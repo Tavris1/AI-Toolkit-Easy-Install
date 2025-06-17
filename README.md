@@ -28,4 +28,4 @@
 > [!TIP]
 >> - After the installation is complete, you can fine-tune the browser's delayed launch time in the **`Start Ai-Toolkit.bat`** file.  
 ## Screenshot  
-![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/1d01995a-cb93-40fb-b4e1-1a346caa8266)
+![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/1d88f8e6-17a2-469c-ada7-55a7fd90d99b)
