@@ -14,8 +14,8 @@ if exist %windir%\system32\WindowsPowerShell\v1.0 set path=%PATH%;%windir%\syste
 if exist %localappdata%\Microsoft\WindowsApps set path=%PATH%;%localappdata%\Microsoft\WindowsApps
 
 :: Check for Existing ComfyUI Folder ::
-if exist Ai-Toolkit (
-	echo %warning%WARNING:%reset% '%bold%Ai-Toolkit%reset%' folder already exists!
+if exist AI-Toolkit (
+	echo %warning%WARNING:%reset% '%bold%AI-Toolkit%reset%' folder already exists!
 	echo %green%Move this file to another folder and run it again.%reset%
 	echo Press any key to Exit...&Pause>nul
 	goto :eof
@@ -44,10 +44,10 @@ Echo %gitversion% | findstr /C:"version">nul&&(
 )
 
 :: System folder? ::
-md Ai-Toolkit
-if not exist Ai-Toolkit (
+md AI-Toolkit
+if not exist AI-Toolkit (
 	cls
-	echo %warning%WARNING:%reset% Cannot create folder %yellow%Ai-Toolkit%reset%
+	echo %warning%WARNING:%reset% Cannot create folder %yellow%AI-Toolkit%reset%
 	echo Make sure you are NOT using system folders like %yellow%Program Files, Windows%reset% or system root %yellow%C:\%reset%
 	echo %green%Move this file to another folder and run it again.%reset%
 	echo Press any key to Exit...&Pause>nul
@@ -60,10 +60,10 @@ call :nodejs_install
 :: Install Python & pip embedded ::
 call :python_embedded_install
 
-:: Install Ai-Toolkit ::
+:: Install AI-Toolkit ::
 call :ai-toolkit_install
 
-:: Create 'Start Ai-Toolkit.bat' ::
+:: Create 'Start AI-Toolkit.bat' ::
 call :create_start-ai-toolkit-bat
 
 :: Capture the end time ::
@@ -134,7 +134,7 @@ echo.
 goto :eof
 
 :ai-toolkit_install
-echo %green%::::::::::::::: Installing%yellow% Ai-Toolkit %green%:::::::::::::::%reset%
+echo %green%::::::::::::::: Installing%yellow% AI-Toolkit %green%:::::::::::::::%reset%
 echo.
 cd ..\
 git clone https://github.com/ostris/ai-toolkit.git
@@ -148,16 +148,16 @@ echo.
 goto :eof
 
 :create_start-ai-toolkit-bat
-echo %green%::::::::::::::: Creating%yellow% Start Ai-Toolkit.bat %green%:::::::::::::::%reset%
+echo %green%::::::::::::::: Creating%yellow% Start AI-Toolkit.bat %green%:::::::::::::::%reset%
 cd..\
-Echo :: Set this time (in seconds) according to your needs ::> "Start Ai-Toolkit.bat"
-Echo @set StartDelay=40>> "Start Ai-Toolkit.bat"
-Echo.>> "Start Ai-Toolkit.bat"
-Echo @echo off>> "Start Ai-Toolkit.bat"
-Echo cd ./ai-toolkit/ui>> "Start Ai-Toolkit.bat"
-Echo Start cmd.exe /k npm run build_and_start>> "Start Ai-Toolkit.bat"
-Echo timeout /t %%StartDelay%%>> "Start Ai-Toolkit.bat"
-Echo start "" http://localhost:8675>> "Start Ai-Toolkit.bat"
+Echo :: Set this time (in seconds) according to your needs ::> "Start AI-Toolkit.bat"
+Echo @set StartDelay=40>> "Start AI-Toolkit.bat"
+Echo.>> "Start AI-Toolkit.bat"
+Echo @echo off>> "Start AI-Toolkit.bat"
+Echo cd ./ai-toolkit/ui>> "Start AI-Toolkit.bat"
+Echo Start cmd.exe /k npm run build_and_start>> "Start AI-Toolkit.bat"
+Echo timeout /t %%StartDelay%%>> "Start AI-Toolkit.bat"
+Echo start "" http://localhost:8675>> "Start AI-Toolkit.bat"
 echo %green%::::::::::::::: Creating%yellow% Done %reset%
 echo.
 goto :eof
