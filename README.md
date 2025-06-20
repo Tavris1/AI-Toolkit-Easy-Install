@@ -30,6 +30,8 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 >> - After installation, you can rename or move **`AI-Toolkit-Easy-Install`** folder if needed.  
 
 > [!TIP]
->> - To adjust the browser launch delay, after installation edit the second line in the **`Start Ai-Toolkit.bat`**
+>> - To adjust the browser launch delay, after installation edit the second line in the **`Start Ai-Toolkit.bat`**  
+>> - To update **`AI-Toolkit`** in the future, simply run **`git pull`** from within the **`AI-Toolkit`** folder.
+
 ## Screenshot  
-![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/9baa1683-2458-4101-8013-d611b15dbc45)
+![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/d7700ea2-e29d-4dec-a893-a3d1524725eb)
