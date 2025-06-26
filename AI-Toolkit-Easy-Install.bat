@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit by Ostris Easy Install - ivo v0.1.0"
+set "version_title=AI-Toolkit-Easy-Install v0.2.0 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -63,7 +63,7 @@ call :python_embedded_install
 :: Install AI-Toolkit ::
 call :ai-toolkit_install
 
-:: Create 'Start AI-Toolkit.bat' ::
+:: Create 'Start-AI-Toolkit.bat' ::
 call :create_start-ai-toolkit-bat
 
 :: Capture the end time ::
@@ -148,16 +148,23 @@ echo.
 goto :eof
 
 :create_start-ai-toolkit-bat
-echo %green%::::::::::::::: Creating%yellow% Start AI-Toolkit.bat %green%:::::::::::::::%reset%
+echo %green%::::::::::::::: Creating%yellow% Start-AI-Toolkit.bat %green%:::::::::::::::%reset%
 cd..\
-Echo :: Set this time (in seconds) according to your needs ::> "Start AI-Toolkit.bat"
-Echo @set StartDelay=40>> "Start AI-Toolkit.bat"
-Echo.>> "Start AI-Toolkit.bat"
-Echo @echo off>> "Start AI-Toolkit.bat"
-Echo cd ./ai-toolkit/ui>> "Start AI-Toolkit.bat"
-Echo Start cmd.exe /k npm run build_and_start>> "Start AI-Toolkit.bat"
-Echo timeout /t %%StartDelay%%>> "Start AI-Toolkit.bat"
-Echo start "" http://localhost:8675>> "Start AI-Toolkit.bat"
-echo %green%::::::::::::::: Creating%yellow% Done %reset%
-echo.
+set "start_bat_name=Start-AI-Toolkit.bat"
+Echo @echo off>%start_bat_name%
+Echo Title %version_title%>>%start_bat_name%
+Echo cd /d %%^~dp0>>%start_bat_name%
+Echo setlocal enabledelayedexpansion>>%start_bat_name%
+Echo set "local_serv=http://localhost:8675">>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo cd ./ai-toolkit>>%start_bat_name%
+Echo echo Updating AI-Toolkit>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo git pull>>%start_bat_name%
+Echo cd ./ui>>%start_bat_name%
+Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
+Echo :loop>> %start_bat_name%
+Echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>> %start_bat_name%
+Echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>> %start_bat_name%
+Echo start !local_serv!>> %start_bat_name%
 goto :eof
