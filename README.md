@@ -1,8 +1,10 @@
 # AI-Toolkit-Easy-Install
 
 One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-> - Supports RTX 50xx GPUs (CUDA 12.8)  
-> - No system Python required
+> - Supports RTX 50xx (CUDA 12.8)  
+> - No system Python needed  
+> - Auto-updates (if available) at every launch  
+> - Automatically open the browser when the local server starts
 <!-- > [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 > [![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]() < !-->
 
@@ -28,10 +30,6 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 > [!NOTE]
 >> - This installation won't affect existing AI-Toolkit installs. Multiple AI-Toolkit are supported.  
 >> - After installation, you can rename or move **`AI-Toolkit-Easy-Install`** folder if needed.  
-
-> [!TIP]
->> - To adjust the browser launch delay, after installation edit the second line in the **`Start Ai-Toolkit.bat`**  
->> - To update **`AI-Toolkit`** in the future, simply run **`git pull`** from within the **`AI-Toolkit`** folder.
 
 ## Screenshot  
 ![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/d7700ea2-e29d-4dec-a893-a3d1524725eb)
