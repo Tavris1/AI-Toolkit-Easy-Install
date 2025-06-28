@@ -158,9 +158,12 @@ Echo setlocal enabledelayedexpansion>>%start_bat_name%
 Echo set "local_serv=http://localhost:8675">>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo cd ./ai-toolkit>>%start_bat_name%
-Echo echo Updating AI-Toolkit>>%start_bat_name%
+Echo echo ^[92m:::::::::::::::   Updating AI-Toolkit...   :::::::::::::::^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo git pull>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo echo ^[92m:::::::::::::::  Waiting for the server... :::::::::::::::^[0m>>%start_bat_name%
+Echo echo ^[93m:::::::::::::::  Do not close this window  :::::::::::::::^[0m>>%start_bat_name%
 Echo cd ./ui>>%start_bat_name%
 Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
 Echo :loop>> %start_bat_name%
