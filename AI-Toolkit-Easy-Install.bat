@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.2.0 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.2.1 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -123,13 +123,16 @@ echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
 curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke
 python get-pip.py %silent%
-python.exe -m pip install --upgrade pip %silent%
-python.exe -m pip install virtualenv %silent%
+
 Echo Lib/site-packages> python310._pth
 Echo python310.zip>> python310._pth
 Echo .>> python310._pth
 Echo.>> python310._pth
 Echo import site>> python310._pth
+
+python.exe -m pip install --upgrade pip %silent%
+python.exe -m pip install virtualenv %silent%
+
 echo.
 goto :eof
 
@@ -141,9 +144,9 @@ git clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -m virtualenv venv
 CALL venv\Scripts\activate.bat
-..\python_embeded\python.exe -m pip install poetry-core
-..\python_embeded\python.exe -m pip install -r requirements.txt %silent%
-..\python_embeded\python.exe -m pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %silent%
+pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %silent%
+pip install poetry-core %silent%
+pip install -r requirements.txt %silent%
 echo.
 goto :eof
 
