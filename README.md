@@ -32,4 +32,4 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 >> - After installation, you can rename or move **`AI-Toolkit-Easy-Install`** folder if needed.  
 
 ## Screenshot  
-![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/d7700ea2-e29d-4dec-a893-a3d1524725eb)
+![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/1d665105-dc1e-489e-a939-aaf12c1e6c32)
