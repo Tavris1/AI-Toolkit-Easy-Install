@@ -29,7 +29,6 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 
 > [!NOTE]
 >> - This installation won't affect existing AI-Toolkit installs. Multiple AI-Toolkit are supported.  
->> - After installation, you can rename or move **`AI-Toolkit-Easy-Install`** folder if needed.  
 
 ## Screenshot  
 ![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/f056eb01-1daf-4607-9eaf-32a6c3d856b2)
