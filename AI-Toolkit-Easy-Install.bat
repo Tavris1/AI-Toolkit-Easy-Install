@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.2.1 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.0 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -132,6 +132,9 @@ Echo import site>> python310._pth
 
 python.exe -m pip install --upgrade pip %silent%
 python.exe -m pip install virtualenv %silent%
+curl -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke
+tar -xf python_3.10.11_include_libs.zip
+erase python_3.10.11_include_libs.zip
 
 echo.
 goto :eof
@@ -146,6 +149,7 @@ cd ai-toolkit
 CALL venv\Scripts\activate.bat
 pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %silent%
 pip install poetry-core %silent%
+pip install triton-windows %silent%
 pip install -r requirements.txt %silent%
 echo.
 goto :eof
@@ -161,12 +165,31 @@ Echo setlocal enabledelayedexpansion>>%start_bat_name%
 Echo set "local_serv=http://localhost:8675">>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo cd ./ai-toolkit>>%start_bat_name%
-Echo echo ^[92m:::::::::::::::   Updating AI-Toolkit...   :::::::::::::::^[0m>>%start_bat_name%
+Echo.>>%start_bat_name%
+
+Echo echo ^[92m:::::::::::::::   Checking for updates...  :::::::::::::::^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
-Echo git pull>>%start_bat_name%
+Echo git fetch>>%start_bat_name%
+Echo git status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%start_bat_name%
+Echo if !errorlevel!==0 ^(>>%start_bat_name%
+Echo     echo ^[92m:::::::::::::::    Installing updates...   :::::::::::::::^[0m>>%start_bat_name%
+Echo     echo.>>%start_bat_name%
+Echo     git pull>>%start_bat_name%
+Echo     echo.>>%start_bat_name%
+Echo     echo ^[92m::::::::::::::: Installing requirements... :::::::::::::::^[0m>>%start_bat_name%
+Echo     echo.>>%start_bat_name%
+Echo     CALL venv\Scripts\activate.bat>>%start_bat_name%
+Echo     pip install -r requirements.txt --no-cache-dir --no-warn-script-location>>%start_bat_name%
+Echo     CALL venv\Scripts\deactivate.bat>>%start_bat_name%
+Echo ^) else ^(>>%start_bat_name%
+Echo     echo ^[92m:::::::::::::::     Already up to date     :::::::::::::::^[0m>>%start_bat_name%
+Echo     echo.>>%start_bat_name%
+Echo ^)>>%start_bat_name%
+Echo.>>%start_bat_name%
+
 Echo echo.>>%start_bat_name%
 Echo echo ^[92m:::::::::::::::  Waiting for the server... :::::::::::::::^[0m>>%start_bat_name%
-Echo echo ^[93m:::::::::::::::  Do not close this window  :::::::::::::::^[0m>>%start_bat_name%
+Echo echo ^[93m:::::::::::::::  ^[91mDo not close ^[93mthis window  :::::::::::::::^[0m>>%start_bat_name%
 Echo cd ./ui>>%start_bat_name%
 Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
 Echo :loop>> %start_bat_name%
