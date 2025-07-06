@@ -172,6 +172,7 @@ Echo echo.>>%start_bat_name%
 Echo git fetch>>%start_bat_name%
 Echo git status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%start_bat_name%
 Echo if !errorlevel!==0 ^(>>%start_bat_name%
+Echo     echo.>>%start_bat_name%
 Echo     echo ^[92m:::::::::::::::    Installing updates...   :::::::::::::::^[0m>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
 Echo     git pull>>%start_bat_name%
