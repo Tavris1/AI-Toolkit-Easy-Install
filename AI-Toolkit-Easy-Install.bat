@@ -1,14 +1,16 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.0 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.1 by ivo"
 Title %version_title%
 
 :: Set colors ::
 call :set_colors
 
-:: Set No Cache & Warnings ::
-set "silent=--no-cache-dir --no-warn-script-location"
+:: Set arguments ::
+set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --resume-retries 20 --retries 50"
+set "CURLargs=--retry 20 --retry-all-errors"
 
-:: Set Local Paths (if broken) ::
+:: Set local path only (temporarily) ::
+set path=
 if exist %windir%\system32 set path=%PATH%;%windir%\System32
 if exist %windir%\system32\WindowsPowerShell\v1.0 set path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0
 if exist %localappdata%\Microsoft\WindowsApps set path=%PATH%;%localappdata%\Microsoft\WindowsApps
@@ -114,15 +116,15 @@ goto :eof
 :: https://www.python.org/downloads/release/python-31011/
 echo %green%::::::::::::::: Installing%yellow% Python embedded %green%:::::::::::::::%reset%
 echo.
-curl -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke
+curl -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke %CURLargs%
 md python_embeded&&cd python_embeded
 tar -xf ..\python-3.10.11-embed-amd64.zip
 erase ..\python-3.10.11-embed-amd64.zip
 echo.
 echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
-curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke
-python get-pip.py %silent%
+curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
+python get-pip.py %PIPargs%
 
 Echo Lib/site-packages> python310._pth
 Echo python310.zip>> python310._pth
@@ -130,9 +132,9 @@ Echo .>> python310._pth
 Echo.>> python310._pth
 Echo import site>> python310._pth
 
-python.exe -m pip install --upgrade pip %silent%
-python.exe -m pip install virtualenv %silent%
-curl -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke
+python.exe -m pip install --upgrade pip %PIPargs%
+python.exe -m pip install virtualenv %PIPargs%
+curl -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
 tar -xf python_3.10.11_include_libs.zip
 erase python_3.10.11_include_libs.zip
 
@@ -147,10 +149,10 @@ git clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -m virtualenv venv
 CALL venv\Scripts\activate.bat
-pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %silent%
-pip install poetry-core %silent%
-pip install triton-windows %silent%
-pip install -r requirements.txt %silent%
+pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+pip install poetry-core %PIPargs%
+pip install triton-windows %PIPargs%
+pip install -r requirements.txt %PIPargs%
 echo.
 goto :eof
 
