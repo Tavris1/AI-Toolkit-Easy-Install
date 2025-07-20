@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.1 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.2 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -25,6 +25,9 @@ if exist AI-Toolkit (
 
 :: Capture the start time ::
 for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set start=%%i
+
+:: Skip downloading LFS (Large File Storage) files ::
+set GIT_LFS_SKIP_SMUDGE=1
 
 :: Clear Pip Cache ::
 if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
@@ -101,7 +104,7 @@ goto :eof
 
 :nodejs_install
 :: https://nodejs.org/en
-echo %green%::::::::::::::: Installing%yellow% Node.js %green%:::::::::::::::%reset%
+echo %green%::::::::::::::: Installing/Updating%yellow% Node.js %green%:::::::::::::::%reset%
 echo.
 winget install --id=OpenJS.NodeJS -e
 set path=%PATH%;%ProgramFiles%\nodejs
@@ -164,6 +167,7 @@ Echo @echo off>%start_bat_name%
 Echo Title %version_title%>>%start_bat_name%
 Echo cd /d %%^~dp0>>%start_bat_name%
 Echo setlocal enabledelayedexpansion>>%start_bat_name%
+Echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
 Echo set "local_serv=http://localhost:8675">>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo cd ./ai-toolkit>>%start_bat_name%
