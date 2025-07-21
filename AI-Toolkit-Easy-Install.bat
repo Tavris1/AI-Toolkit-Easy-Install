@@ -1,12 +1,12 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.2 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.3 by ivo"
 Title %version_title%
 
 :: Set colors ::
 call :set_colors
 
 :: Set arguments ::
-set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --resume-retries 20 --retries 50"
+set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 50"
 set "CURLargs=--retry 20 --retry-all-errors"
 
 :: Set local path only (temporarily) ::
@@ -127,7 +127,7 @@ echo.
 echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
 curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
-python get-pip.py %PIPargs%
+.\python.exe get-pip.py %PIPargs%
 
 Echo Lib/site-packages> python310._pth
 Echo python310.zip>> python310._pth
@@ -135,11 +135,8 @@ Echo .>> python310._pth
 Echo.>> python310._pth
 Echo import site>> python310._pth
 
-python.exe -m pip install --upgrade pip %PIPargs%
-python.exe -m pip install virtualenv %PIPargs%
-curl -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
-tar -xf python_3.10.11_include_libs.zip
-erase python_3.10.11_include_libs.zip
+.\python.exe -m pip install --upgrade pip %PIPargs%
+.\python.exe -m pip install virtualenv %PIPargs%
 
 echo.
 goto :eof
@@ -154,7 +151,6 @@ cd ai-toolkit
 CALL venv\Scripts\activate.bat
 pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %PIPargs%
 pip install poetry-core %PIPargs%
-pip install triton-windows %PIPargs%
 pip install -r requirements.txt %PIPargs%
 echo.
 goto :eof
