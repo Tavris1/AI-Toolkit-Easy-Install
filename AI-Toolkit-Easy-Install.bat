@@ -1,15 +1,16 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.3 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.4 by ivo"
 Title %version_title%
 
 :: Set colors ::
 call :set_colors
 
 :: Set arguments ::
-set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 50"
-set "CURLargs=--retry 20 --retry-all-errors"
+set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 200"
+set "CURLargs=--retry 200 --retry-all-errors"
 
 :: Set local path only (temporarily) ::
+set path=
 if exist %windir%\system32 set path=%PATH%;%windir%\System32
 if exist %windir%\system32\WindowsPowerShell\v1.0 set path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0
 if exist %localappdata%\Microsoft\WindowsApps set path=%PATH%;%localappdata%\Microsoft\WindowsApps
@@ -96,7 +97,20 @@ goto :eof
 :: https://git-scm.com/
 echo %green%::::::::::::::: Installing/Updating%yellow% Git %green%:::::::::::::::%reset%
 echo.
-winget install --id Git.Git -e --source winget
+
+:: Check if Winget is installed ::
+where winget.exe >nul 2>&1
+if %errorlevel% NEQ 0 (
+    cls
+    echo %warning%App Installer ^(winget^) is NOT installed.
+	echo %green%Install it first and then run this script again.%reset%
+	start ms-windows-store://pdp/?productid=9NBLGGH4NNS1
+	echo.
+	echo Press any key to exit&Pause>nul
+	exit
+)
+
+winget.exe install --id Git.Git -e --source winget
 set path=%PATH%;%ProgramFiles%\Git\cmd
 echo.
 goto :eof
@@ -105,7 +119,7 @@ goto :eof
 :: https://nodejs.org/en
 echo %green%::::::::::::::: Installing/Updating%yellow% Node.js %green%:::::::::::::::%reset%
 echo.
-winget install --id=OpenJS.NodeJS -e
+winget.exe install --id=OpenJS.NodeJS -e
 set path=%PATH%;%ProgramFiles%\nodejs
 CALL npm i --save-dev prisma@latest
 CALL npm i @prisma/client@latest
@@ -118,14 +132,14 @@ goto :eof
 :: https://www.python.org/downloads/release/python-31011/
 echo %green%::::::::::::::: Installing%yellow% Python embedded %green%:::::::::::::::%reset%
 echo.
-curl -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke %CURLargs%
+curl.exe -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke %CURLargs%
 md python_embeded&&cd python_embeded
-tar -xf ..\python-3.10.11-embed-amd64.zip
+tar.exe -xf ..\python-3.10.11-embed-amd64.zip
 erase ..\python-3.10.11-embed-amd64.zip
 echo.
 echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
-curl -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
+curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
 .\python.exe get-pip.py %PIPargs%
 
 Echo Lib/site-packages> python310._pth
