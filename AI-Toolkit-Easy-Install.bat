@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.4 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.5 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -10,7 +10,8 @@ set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 2
 set "CURLargs=--retry 200 --retry-all-errors"
 
 :: Set local path only (temporarily) ::
-set path=
+for /f "delims=" %%G in ('cmd /c "where git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
+set path=%GIT_PATH%
 if exist %windir%\system32 set path=%PATH%;%windir%\System32
 if exist %windir%\system32\WindowsPowerShell\v1.0 set path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0
 if exist %localappdata%\Microsoft\WindowsApps set path=%PATH%;%localappdata%\Microsoft\WindowsApps
@@ -158,7 +159,7 @@ goto :eof
 echo %green%::::::::::::::: Installing%yellow% AI-Toolkit %green%:::::::::::::::%reset%
 echo.
 cd ..\
-git clone https://github.com/ostris/ai-toolkit.git
+git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -m virtualenv venv
 CALL venv\Scripts\activate.bat
