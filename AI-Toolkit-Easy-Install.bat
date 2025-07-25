@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.5 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.6 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -9,9 +9,19 @@ call :set_colors
 set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 200"
 set "CURLargs=--retry 200 --retry-all-errors"
 
+:: Clear environment variables that might interfere ::
+set PYTHONHOME=
+set PYTHONPATH=
+set PYTHONSTARTUP=
+set PYTHONUSERBASE=
+set PYTHONBREAKPOINT=
+set VIRTUAL_ENV=
+
 :: Set local path only (temporarily) ::
 for /f "delims=" %%G in ('cmd /c "where git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
-set path=%GIT_PATH%
+for /f "delims=" %%G in ('cmd /c "where node.exe 2>nul"') do (set "NODE_PATH=%%~dpG")
+set path=%GIT_PATH%;%NODE_PATH%
+
 if exist %windir%\system32 set path=%PATH%;%windir%\System32
 if exist %windir%\system32\WindowsPowerShell\v1.0 set path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0
 if exist %localappdata%\Microsoft\WindowsApps set path=%PATH%;%localappdata%\Microsoft\WindowsApps
@@ -141,14 +151,13 @@ echo.
 echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
 curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
-.\python.exe get-pip.py %PIPargs%
 
 Echo Lib/site-packages> python310._pth
 Echo python310.zip>> python310._pth
 Echo .>> python310._pth
-Echo.>> python310._pth
-Echo import site>> python310._pth
+Echo # import site>> python310._pth
 
+.\python.exe get-pip.py %PIPargs%
 .\python.exe -m pip install --upgrade pip %PIPargs%
 .\python.exe -m pip install virtualenv %PIPargs%
 
