@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.6 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.7 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -8,14 +8,6 @@ call :set_colors
 :: Set arguments ::
 set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 200"
 set "CURLargs=--retry 200 --retry-all-errors"
-
-:: Clear environment variables that might interfere ::
-set PYTHONHOME=
-set PYTHONPATH=
-set PYTHONSTARTUP=
-set PYTHONUSERBASE=
-set PYTHONBREAKPOINT=
-set VIRTUAL_ENV=
 
 :: Set local path only (temporarily) ::
 for /f "delims=" %%G in ('cmd /c "where git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
@@ -152,14 +144,17 @@ echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
 curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
 
+Echo ../AI-Toolkit> python310._pth
 Echo Lib/site-packages> python310._pth
+Echo Lib>> python310._pth
+Echo Scripts>> python310._pth
 Echo python310.zip>> python310._pth
 Echo .>> python310._pth
 Echo # import site>> python310._pth
 
-.\python.exe get-pip.py %PIPargs%
-.\python.exe -m pip install --upgrade pip %PIPargs%
-.\python.exe -m pip install virtualenv %PIPargs%
+.\python.exe -I get-pip.py %PIPargs%
+.\python.exe -I -m pip install --upgrade pip %PIPargs%
+.\python.exe -I -m pip install virtualenv %PIPargs%
 
 echo.
 goto :eof
@@ -170,7 +165,7 @@ echo.
 cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
-..\python_embeded\python.exe -m virtualenv venv
+..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
 pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %PIPargs%
 pip install poetry-core %PIPargs%
