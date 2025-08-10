@@ -1,7 +1,6 @@
 # AI-Toolkit-Easy-Install
 
 One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-> - Supports RTX 50xx (CUDA 12.8)  
 > - No system Python needed  
 > - AI-Toolkit is launched via a **single .bat file**, which also:  
 >   - Automatically checks for and installs updates at each launch  
