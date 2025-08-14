@@ -5,8 +5,9 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 > - AI-Toolkit is launched via a **single .bat file**, which also:  
 >   - Automatically checks for and installs updates at each launch  
 >   - Opens your default browser once the local server is running  
-<!-- > [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
-> [![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]() < !-->
+>
+> [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
+> [![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]()
 
 ---
 
@@ -24,7 +25,7 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 2. Extract the ZIP file into a new folder  
 3. Double-click **`AI-Toolkit-Easy-Install.bat`** to start the setup
 > [!IMPORTANT]
->> - Do **not** extract to system-protected folders such as **`Program Files`**, **`Windows`**, or directly to **`C:\`**  
+>> - Do **not** extract to system-protected folders like **`Program Files`**, **`Windows`**, or the **root** of the **`C:`** drive  
 >> - Do not **run** the installer as **Administrator**
 
 > [!NOTE]
