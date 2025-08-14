@@ -31,4 +31,8 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 >> - This installation won't affect existing AI-Toolkit installs. Multiple AI-Toolkit are supported.  
 
 ## Screenshot  
-![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/f056eb01-1daf-4607-9eaf-32a6c3d856b2)
+![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/f056eb01-1daf-4607-9eaf-32a6c3d856b2)  
+
+### [Support me on PayPal](https://paypal.me/tavris1)
+[![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
+
