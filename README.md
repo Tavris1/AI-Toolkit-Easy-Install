@@ -1,13 +1,13 @@
 # AI-Toolkit-Easy-Install
 
 One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-> - No system Python needed  
-> - AI-Toolkit is launched via a **single .bat file**, which also:  
->   - Automatically checks for and installs updates at each launch  
->   - Opens your default browser once the local server is running  
->
-> [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
-> [![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]()
+- No system Python needed  
+- AI-Toolkit is launched via a **single .bat file**, which also:  
+  - Automatically checks for and installs updates at each launch  
+  - Opens your default browser once the local server is running  
+
+[![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
+[![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]()
 
 ---
 
@@ -21,15 +21,12 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 
 ---
 ## Installation  
-1. Download the latest release [:arrow_forward:HERE](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
-2. Extract the ZIP file into a new folder  
-3. Double-click **`AI-Toolkit-Easy-Install.bat`** to start the setup
+- Download the latest release [:arrow_forward:HERE](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
+- Extract **`AI-Toolkit-Easy-Install.bat`** to a new folder, then run it.  
 > [!IMPORTANT]
->> - Do **not** extract to system-protected folders like **`Program Files`**, **`Windows`**, or the **root** of the **`C:`** drive  
->> - Do not **run** the installer as **Administrator**
-
-> [!NOTE]
->> - This installation won't affect existing AI-Toolkit installs. Multiple AI-Toolkit are supported.  
+> - Do not **run** the installer as **Administrator**
+> - Do **not** extract to system-protected folders like **`Program Files`**, **`Windows`**, or the **root** of the **`C:`** drive **`(C:\)`**  
+> - Spaces in folder names are not recommended  
 
 ## Screenshot  
 ![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/f056eb01-1daf-4607-9eaf-32a6c3d856b2)  
