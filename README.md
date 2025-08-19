@@ -1,6 +1,6 @@
 # AI-Toolkit-Easy-Install
 
-One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
+### One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
 - No system Python needed  
 - AI-Toolkit is launched via a **single .bat file**, which also:  
   - Automatically checks for and installs updates at each launch  
@@ -11,11 +11,11 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 
 ---
 
-## What will be installed  
+### What will be installed  
 - [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit)  
 - [**Python 3.10.11 Embedded**](https://www.python.org/downloads/release/python-31011/)
 
-## Will be installed or updated if required 
+### Will be installed or updated if required 
 - [**Git**](https://git-scm.com/)  
 - [**Node.js**](https://nodejs.org/en)  
 
