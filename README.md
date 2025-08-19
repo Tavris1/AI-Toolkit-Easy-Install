@@ -25,8 +25,8 @@ One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/a
 - Extract **`AI-Toolkit-Easy-Install.bat`** to a new folder, then run it.  
 > [!IMPORTANT]
 > - Do **not** run the installer as **Administrator**
-> - Do **not** extract to system-protected folders like **`Program Files`**, **`Windows`**, or the **root** of the **`C:`** drive **`(C:\)`**  
-> - Spaces in folder names are not recommended  
+> - Avoid system folders (**Program Files**, **Windows**, **C:\\** root)  
+> - Avoid **spaces** in folder names
 
 ## Screenshot  
 ![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/f056eb01-1daf-4607-9eaf-32a6c3d856b2)  
