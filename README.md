@@ -11,13 +11,11 @@
 
 ---
 
-### What will be installed  
-- [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit)  
-- [**Python 3.10.11 Embedded**](https://www.python.org/downloads/release/python-31011/)
-
-### Will be installed or updated if required 
-- [**Git**](https://git-scm.com/)  
-- [**Node.js**](https://nodejs.org/en)  
+### Installation List:  
+- **AI-Toolkit by Ostris**  
+- **Python 3.10.11 Embedded**  
+- **Git** (will be installed or updated if needed)  
+- **Node.js** (will be installed or updated if needed)  
 
 ---
 ## Installation  
