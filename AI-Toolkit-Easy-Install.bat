@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.7 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.8 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -124,9 +124,9 @@ echo %green%::::::::::::::: Installing/Updating%yellow% Node.js %green%:::::::::
 echo.
 winget.exe install --id=OpenJS.NodeJS -e
 set path=%PATH%;%ProgramFiles%\nodejs
-CALL npm i --save-dev prisma@latest
-CALL npm i @prisma/client@latest
-CALL npm audit fix
+REM CALL npm i --save-dev prisma@latest
+REM CALL npm i @prisma/client@latest
+REM CALL npm audit fix
 Title %version_title%
 echo.
 goto :eof
@@ -153,8 +153,13 @@ Echo .>> python310._pth
 Echo # import site>> python310._pth
 
 .\python.exe -I get-pip.py %PIPargs%
-.\python.exe -I -m pip install --upgrade pip %PIPargs%
-.\python.exe -I -m pip install virtualenv %PIPargs%
+.\python.exe -I -m pip install uv %PIPargs%
+.\python.exe -I -m uv pip install --upgrade pip
+.\python.exe -I -m uv pip install virtualenv
+
+curl -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
+tar -xf python_3.10.11_include_libs.zip
+erase python_3.10.11_include_libs.zip
 
 echo.
 goto :eof
@@ -167,9 +172,12 @@ git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
-pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %PIPargs%
-pip install poetry-core %PIPargs%
-pip install -r requirements.txt %PIPargs%
+pip install uv %PIPargs%
+uv pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128
+uv pip install poetry-core
+uv pip install triton-windows
+REM uv pip install hf_xet
+uv pip install -r requirements.txt
 echo.
 goto :eof
 
