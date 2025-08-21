@@ -7,7 +7,9 @@
   - Opens your default browser once the local server is running  
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
+[![GitHun Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]()
+[![GitHub Downloads latest)](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/latest/total?style=flat&label=downloads%40latest&color=orange)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 
 ---
 
