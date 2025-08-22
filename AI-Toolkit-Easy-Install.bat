@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.9 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.10 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -32,10 +32,8 @@ for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set start=%
 :: Skip downloading LFS (Large File Storage) files ::
 set GIT_LFS_SKIP_SMUDGE=1
 
-:: Clear Pip Cache ::
-if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
-echo %green%::::::::::::::: Clearing Pip Cache %yellow%Done%green% :::::::::::::::%reset%
-echo.
+:: Clear Pip and uv Cache ::
+call :clear_pip_uv_cache
 
 :: Install/Update Git ::
 call :install_git
@@ -74,6 +72,9 @@ call :ai-toolkit_install
 :: Create 'Start-AI-Toolkit.bat' ::
 call :create_start-ai-toolkit-bat
 
+:: Clear Pip and uv Cache ::
+call :clear_pip_uv_cache
+
 :: Capture the end time ::
 for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set end=%%i
 for /f %%i in ('powershell -command "(New-TimeSpan -Start (Get-Date '%start%') -End (Get-Date '%end%')).TotalSeconds"') do set diff=%%i
@@ -94,6 +95,12 @@ set   green=[92m
 set  yellow=[93m
 set    bold=[1m
 set   reset=[0m
+goto :eof
+
+:clear_pip_uv_cache
+if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
+echo %green%::::::::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::::::%reset%
+echo.
 goto :eof
 
 :install_git
@@ -182,7 +189,7 @@ echo.
 goto :eof
 
 :create_start-ai-toolkit-bat
-echo %green%::::::::::::::: Creating%yellow% Start-AI-Toolkit.bat %green%:::::::::::::::%reset%
+echo %green%::::::::::::::: Creating%yellow%  Start-AI-Toolkit.bat %green%:::::::::::::::%reset%
 cd..\
 set "start_bat_name=Start-AI-Toolkit.bat"
 Echo @echo off>%start_bat_name%
