@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.8 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.9 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -157,8 +157,8 @@ Echo # import site>> python310._pth
 .\python.exe -I -m uv pip install --upgrade pip
 .\python.exe -I -m uv pip install virtualenv
 
-curl -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
-tar -xf python_3.10.11_include_libs.zip
+curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
+tar.exe -xf python_3.10.11_include_libs.zip
 erase python_3.10.11_include_libs.zip
 
 echo.
