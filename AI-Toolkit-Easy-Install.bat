@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.10 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.11 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -99,6 +99,7 @@ goto :eof
 
 :clear_pip_uv_cache
 if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
+if exist "%localappdata%\uv\cache" rd /s /q "%localappdata%\uv\cache"&&md "%localappdata%\uv\cache"
 echo %green%::::::::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::::::%reset%
 echo.
 goto :eof
@@ -215,7 +216,7 @@ Echo     echo.>>%start_bat_name%
 Echo     echo ^[92m::::::::::::::: Installing requirements... :::::::::::::::^[0m>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
 Echo     CALL venv\Scripts\activate.bat>>%start_bat_name%
-Echo     pip install -r requirements.txt --no-cache-dir --no-warn-script-location>>%start_bat_name%
+Echo     uv pip install -r requirements.txt>>%start_bat_name%
 Echo     CALL venv\Scripts\deactivate.bat>>%start_bat_name%
 Echo ^) else ^(>>%start_bat_name%
 Echo     echo ^[92m:::::::::::::::     Already up to date     :::::::::::::::^[0m>>%start_bat_name%
