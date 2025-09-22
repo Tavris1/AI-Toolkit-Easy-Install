@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.11 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.12 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -32,8 +32,8 @@ for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set start=%
 :: Skip downloading LFS (Large File Storage) files ::
 set GIT_LFS_SKIP_SMUDGE=1
 
-:: Clear Pip and uv Cache ::
-call :clear_pip_uv_cache
+:: Clear Pip Cache ::
+call :clear_pip_cache
 
 :: Install/Update Git ::
 call :install_git
@@ -72,8 +72,8 @@ call :ai-toolkit_install
 :: Create 'Start-AI-Toolkit.bat' ::
 call :create_start-ai-toolkit-bat
 
-:: Clear Pip and uv Cache ::
-call :clear_pip_uv_cache
+:: Clear Pip Cache ::
+call :clear_pip_cache
 
 :: Capture the end time ::
 for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set end=%%i
@@ -97,10 +97,9 @@ set    bold=[1m
 set   reset=[0m
 goto :eof
 
-:clear_pip_uv_cache
+:clear_pip_cache
 if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
-if exist "%localappdata%\uv\cache" rd /s /q "%localappdata%\uv\cache"&&md "%localappdata%\uv\cache"
-echo %green%::::::::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::::::%reset%
+echo %green%::::::::::::::: Clearing Pip Cache %yellow%Done%green% :::::::::::::::%reset%
 echo.
 goto :eof
 
@@ -108,18 +107,6 @@ goto :eof
 :: https://git-scm.com/
 echo %green%::::::::::::::: Installing/Updating%yellow% Git %green%:::::::::::::::%reset%
 echo.
-
-REM :: Check if Winget is installed ::
-REM where winget.exe >nul 2>&1
-REM if %errorlevel% NEQ 0 (
-    REM cls
-    REM echo %warning%App Installer ^(winget^) is NOT installed.
-	REM echo %green%Install it first and then run this script again.%reset%
-	REM start ms-windows-store://pdp/?productid=9NBLGGH4NNS1
-	REM echo.
-	REM echo Press any key to exit&Pause>nul
-	REM exit
-REM )
 
 winget.exe install --id Git.Git -e --source winget
 set path=%PATH%;%ProgramFiles%\Git\cmd
@@ -132,9 +119,6 @@ echo %green%::::::::::::::: Installing/Updating%yellow% Node.js %green%:::::::::
 echo.
 winget.exe install --id=OpenJS.NodeJS -e
 set path=%PATH%;%ProgramFiles%\nodejs
-REM CALL npm i --save-dev prisma@latest
-REM CALL npm i @prisma/client@latest
-REM CALL npm audit fix
 Title %version_title%
 echo.
 goto :eof
@@ -161,9 +145,8 @@ Echo .>> python310._pth
 Echo # import site>> python310._pth
 
 .\python.exe -I get-pip.py %PIPargs%
-.\python.exe -I -m pip install uv %PIPargs%
-.\python.exe -I -m uv pip install --upgrade pip
-.\python.exe -I -m uv pip install virtualenv
+.\python.exe -I -m pip install --upgrade pip %PIPargs%
+.\python.exe -I -m pip install virtualenv %PIPargs%
 
 curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
 tar.exe -xf python_3.10.11_include_libs.zip
@@ -180,12 +163,11 @@ git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
-pip install uv %PIPargs%
-uv pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128
-uv pip install poetry-core
-uv pip install triton-windows
-REM uv pip install hf_xet
-uv pip install -r requirements.txt
+pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+pip install poetry-core %PIPargs%
+pip install triton-windows %PIPargs%
+REM pip install hf_xet %PIPargs%
+pip install -r requirements.txt %PIPargs%
 echo.
 goto :eof
 
@@ -216,7 +198,7 @@ Echo     echo.>>%start_bat_name%
 Echo     echo ^[92m::::::::::::::: Installing requirements... :::::::::::::::^[0m>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
 Echo     CALL venv\Scripts\activate.bat>>%start_bat_name%
-Echo     uv pip install -r requirements.txt>>%start_bat_name%
+Echo     pip install -r requirements.txt --no-cache>>%start_bat_name%
 Echo     CALL venv\Scripts\deactivate.bat>>%start_bat_name%
 Echo ^) else ^(>>%start_bat_name%
 Echo     echo ^[92m:::::::::::::::     Already up to date     :::::::::::::::^[0m>>%start_bat_name%
