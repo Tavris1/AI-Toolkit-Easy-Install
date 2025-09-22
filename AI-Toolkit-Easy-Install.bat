@@ -163,7 +163,8 @@ git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
-pip install --upgrade torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+REM pip install --upgrade torch torchvision torchaudio --pre --index-url https://download.pytorch.org/whl/nightly/cu128 %PIPargs%
+pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
 pip install poetry-core %PIPargs%
 pip install triton-windows %PIPargs%
 REM pip install hf_xet %PIPargs%
