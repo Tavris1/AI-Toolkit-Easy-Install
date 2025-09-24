@@ -31,6 +31,8 @@
 ## Screenshot  
 ![AI-Toolkit-Easy-Install](https://github.com/user-attachments/assets/a7ddeee9-6487-4521-946c-f81d8c96aa47)  
 
+![Tips](https://github.com/user-attachments/assets/8ce5bf03-6f86-4fc0-a54d-e78362472c22)
+
 ### [Support me on PayPal](https://paypal.me/tavris1)
 [![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
 
