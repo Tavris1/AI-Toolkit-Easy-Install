@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.12 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.15 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -163,7 +163,6 @@ git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
-REM pip install --upgrade torch torchvision torchaudio --pre --index-url https://download.pytorch.org/whl/nightly/cu128 %PIPargs%
 pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
 pip install poetry-core %PIPargs%
 pip install triton-windows %PIPargs%
@@ -186,30 +185,42 @@ Echo echo.>>%start_bat_name%
 Echo cd ./ai-toolkit>>%start_bat_name%
 Echo.>>%start_bat_name%
 
-Echo echo ^[92m:::::::::::::::   Checking for updates...  :::::::::::::::^[0m>>%start_bat_name%
+Echo echo ^[92m:::::::::::::: Checking for updates... ::::::::::::::^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo git fetch>>%start_bat_name%
 Echo git status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%start_bat_name%
 Echo if !errorlevel!==0 ^(>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
-Echo     echo ^[92m:::::::::::::::    Installing updates...   :::::::::::::::^[0m>>%start_bat_name%
+Echo     echo ^[92m::::::::::::::: Installing updates... :::::::::::::::^[0m>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
 Echo     git pull>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
-Echo     echo ^[92m::::::::::::::: Installing requirements... :::::::::::::::^[0m>>%start_bat_name%
+Echo     echo ^[92m::::::::::::: Installing requirements... ::::::::::::^[0m>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
 Echo     CALL venv\Scripts\activate.bat>>%start_bat_name%
 Echo     pip install -r requirements.txt --no-cache>>%start_bat_name%
 Echo     CALL venv\Scripts\deactivate.bat>>%start_bat_name%
 Echo ^) else ^(>>%start_bat_name%
-Echo     echo ^[92m:::::::::::::::     Already up to date     :::::::::::::::^[0m>>%start_bat_name%
+Echo     echo ^[92m::::::::::::::::: Already up to date ::::::::::::::::^[0m>>%start_bat_name%
 Echo     echo.>>%start_bat_name%
 Echo ^)>>%start_bat_name%
 Echo.>>%start_bat_name%
 
+Echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
-Echo echo ^[92m:::::::::::::::  Waiting for the server... :::::::::::::::^[0m>>%start_bat_name%
-Echo echo ^[93m:::::::::::::::  ^[91mDo not close ^[93mthis window  :::::::::::::::^[0m>>%start_bat_name%
+Echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
+Echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
+Echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo echo ^[1;93mBranches (run CMD in AI-Toolkit folder):^[0m>>%start_bat_name%
+Echo echo  ^[1;32m3.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
+Echo echo  ^[1;32m4.^[0m List all branches:   ^[1;92mgit branch -a^[0m>>%start_bat_name%
+Echo echo  ^[1;32m5.^[0m Switch branch:       ^[1;92mgit checkout^[0m ^[1;33mbranch_name^[0m>>%start_bat_name%
+Echo echo  ^[1;32m6.^[0m Back to ^[1;33mmain^[0m branch: ^[1;92mgit checkout^[0m ^[1;33mmain^[0m>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo echo ^[92m:::::::: Waiting for the server to start ... ::::::::^[0m>>%start_bat_name%
+Echo.>>%start_bat_name%
+
 Echo cd ./ui>>%start_bat_name%
 Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
 Echo :loop>> %start_bat_name%
