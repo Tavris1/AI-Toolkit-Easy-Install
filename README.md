@@ -31,7 +31,8 @@
 ## Screenshots  
 ### Installing AI-Toolkit  
 <img width="1264" height="442" alt="Tips" src="https://github.com/user-attachments/assets/a7ddeee9-6487-4521-946c-f81d8c96aa47" />
-<br/><br/>
+<br/><br/>  
+
 ### Starting AI-Toolkit  
 <img width="1264" height="442" alt="Tips" src="https://github.com/user-attachments/assets/ac8d44dd-746a-43d4-96db-b4b1dcffc530" />
 
