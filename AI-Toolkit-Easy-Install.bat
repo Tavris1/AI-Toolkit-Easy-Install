@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.15 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.16 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -164,10 +164,10 @@ cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
 pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+pip install -r requirements.txt %PIPargs%
 pip install poetry-core %PIPargs%
 pip install triton-windows %PIPargs%
 REM pip install hf_xet %PIPargs%
-pip install -r requirements.txt %PIPargs%
 echo.
 goto :eof
 
@@ -211,14 +211,17 @@ Echo echo.>>%start_bat_name%
 Echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
 Echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
 Echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
+Echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
+Echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
+Echo echo     - Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo echo ^[1;93mBranches (run CMD in AI-Toolkit folder):^[0m>>%start_bat_name%
-Echo echo  ^[1;32m3.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
-Echo echo  ^[1;32m4.^[0m List all branches:   ^[1;92mgit branch -a^[0m>>%start_bat_name%
-Echo echo  ^[1;32m5.^[0m Switch branch:       ^[1;92mgit checkout^[0m ^[1;33mbranch_name^[0m>>%start_bat_name%
-Echo echo  ^[1;32m6.^[0m Back to ^[1;33mmain^[0m branch: ^[1;92mgit checkout^[0m ^[1;33mmain^[0m>>%start_bat_name%
+Echo echo  ^[1;32m1.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
+Echo echo  ^[1;32m2.^[0m List all branches:   ^[1;92mgit branch -a^[0m>>%start_bat_name%
+Echo echo  ^[1;32m3.^[0m Switch branch:       ^[1;92mgit checkout^[0m ^[1;33mbranch_name^[0m>>%start_bat_name%
+Echo echo  ^[1;32m4.^[0m Back to ^[1;33mmain^[0m branch: ^[1;92mgit checkout^[0m ^[1;33mmain^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
-Echo echo ^[92m:::::::: Waiting for the server to start ... ::::::::^[0m>>%start_bat_name%
+Echo echo ^[92m:::::::: Waiting for the server to start... :::::::::^[0m>>%start_bat_name%
 Echo.>>%start_bat_name%
 
 Echo cd ./ui>>%start_bat_name%
