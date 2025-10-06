@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.16 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.17 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -8,15 +8,16 @@ call :set_colors
 :: Set arguments ::
 set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 200"
 set "CURLargs=--retry 200 --retry-all-errors"
+set "UVargs=--no-cache --link-mode=copy"
 
 :: Set local path only (temporarily) ::
 for /f "delims=" %%G in ('cmd /c "where git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
 for /f "delims=" %%G in ('cmd /c "where node.exe 2>nul"') do (set "NODE_PATH=%%~dpG")
-set path=%GIT_PATH%;%NODE_PATH%
+set "path=%GIT_PATH%;%NODE_PATH%"
 
-if exist %windir%\system32 set path=%PATH%;%windir%\System32
-if exist %windir%\system32\WindowsPowerShell\v1.0 set path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0
-if exist %localappdata%\Microsoft\WindowsApps set path=%PATH%;%localappdata%\Microsoft\WindowsApps
+if exist %windir%\system32 set "path=%PATH%;%windir%\System32"
+if exist %windir%\system32\WindowsPowerShell\v1.0 set "path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0"
+if exist %localappdata%\Microsoft\WindowsApps set "path=%PATH%;%localappdata%\Microsoft\WindowsApps"
 
 :: Check for Existing ComfyUI Folder ::
 if exist AI-Toolkit (
@@ -32,22 +33,22 @@ for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set start=%
 :: Skip downloading LFS (Large File Storage) files ::
 set GIT_LFS_SKIP_SMUDGE=1
 
-:: Clear Pip Cache ::
-call :clear_pip_cache
+:: Clear Pip and uv Cache ::
+call :clear_pip_uv_cache
 
 :: Install/Update Git ::
 call :install_git
 
-:: Check if git is installed ::
-for /F "tokens=*" %%g in ('git --version') do (set gitversion=%%g)
-Echo %gitversion% | findstr /C:"version">nul&&(
-	Echo %bold%git%reset% %yellow%is installed%reset%
-	Echo.) || (
+::----------------------------------------------------
+:: Check if git is installed
+git.exe --version>nul 2>&1
+if errorlevel 1 (
     Echo %warning%WARNING:%reset% %bold%'git'%reset% is NOT installed
 	Echo Please install %bold%'git'%reset% manually from %yellow%https://git-scm.com/%reset% and run this installer again
-	Echo Press any key to Exit...&Pause>nul
-	exit /b
+    echo Press any key to Exit...&pause>nul
+    exit /b
 )
+::----------------------------------------------------
 
 :: System folder? ::
 md AI-Toolkit
@@ -70,10 +71,10 @@ call :python_embedded_install
 call :ai-toolkit_install
 
 :: Create 'Start-AI-Toolkit.bat' ::
-call :create_start-ai-toolkit-bat
+call :create_bat_files
 
-:: Clear Pip Cache ::
-call :clear_pip_cache
+:: Clear Pip and uv Cache ::
+call :clear_pip_uv_cache
 
 :: Capture the end time ::
 for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set end=%%i
@@ -97,9 +98,10 @@ set    bold=[1m
 set   reset=[0m
 goto :eof
 
-:clear_pip_cache
+:clear_pip_uv_cache
 if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
-echo %green%::::::::::::::: Clearing Pip Cache %yellow%Done%green% :::::::::::::::%reset%
+if exist "%localappdata%\uv\cache" rd /s /q "%localappdata%\uv\cache"&&md "%localappdata%\uv\cache"
+echo %green%::::::::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::::::%reset%
 echo.
 goto :eof
 
@@ -109,7 +111,7 @@ echo %green%::::::::::::::: Installing/Updating%yellow% Git %green%:::::::::::::
 echo.
 
 winget.exe install --id Git.Git -e --source winget
-set path=%PATH%;%ProgramFiles%\Git\cmd
+set "path=%PATH%;%ProgramFiles%\Git\cmd"
 echo.
 goto :eof
 
@@ -145,8 +147,9 @@ Echo .>> python310._pth
 Echo # import site>> python310._pth
 
 .\python.exe -I get-pip.py %PIPargs%
-.\python.exe -I -m pip install --upgrade pip %PIPargs%
-.\python.exe -I -m pip install virtualenv %PIPargs%
+.\python.exe -I -m pip install uv %PIPargs%
+.\python.exe -I -m uv pip install --upgrade pip %UVargs%
+.\python.exe -I -m uv pip install virtualenv %UVargs%
 
 curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
 tar.exe -xf python_3.10.11_include_libs.zip
@@ -163,21 +166,21 @@ git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
-pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
-pip install -r requirements.txt %PIPargs%
-pip install poetry-core %PIPargs%
-pip install triton-windows %PIPargs%
+pip install uv %PIPargs%
+uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+uv pip install -r requirements.txt %UVargs%
+uv pip install poetry-core %UVargs%
+uv pip install triton-windows %UVargs%
 REM pip install hf_xet %PIPargs%
 echo.
 goto :eof
 
-:create_start-ai-toolkit-bat
+:create_bat_files
 echo %green%::::::::::::::: Creating%yellow%  Start-AI-Toolkit.bat %green%:::::::::::::::%reset%
 cd..\
 set "start_bat_name=Start-AI-Toolkit.bat"
-Echo @echo off>%start_bat_name%
+Echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
 Echo Title %version_title%>>%start_bat_name%
-Echo cd /d %%^~dp0>>%start_bat_name%
 Echo setlocal enabledelayedexpansion>>%start_bat_name%
 Echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
 Echo set "local_serv=http://localhost:8675">>%start_bat_name%
@@ -214,6 +217,7 @@ Echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the 
 Echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
 Echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
 Echo echo     - Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
+Echo echo     OR Just start ^[1;92mvenv-AI-Toolkit.bat^[0m>>%start_bat_name%
 Echo echo.>>%start_bat_name%
 Echo echo ^[1;93mBranches (run CMD in AI-Toolkit folder):^[0m>>%start_bat_name%
 Echo echo  ^[1;32m1.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
@@ -230,4 +234,49 @@ Echo :loop>> %start_bat_name%
 Echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>> %start_bat_name%
 Echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>> %start_bat_name%
 Echo start !local_serv!>> %start_bat_name%
+
+::------------------------------------------------
+
+set "start_bat_name=Start-AI-Toolkit-NoUpdate.bat"
+Echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
+Echo Title %version_title%>>%start_bat_name%
+Echo setlocal enabledelayedexpansion>>%start_bat_name%
+Echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
+Echo set "local_serv=http://localhost:8675">>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo cd ./ai-toolkit>>%start_bat_name%
+Echo.>>%start_bat_name%
+
+Echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
+Echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
+Echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
+Echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
+Echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
+Echo echo     - Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
+Echo echo     OR Just start ^[1;92mvenv-AI-Toolkit.bat^[0m>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo echo ^[1;93mBranches (run CMD in AI-Toolkit folder):^[0m>>%start_bat_name%
+Echo echo  ^[1;32m1.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
+Echo echo  ^[1;32m2.^[0m List all branches:   ^[1;92mgit branch -a^[0m>>%start_bat_name%
+Echo echo  ^[1;32m3.^[0m Switch branch:       ^[1;92mgit checkout^[0m ^[1;33mbranch_name^[0m>>%start_bat_name%
+Echo echo  ^[1;32m4.^[0m Back to ^[1;33mmain^[0m branch: ^[1;92mgit checkout^[0m ^[1;33mmain^[0m>>%start_bat_name%
+Echo echo.>>%start_bat_name%
+Echo echo ^[92m:::::::: Waiting for the server to start... :::::::::^[0m>>%start_bat_name%
+Echo.>>%start_bat_name%
+
+Echo cd ./ui>>%start_bat_name%
+Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
+Echo :loop>> %start_bat_name%
+Echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>> %start_bat_name%
+Echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>> %start_bat_name%
+Echo start !local_serv!>> %start_bat_name%
+
+:: Create venv-AI-Toolkit.bat ::
+
+Echo @echo off^&^&cd /d %%~dp0>venv-AI-Toolkit.bat
+Echo call AI-Toolkit\venv\Scripts\activate.bat>>venv-AI-Toolkit.bat
+Echo cmd /k>>venv-AI-Toolkit.bat
+
 goto :eof
