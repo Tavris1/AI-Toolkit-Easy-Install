@@ -31,10 +31,10 @@
 
 ## Screenshots  
 ### Installing AI-Toolkit  
-<img width="1264" height="442" alt="Tips" src="https://github.com/user-attachments/assets/a7ddeee9-6487-4521-946c-f81d8c96aa47" />
+<img width="1264" height="442" alt="Install_3 17" src="https://github.com/user-attachments/assets/6dcdfd71-aea0-480b-84b7-423d625a77fb" />
 
 ### Starting AI-Toolkit  
-<img width="1264" height="442" alt="Tips" src="https://github.com/user-attachments/assets/ac8d44dd-746a-43d4-96db-b4b1dcffc530" />
+<img width="1264" height="484" alt="Run_3 17" src="https://github.com/user-attachments/assets/46671650-7ae5-4614-b764-6a94c7c78a51" />
 
 ### [Support me on PayPal](https://paypal.me/tavris1)
 [![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
