@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.18 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.20 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -126,34 +126,38 @@ echo.
 goto :eof
 
 :python_embedded_install
-:: https://www.python.org/downloads/release/python-31011/
+:: https://www.python.org/downloads/release/python-31210/
 echo %green%::::::::::::::: Installing%yellow% Python embedded %green%:::::::::::::::%reset%
 echo.
-curl.exe -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke %CURLargs%
+REM curl.exe -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke %CURLargs%
+curl.exe -OL https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip --ssl-no-revoke %CURLargs%
 md python_embeded&&cd python_embeded
-tar.exe -xf ..\python-3.10.11-embed-amd64.zip
-erase ..\python-3.10.11-embed-amd64.zip
+tar.exe -xf ..\python-3.12.10-embed-amd64.zip
+erase ..\python-3.12.10-embed-amd64.zip
 echo.
 echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
 echo.
 curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
 
-Echo ../AI-Toolkit> python310._pth
-Echo Lib/site-packages> python310._pth
-Echo Lib>> python310._pth
-Echo Scripts>> python310._pth
-Echo python310.zip>> python310._pth
-Echo .>> python310._pth
-Echo # import site>> python310._pth
+Echo ../AI-Toolkit> python312._pth
+Echo Lib/site-packages> python312._pth
+Echo Lib>> python312._pth
+Echo Scripts>> python312._pth
+Echo python312.zip>> python312._pth
+Echo .>> python312._pth
+Echo # import site>> python312._pth
 
 .\python.exe -I get-pip.py %PIPargs%
-.\python.exe -I -m pip install uv %PIPargs%
+.\python.exe -I -m pip install uv==0.9.7 %PIPargs%
 .\python.exe -I -m uv pip install --upgrade pip %UVargs%
 .\python.exe -I -m uv pip install virtualenv %UVargs%
 
-curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
-tar.exe -xf python_3.10.11_include_libs.zip
-erase python_3.10.11_include_libs.zip
+REM curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
+
+curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke %CURLargs%
+
+tar.exe -xf python_3.12.7_include_libs.zip
+erase python_3.12.7_include_libs.zip
 
 echo.
 goto :eof
@@ -166,12 +170,12 @@ git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
-pip install uv %PIPargs%
-uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+pip install uv==0.9.7 %PIPargs%
+uv pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu130 %UVargs%
 uv pip install -r requirements.txt %UVargs%
 uv pip install poetry-core %UVargs%
-uv pip install triton-windows==3.4.0.post20 %UVargs%
-REM pip install hf_xet %PIPargs%
+uv pip install "triton-windows<3.6" %UVargs%
+uv pip install hf_xet %UVargs%
 echo.
 goto :eof
 
