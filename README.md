@@ -15,7 +15,7 @@
 
 ### Installation List:  
 - **AI-Toolkit by Ostris**  
-- **Python 3.10.11 Embedded**  
+- **Python 3.12.10 Embedded**  
 - **Git** *(will be installed or updated if needed)*  
 - **Node.js** *(will be installed or updated if needed)*  
 
