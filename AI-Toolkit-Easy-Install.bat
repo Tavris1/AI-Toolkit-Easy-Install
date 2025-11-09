@@ -1,5 +1,5 @@
 @Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.20 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.21 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -129,7 +129,6 @@ goto :eof
 :: https://www.python.org/downloads/release/python-31210/
 echo %green%::::::::::::::: Installing%yellow% Python embedded %green%:::::::::::::::%reset%
 echo.
-REM curl.exe -OL https://www.python.org/ftp/python/3.10.11/python-3.10.11-embed-amd64.zip --ssl-no-revoke %CURLargs%
 curl.exe -OL https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip --ssl-no-revoke %CURLargs%
 md python_embeded&&cd python_embeded
 tar.exe -xf ..\python-3.12.10-embed-amd64.zip
@@ -152,8 +151,6 @@ Echo # import site>> python312._pth
 .\python.exe -I -m uv pip install --upgrade pip %UVargs%
 .\python.exe -I -m uv pip install virtualenv %UVargs%
 
-REM curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.10.11_include_libs.zip --ssl-no-revoke %CURLargs%
-
 curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke %CURLargs%
 
 tar.exe -xf python_3.12.7_include_libs.zip
@@ -171,10 +168,10 @@ cd ai-toolkit
 ..\python_embeded\python.exe -I -m virtualenv venv
 CALL venv\Scripts\activate.bat
 pip install uv==0.9.7 %PIPargs%
-uv pip install torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu130 %UVargs%
+uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
 uv pip install -r requirements.txt %UVargs%
 uv pip install poetry-core %UVargs%
-uv pip install "triton-windows<3.6" %UVargs%
+uv pip install triton-windows==3.4.0.post20 %UVargs%
 uv pip install hf_xet %UVargs%
 echo.
 goto :eof
