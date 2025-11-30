@@ -3,7 +3,7 @@
 ### One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
 - No system Python needed  
 - AI-Toolkit is launched via a **single .bat file**, which also:  
-  - Automatically checks for and installs updates at each launch  
+  - Automatically checks for updates on launch and notifies you of new versions  
   - Opens your default browser once the local server is running  
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
@@ -32,10 +32,10 @@
 
 ## Screenshots  
 ### Installing AI-Toolkit  
-<img width="938" height="344" alt="AI-Toolkit-Easy-Install" src="https://github.com/user-attachments/assets/b3aca4f0-f4b7-429f-a84b-f205d480e907" />
+<img width="1038" height="400" alt="Installing AI-Toolkit 1038" src="https://github.com/user-attachments/assets/636fcbe9-1d4c-4a63-a1c3-db046eca8bec" />
 
 ### Starting AI-Toolkit  
-<img width="1264" height="484" alt="Run_3 17" src="https://github.com/user-attachments/assets/46671650-7ae5-4614-b764-6a94c7c78a51" />
+<img width="1038" height="404" alt="Starting AI-Toolkit 1038" src="https://github.com/user-attachments/assets/2565c2f4-8200-49e0-8677-b55aba49bd3b" />
 
 ### [Support me on PayPal](https://paypal.me/tavris1)
 [![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
