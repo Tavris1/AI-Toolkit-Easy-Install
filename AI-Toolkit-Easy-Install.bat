@@ -1,5 +1,5 @@
-@Echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.21 by ivo"
+@echo off
+set "version_title=AI-Toolkit-Easy-Install v0.3.22 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -43,8 +43,8 @@ call :install_git
 :: Check if git is installed
 git.exe --version>nul 2>&1
 if errorlevel 1 (
-    Echo %warning%WARNING:%reset% %bold%'git'%reset% is NOT installed
-	Echo Please install %bold%'git'%reset% manually from %yellow%https://git-scm.com/%reset% and run this installer again
+    echo %warning%WARNING:%reset% %bold%'git'%reset% is NOT installed
+	echo Please install %bold%'git'%reset% manually from %yellow%https://git-scm.com/%reset% and run this installer again
     echo Press any key to Exit...&pause>nul
     exit /b
 )
@@ -101,13 +101,14 @@ goto :eof
 :clear_pip_uv_cache
 if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
 if exist "%localappdata%\uv\cache" rd /s /q "%localappdata%\uv\cache"&&md "%localappdata%\uv\cache"
-echo %green%::::::::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::::::%reset%
+echo.
+echo %green%:::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::%reset%
 echo.
 goto :eof
 
 :install_git
 :: https://git-scm.com/
-echo %green%::::::::::::::: Installing/Updating%yellow% Git %green%:::::::::::::::%reset%
+echo %green%:::::::::::::: Installing/Updating%yellow% Git %green%::::::::::::::%reset%
 echo.
 
 winget.exe install --id Git.Git -e --source winget
@@ -117,7 +118,7 @@ goto :eof
 
 :nodejs_install
 :: https://nodejs.org/en
-echo %green%::::::::::::::: Installing/Updating%yellow% Node.js %green%:::::::::::::::%reset%
+echo %green%:::::::::::: Installing/Updating%yellow% Node.js %green%::::::::::::%reset%
 echo.
 winget.exe install --id=OpenJS.NodeJS -e
 set path=%PATH%;%ProgramFiles%\nodejs
@@ -127,24 +128,24 @@ goto :eof
 
 :python_embedded_install
 :: https://www.python.org/downloads/release/python-31210/
-echo %green%::::::::::::::: Installing%yellow% Python embedded %green%:::::::::::::::%reset%
+echo %green%::::::::::::: Installing%yellow% Python embedded %green%::::::::::::%reset%
 echo.
 curl.exe -OL https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip --ssl-no-revoke %CURLargs%
 md python_embeded&&cd python_embeded
 tar.exe -xf ..\python-3.12.10-embed-amd64.zip
 erase ..\python-3.12.10-embed-amd64.zip
 echo.
-echo %green%::::::::::::::: Installing%yellow% pip %green%:::::::::::::::%reset%
+echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
 curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
 
-Echo ../AI-Toolkit> python312._pth
-Echo Lib/site-packages> python312._pth
-Echo Lib>> python312._pth
-Echo Scripts>> python312._pth
-Echo python312.zip>> python312._pth
-Echo .>> python312._pth
-Echo # import site>> python312._pth
+echo ../AI-Toolkit> python312._pth
+echo Lib/site-packages> python312._pth
+echo Lib>> python312._pth
+echo Scripts>> python312._pth
+echo python312.zip>> python312._pth
+echo .>> python312._pth
+echo # import site>> python312._pth
 
 .\python.exe -I get-pip.py %PIPargs%
 .\python.exe -I -m pip install uv==0.9.7 %PIPargs%
@@ -177,107 +178,87 @@ echo.
 goto :eof
 
 :create_bat_files
-echo %green%::::::::::::::: Creating%yellow%  Start-AI-Toolkit.bat %green%:::::::::::::::%reset%
+:: Create Start-AI-Toolkit.bat ::
+echo %green%:::::::::: Creating%yellow%  Start-AI-Toolkit.bat %green%:::::::::::%reset%
 cd..\
 set "start_bat_name=Start-AI-Toolkit.bat"
-Echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
-Echo Title %version_title%>>%start_bat_name%
-Echo setlocal enabledelayedexpansion>>%start_bat_name%
-Echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
-Echo set "local_serv=http://localhost:8675">>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo cd ./ai-toolkit>>%start_bat_name%
-Echo.>>%start_bat_name%
+echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
+echo Title %version_title%>>%start_bat_name%
+echo setlocal enabledelayedexpansion>>%start_bat_name%
+echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
+echo set "local_serv=http://localhost:8675">>%start_bat_name%
+echo echo.>>%start_bat_name%
+echo cd ./ai-toolkit>>%start_bat_name%
 
-Echo echo ^[92m:::::::::::::: Checking for updates... ::::::::::::::^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo git fetch>>%start_bat_name%
-Echo git status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%start_bat_name%
-Echo if !errorlevel!==0 ^(>>%start_bat_name%
-Echo     echo.>>%start_bat_name%
-Echo     echo ^[92m::::::::::::::: Installing updates... :::::::::::::::^[0m>>%start_bat_name%
-Echo     echo.>>%start_bat_name%
-Echo     git pull>>%start_bat_name%
-Echo     echo.>>%start_bat_name%
-Echo     echo ^[92m::::::::::::: Installing requirements... ::::::::::::^[0m>>%start_bat_name%
-Echo     echo.>>%start_bat_name%
-Echo     CALL venv\Scripts\activate.bat>>%start_bat_name%
-Echo     pip install -r requirements.txt --no-cache>>%start_bat_name%
-Echo     CALL venv\Scripts\deactivate.bat>>%start_bat_name%
-Echo ^) else ^(>>%start_bat_name%
-Echo     echo ^[92m::::::::::::::::: Already up to date ::::::::::::::::^[0m>>%start_bat_name%
-Echo     echo.>>%start_bat_name%
-Echo ^)>>%start_bat_name%
-Echo.>>%start_bat_name%
+echo     echo ^[92m::::::::::::  Starting AI-Toolkit ...  ::::::::::::::^[0m>>%start_bat_name%
+echo     echo.>>%start_bat_name%
 
-Echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
-Echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
-Echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
-Echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
-Echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
-Echo echo     - Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
-Echo echo     OR Just start ^[1;92mvenv-AI-Toolkit.bat^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo echo ^[1;93mBranches (run CMD in AI-Toolkit folder):^[0m>>%start_bat_name%
-Echo echo  ^[1;32m1.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
-Echo echo  ^[1;32m2.^[0m List all branches:   ^[1;92mgit branch -a^[0m>>%start_bat_name%
-Echo echo  ^[1;32m3.^[0m Switch branch:       ^[1;92mgit checkout^[0m ^[1;33mbranch_name^[0m>>%start_bat_name%
-Echo echo  ^[1;32m4.^[0m Back to ^[1;33mmain^[0m branch: ^[1;92mgit checkout^[0m ^[1;33mmain^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo echo ^[92m:::::::: Waiting for the server to start... :::::::::^[0m>>%start_bat_name%
-Echo.>>%start_bat_name%
+echo git.exe fetch>>%start_bat_name%
+echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%start_bat_name%
+echo if !errorlevel!==0 ^(>>%start_bat_name%
+echo     echo ^[93m:::::::::::: ^[91mNew updates^[93m are available ::::::::::::::^[0m>>%start_bat_name%
+echo     echo ^[92m:::::::::::: Run Update-AI-Toolkit.bat ::::::::::::::^[0m>>%start_bat_name%
+echo     echo.>>%start_bat_name%
+echo ^)>>%start_bat_name%
+echo.>>%start_bat_name%
 
-Echo cd ./ui>>%start_bat_name%
-Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
-Echo :loop>> %start_bat_name%
-Echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>> %start_bat_name%
-Echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>> %start_bat_name%
-Echo start !local_serv!>> %start_bat_name%
+echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
+echo echo.>>%start_bat_name%
+echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
+echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
+echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
+echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
+echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
+echo echo       and Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
+echo echo     ^[1;93mOR^[0m just start ^[1;92mvenv-AI-Toolkit.bat^[0m>>%start_bat_name%
+echo echo.>>%start_bat_name%
+echo echo ^[92m:::::::: ^[93mWaiting for the server to start...^[92m :::::::::^[0m>>%start_bat_name%
+echo.>>%start_bat_name%
 
-::------------------------------------------------
-
-set "start_bat_name=Start-AI-Toolkit-NoUpdate.bat"
-Echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
-Echo Title %version_title%>>%start_bat_name%
-Echo setlocal enabledelayedexpansion>>%start_bat_name%
-Echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
-Echo set "local_serv=http://localhost:8675">>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo cd ./ai-toolkit>>%start_bat_name%
-Echo.>>%start_bat_name%
-
-Echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
-Echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
-Echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
-Echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
-Echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
-Echo echo     - Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
-Echo echo     OR Just start ^[1;92mvenv-AI-Toolkit.bat^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo echo ^[1;93mBranches (run CMD in AI-Toolkit folder):^[0m>>%start_bat_name%
-Echo echo  ^[1;32m1.^[0m Show current branch: ^[1;92mgit branch^[0m>>%start_bat_name%
-Echo echo  ^[1;32m2.^[0m List all branches:   ^[1;92mgit branch -a^[0m>>%start_bat_name%
-Echo echo  ^[1;32m3.^[0m Switch branch:       ^[1;92mgit checkout^[0m ^[1;33mbranch_name^[0m>>%start_bat_name%
-Echo echo  ^[1;32m4.^[0m Back to ^[1;33mmain^[0m branch: ^[1;92mgit checkout^[0m ^[1;33mmain^[0m>>%start_bat_name%
-Echo echo.>>%start_bat_name%
-Echo echo ^[92m:::::::: Waiting for the server to start... :::::::::^[0m>>%start_bat_name%
-Echo.>>%start_bat_name%
-
-Echo cd ./ui>>%start_bat_name%
-Echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
-Echo :loop>> %start_bat_name%
-Echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>> %start_bat_name%
-Echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>> %start_bat_name%
-Echo start !local_serv!>> %start_bat_name%
+echo cd ./ui>>%start_bat_name%
+echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
+echo :loop>>%start_bat_name%
+echo if exist "%%windir%%\System32\WindowsPowerShell\v1.0" set "PATH=%%PATH%%;%%windir%%\System32\WindowsPowerShell\v1.0">>"%start_bat_name%"
+echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%start_bat_name%
+echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>>%start_bat_name%
+echo start !local_serv!>>%start_bat_name%
 
 :: Create venv-AI-Toolkit.bat ::
+echo %green%:::::::::: Creating%yellow%   venv-AI-Toolkit.bat %green%:::::::::::%reset%
 
-Echo @echo off^&^&cd /d %%~dp0>venv-AI-Toolkit.bat
-Echo call AI-Toolkit\venv\Scripts\activate.bat>>venv-AI-Toolkit.bat
-Echo cmd /k>>venv-AI-Toolkit.bat
+echo @echo off^&^&cd /d %%~dp0>venv-AI-Toolkit.bat
+echo call AI-Toolkit\venv\Scripts\activate.bat>>venv-AI-Toolkit.bat
+echo cmd /k>>venv-AI-Toolkit.bat
+
+:: Create Update-AI-Toolkit.bat ::
+echo %green%:::::::::: Creating%yellow% Update-AI-Toolkit.bat %green%:::::::::::%reset%
+
+echo @echo off^&^&cd /d %%~dp0>Update-AI-Toolkit.bat
+echo Title AI-Toolkit Update by ivo>>Update-AI-Toolkit.bat
+
+echo.>>Update-AI-Toolkit.bat
+echo set GIT_LFS_SKIP_SMUDGE=^1>>Update-AI-Toolkit.bat
+echo cd ./ai-toolkit>>Update-AI-Toolkit.bat
+echo.>>Update-AI-Toolkit.bat
+
+echo echo.>>Update-AI-Toolkit.bat
+echo echo ^[92m::::::::::::::: Installing ^[93mAI-Toolkit^[92m updates... :::::::::::::::^[0m>>Update-AI-Toolkit.bat
+echo echo.>>Update-AI-Toolkit.bat
+echo git.exe pull>>Update-AI-Toolkit.bat
+echo echo.>>Update-AI-Toolkit.bat
+echo echo ^[92m::::::: Installing ^[93mrequirements ^[92mand updating ^[93mdiffusers^[92m :::::::::^[0m>>Update-AI-Toolkit.bat
+echo echo.>>Update-AI-Toolkit.bat
+echo CALL venv\Scripts\activate.bat>>Update-AI-Toolkit.bat
+echo uv pip uninstall diffusers>>Update-AI-Toolkit.bat
+echo uv pip install -r requirements.txt --no-cache>>Update-AI-Toolkit.bat
+echo CALL venv\Scripts\deactivate.bat>>Update-AI-Toolkit.bat
+
+echo.>>Update-AI-Toolkit.bat
+echo echo.>>Update-AI-Toolkit.bat
+echo echo ^[92m:::::::::::::::   Update completed    :::::::::::::::^[0m>>Update-AI-Toolkit.bat
+echo if "%%~1"=="" ^(>>Update-AI-Toolkit.bat
+echo     echo ^[93m::::::::::::::: Press any key to exit :::::::::::::::^[0m^&Pause^>nul>>Update-AI-Toolkit.bat
+echo     exit>>Update-AI-Toolkit.bat
+echo ^)>>Update-AI-Toolkit.bat
 
 goto :eof
