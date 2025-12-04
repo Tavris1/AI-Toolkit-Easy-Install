@@ -1,5 +1,5 @@
 @echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.22 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.23 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -173,7 +173,7 @@ uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url ht
 uv pip install -r requirements.txt %UVargs%
 uv pip install poetry-core %UVargs%
 uv pip install triton-windows==3.4.0.post20 %UVargs%
-uv pip install hf_xet %UVargs%
+REM uv pip install hf_xet %UVargs%
 echo.
 goto :eof
 
