@@ -162,7 +162,7 @@ echo Lib>> python312._pth
 echo Scripts>> python312._pth
 echo python312.zip>> python312._pth
 echo .>> python312._pth
-echo import site>> python312._pth
+echo # import site>> python312._pth
 
 "%CD%\python.exe" -I -E get-pip.py %PIPargs%
 "%CD%\python.exe" -I -E -m pip install uv==0.9.7 %PIPargs%
