@@ -1,5 +1,5 @@
-@echo off
-set "version_title=AI-Toolkit-Easy-Install v0.3.23 by ivo"
+@echo off&&cd /d %~dp0
+set "version_title=AI-Toolkit-Easy-Install v0.3.25 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -10,11 +10,28 @@ set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 2
 set "CURLargs=--retry 200 --retry-all-errors"
 set "UVargs=--no-cache --link-mode=copy"
 
+:: CRITICAL: Clear all Python-related environment variables ::
+set PYTHONPATH=
+set PYTHONHOME=
+set PYTHON=
+set PYTHONSTARTUP=
+set PYTHONUSERBASE=
+set PIP_CONFIG_FILE=
+set PIP_REQUIRE_VIRTUALENV=
+set VIRTUAL_ENV=
+set CONDA_PREFIX=
+set CONDA_DEFAULT_ENV=
+set PYENV_ROOT=
+set PYENV_VERSION=
+
 :: Set local path only (temporarily) ::
 for /f "delims=" %%G in ('cmd /c "where git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
 for /f "delims=" %%G in ('cmd /c "where node.exe 2>nul"') do (set "NODE_PATH=%%~dpG")
-set "path=%GIT_PATH%;%NODE_PATH%"
 
+:: Build minimal PATH without system Python ::
+set "path="
+if defined GIT_PATH set "path=%GIT_PATH%"
+if defined NODE_PATH set "path=%path%;%NODE_PATH%"
 if exist %windir%\system32 set "path=%PATH%;%windir%\System32"
 if exist %windir%\system32\WindowsPowerShell\v1.0 set "path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0"
 if exist %localappdata%\Microsoft\WindowsApps set "path=%PATH%;%localappdata%\Microsoft\WindowsApps"
@@ -140,17 +157,17 @@ echo.
 curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
 
 echo ../AI-Toolkit> python312._pth
-echo Lib/site-packages> python312._pth
+echo Lib/site-packages>> python312._pth
 echo Lib>> python312._pth
 echo Scripts>> python312._pth
 echo python312.zip>> python312._pth
 echo .>> python312._pth
-echo # import site>> python312._pth
+echo import site>> python312._pth
 
-.\python.exe -I get-pip.py %PIPargs%
-.\python.exe -I -m pip install uv==0.9.7 %PIPargs%
-.\python.exe -I -m uv pip install --upgrade pip %UVargs%
-.\python.exe -I -m uv pip install virtualenv %UVargs%
+"%CD%\python.exe" -I -E get-pip.py %PIPargs%
+"%CD%\python.exe" -I -E -m pip install uv==0.9.7 %PIPargs%
+"%CD%\python.exe" -I -E -m uv pip install --upgrade pip %UVargs%
+"%CD%\python.exe" -I -E -m uv pip install virtualenv %UVargs%
 
 curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke %CURLargs%
 
@@ -166,8 +183,14 @@ echo.
 cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
-..\python_embeded\python.exe -I -m virtualenv venv
+"..\python_embeded\python.exe" -I -E -m virtualenv --clear --no-download venv
 CALL venv\Scripts\activate.bat
+
+:: Clear environment again inside venv for safety ::
+set PYTHONPATH=
+set PYTHONHOME=
+set PIP_CONFIG_FILE=
+
 pip install uv==0.9.7 %PIPargs%
 uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
 uv pip install -r requirements.txt %UVargs%
@@ -185,6 +208,23 @@ set "start_bat_name=Start-AI-Toolkit.bat"
 echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
 echo Title %version_title%>>%start_bat_name%
 echo setlocal enabledelayedexpansion>>%start_bat_name%
+echo.>>%start_bat_name%
+
+:: Isolate from system Python ::
+echo set PYTHONPATH=>>%start_bat_name%
+echo set PYTHONHOME=>>%start_bat_name%
+echo set PYTHON=>>%start_bat_name%
+echo set PYTHONSTARTUP=>>%start_bat_name%
+echo set PYTHONUSERBASE=>>%start_bat_name%
+echo set PIP_CONFIG_FILE=>>%start_bat_name%
+echo set PIP_REQUIRE_VIRTUALENV=>>%start_bat_name%
+echo set VIRTUAL_ENV=>>%start_bat_name%
+echo set CONDA_PREFIX=>>%start_bat_name%
+echo set CONDA_DEFAULT_ENV=>>%start_bat_name%
+echo set PYENV_ROOT=>>%start_bat_name%
+echo set PYENV_VERSION=>>%start_bat_name%
+echo.>>%start_bat_name%
+
 echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
 echo set "local_serv=http://localhost:8675">>%start_bat_name%
 echo echo.>>%start_bat_name%
@@ -227,6 +267,23 @@ echo start !local_serv!>>%start_bat_name%
 echo %green%:::::::::: Creating%yellow%   venv-AI-Toolkit.bat %green%:::::::::::%reset%
 
 echo @echo off^&^&cd /d %%~dp0>venv-AI-Toolkit.bat
+echo.>>venv-AI-Toolkit.bat
+
+:: Isolate from system Python ::
+echo set PYTHONPATH=>>venv-AI-Toolkit.bat
+echo set PYTHONHOME=>>venv-AI-Toolkit.bat
+echo set PYTHON=>>venv-AI-Toolkit.bat
+echo set PYTHONSTARTUP=>>venv-AI-Toolkit.bat
+echo set PYTHONUSERBASE=>>venv-AI-Toolkit.bat
+echo set PIP_CONFIG_FILE=>>venv-AI-Toolkit.bat
+echo set PIP_REQUIRE_VIRTUALENV=>>venv-AI-Toolkit.bat
+echo set VIRTUAL_ENV=>>venv-AI-Toolkit.bat
+echo set CONDA_PREFIX=>>venv-AI-Toolkit.bat
+echo set CONDA_DEFAULT_ENV=>>venv-AI-Toolkit.bat
+echo set PYENV_ROOT=>>venv-AI-Toolkit.bat
+echo set PYENV_VERSION=>>venv-AI-Toolkit.bat
+echo.>>venv-AI-Toolkit.bat
+
 echo call AI-Toolkit\venv\Scripts\activate.bat>>venv-AI-Toolkit.bat
 echo cmd /k>>venv-AI-Toolkit.bat
 
@@ -235,8 +292,23 @@ echo %green%:::::::::: Creating%yellow% Update-AI-Toolkit.bat %green%:::::::::::
 
 echo @echo off^&^&cd /d %%~dp0>Update-AI-Toolkit.bat
 echo Title AI-Toolkit Update by ivo>>Update-AI-Toolkit.bat
-
 echo.>>Update-AI-Toolkit.bat
+
+:: Isolate from system Python ::
+echo set PYTHONPATH=>>Update-AI-Toolkit.bat
+echo set PYTHONHOME=>>Update-AI-Toolkit.bat
+echo set PYTHON=>>Update-AI-Toolkit.bat
+echo set PYTHONSTARTUP=>>Update-AI-Toolkit.bat
+echo set PYTHONUSERBASE=>>Update-AI-Toolkit.bat
+echo set PIP_CONFIG_FILE=>>Update-AI-Toolkit.bat
+echo set PIP_REQUIRE_VIRTUALENV=>>Update-AI-Toolkit.bat
+echo set VIRTUAL_ENV=>>Update-AI-Toolkit.bat
+echo set CONDA_PREFIX=>>Update-AI-Toolkit.bat
+echo set CONDA_DEFAULT_ENV=>>Update-AI-Toolkit.bat
+echo set PYENV_ROOT=>>Update-AI-Toolkit.bat
+echo set PYENV_VERSION=>>Update-AI-Toolkit.bat
+echo.>>Update-AI-Toolkit.bat
+
 echo set GIT_LFS_SKIP_SMUDGE=^1>>Update-AI-Toolkit.bat
 echo cd ./ai-toolkit>>Update-AI-Toolkit.bat
 echo.>>Update-AI-Toolkit.bat
