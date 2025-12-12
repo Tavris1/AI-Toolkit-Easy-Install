@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.3.25 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.26 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -164,10 +164,10 @@ echo python312.zip>> python312._pth
 echo .>> python312._pth
 echo # import site>> python312._pth
 
-"%CD%\python.exe" -I -E get-pip.py %PIPargs%
-"%CD%\python.exe" -I -E -m pip install uv==0.9.7 %PIPargs%
-"%CD%\python.exe" -I -E -m uv pip install --upgrade pip %UVargs%
-"%CD%\python.exe" -I -E -m uv pip install virtualenv %UVargs%
+"%CD%\python.exe" -I get-pip.py %PIPargs%
+"%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
+"%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
+"%CD%\python.exe" -I -m pip install virtualenv %PIPargs%
 
 curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke %CURLargs%
 
@@ -183,7 +183,7 @@ echo.
 cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
-"..\python_embeded\python.exe" -I -E -m virtualenv --clear --no-download venv
+"..\python_embeded\python.exe" -I -m virtualenv --clear --no-download venv
 CALL venv\Scripts\activate.bat
 
 :: Clear environment again inside venv for safety ::
@@ -191,12 +191,23 @@ set PYTHONPATH=
 set PYTHONHOME=
 set PIP_CONFIG_FILE=
 
-pip install uv==0.9.7 %PIPargs%
-uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
-uv pip install -r requirements.txt %UVargs%
-uv pip install poetry-core %UVargs%
-uv pip install triton-windows==3.4.0.post20 %UVargs%
-REM uv pip install hf_xet %UVargs%
+:: Check if uv.exe exists in python_embeded ::
+if exist "..\python_embeded\Scripts\uv.exe" pip install uv==0.9.7 %PIPargs%
+
+if exist "venv\Scripts\uv.exe" (
+    echo %green%Using UV for package installation%reset%
+    uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    uv pip install -r requirements.txt %UVargs%
+    uv pip install poetry-core %UVargs%
+    uv pip install triton-windows==3.4.0.post20 %UVargs%
+) else (
+    echo %warning%UV not available - using standard pip%reset%
+    pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    pip install -r requirements.txt %PIPargs%
+    pip install poetry-core %PIPargs%
+    pip install triton-windows==3.4.0.post20 %PIPargs%
+)
+
 echo.
 goto :eof
 
@@ -321,8 +332,8 @@ echo echo.>>Update-AI-Toolkit.bat
 echo echo ^[92m::::::: Installing ^[93mrequirements ^[92mand updating ^[93mdiffusers^[92m :::::::::^[0m>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
 echo CALL venv\Scripts\activate.bat>>Update-AI-Toolkit.bat
-echo uv pip uninstall diffusers>>Update-AI-Toolkit.bat
-echo uv pip install -r requirements.txt --no-cache>>Update-AI-Toolkit.bat
+echo pip uninstall diffusers -y>>Update-AI-Toolkit.bat
+echo pip install -r requirements.txt --no-cache>>Update-AI-Toolkit.bat
 echo CALL venv\Scripts\deactivate.bat>>Update-AI-Toolkit.bat
 
 echo.>>Update-AI-Toolkit.bat
