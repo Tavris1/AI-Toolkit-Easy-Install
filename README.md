@@ -21,7 +21,7 @@
 
 ---
 ## Installation  
-- Download the latest release [:arrow_forward:HERE](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
+- Download the [:arrow_forward:latest release here◀️](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
 - Extract **`AI-Toolkit-Easy-Install.bat`** to a new folder, then run it.  
 > [!IMPORTANT]
 > - Do **not** run the installer as **Administrator**
