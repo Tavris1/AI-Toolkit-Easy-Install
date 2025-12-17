@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.3.26 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.27 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -7,7 +7,6 @@ call :set_colors
 
 :: Set arguments ::
 set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 200"
-set "CURLargs=--retry 200 --retry-all-errors"
 set "UVargs=--no-cache --link-mode=copy"
 
 :: CRITICAL: Clear all Python-related environment variables ::
@@ -25,16 +24,16 @@ set PYENV_ROOT=
 set PYENV_VERSION=
 
 :: Set local path only (temporarily) ::
-for /f "delims=" %%G in ('cmd /c "where git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
-for /f "delims=" %%G in ('cmd /c "where node.exe 2>nul"') do (set "NODE_PATH=%%~dpG")
+for /f "delims=" %%G in ('cmd /c "where.exe git.exe 2>nul"') do (set "GIT_PATH=%%~dpG")
+for /f "delims=" %%G in ('cmd /c "where.exe node.exe 2>nul"') do (set "NODE_PATH=%%~dpG")
 
 :: Build minimal PATH without system Python ::
 set "path="
 if defined GIT_PATH set "path=%GIT_PATH%"
 if defined NODE_PATH set "path=%path%;%NODE_PATH%"
-if exist %windir%\system32 set "path=%PATH%;%windir%\System32"
-if exist %windir%\system32\WindowsPowerShell\v1.0 set "path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0"
-if exist %localappdata%\Microsoft\WindowsApps set "path=%PATH%;%localappdata%\Microsoft\WindowsApps"
+if exist "%windir%\system32" set "path=%PATH%;%windir%\System32"
+if exist "%windir%\system32\WindowsPowerShell\v1.0" set "path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0"
+if exist "%localappdata%\Microsoft\WindowsApps" set "path=%PATH%;%localappdata%\Microsoft\WindowsApps"
 
 :: Check for Existing ComfyUI Folder ::
 if exist AI-Toolkit (
@@ -138,7 +137,7 @@ goto :eof
 echo %green%:::::::::::: Installing/Updating%yellow% Node.js %green%::::::::::::%reset%
 echo.
 winget.exe install --id=OpenJS.NodeJS -e
-set path=%PATH%;%ProgramFiles%\nodejs
+set "path=%PATH%;%ProgramFiles%\nodejs"
 Title %version_title%
 echo.
 goto :eof
@@ -147,14 +146,21 @@ goto :eof
 :: https://www.python.org/downloads/release/python-31210/
 echo %green%::::::::::::: Installing%yellow% Python embedded %green%::::::::::::%reset%
 echo.
-curl.exe -OL https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip --ssl-no-revoke %CURLargs%
+
+:: Disable only CRL/OCSP checks for SSL ::
+powershell -Command "[System.Net.ServicePointManager]::CheckCertificateRevocationList = $false"
+
+:: Ignore SSL certificate errors ::
+REM powershell -Command "Add-Type @'using System.Net;using System.Security.Cryptography.X509Certificates;public class TrustAllCertsPolicy : ICertificatePolicy {public bool CheckValidationResult(ServicePoint srvPoint,X509Certificate certificate,WebRequest request,int certificateProblem){return true;}}'@;[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy"
+
+powershell -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing"
 md python_embeded&&cd python_embeded
 tar.exe -xf ..\python-3.12.10-embed-amd64.zip
 erase ..\python-3.12.10-embed-amd64.zip
 echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
-curl.exe -sSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py --ssl-no-revoke %CURLargs%
+powershell -Command "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing"
 
 echo ../AI-Toolkit> python312._pth
 echo Lib/site-packages>> python312._pth
@@ -169,7 +175,7 @@ echo # import site>> python312._pth
 "%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
 "%CD%\python.exe" -I -m pip install virtualenv %PIPargs%
 
-curl.exe -OL https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke %CURLargs%
+powershell -Command "Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing"
 
 tar.exe -xf python_3.12.7_include_libs.zip
 erase python_3.12.7_include_libs.zip
