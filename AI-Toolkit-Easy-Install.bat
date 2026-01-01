@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.3.27 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.3.30 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -333,6 +333,8 @@ echo.>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
 echo echo ^[92m::::::::::::::: Installing ^[93mAI-Toolkit^[92m updates... :::::::::::::::^[0m>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
+echo git.exe reset --hard>>Update-AI-Toolkit.bat
+echo git.exe clean -fd>>Update-AI-Toolkit.bat
 echo git.exe pull>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
 echo echo ^[92m::::::: Installing ^[93mrequirements ^[92mand updating ^[93mdiffusers^[92m :::::::::^[0m>>Update-AI-Toolkit.bat
