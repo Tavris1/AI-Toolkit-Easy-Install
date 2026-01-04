@@ -5,6 +5,9 @@
 - AI-Toolkit is launched via a **single .bat file**, which also:  
   - Automatically checks for updates on launch and notifies you of new versions  
   - Opens your default browser once the local server is running  
+- Includes a separate **Update-AI-Toolkit.bat** for update to the latest version
+- Installs **PyTorch 2.8.0 with CUDA 12.8**, compatible with **RTX 50x GPUs**
+- Installs **Triton**
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 [![GitHun Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
