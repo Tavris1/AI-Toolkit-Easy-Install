@@ -31,6 +31,7 @@
 > - Avoid system folders (**Program Files**, **Windows**, **C:\\** root)  
 > - Avoid **spaces** and **special characters** in folder names
 > - Make sure your NVIDIA drivers are up to date
+> - Do not rename or move the AI-Toolkit folder after installation
 > - Use NTFS drives, not exFAT
 [ ](https://github.com/user-attachments/files/22717004/AI-Toolkit-Easy-Install.zip)
 
