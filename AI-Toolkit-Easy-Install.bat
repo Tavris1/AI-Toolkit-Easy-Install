@@ -1,12 +1,12 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.3.30 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.0 by ivo"
 Title %version_title%
 
 :: Set colors ::
 call :set_colors
 
 :: Set arguments ::
-set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 200"
+set "PIPargs=--no-cache-dir --no-warn-script-location --timeout=1000 --retries 20"
 set "UVargs=--no-cache --link-mode=copy"
 
 :: CRITICAL: Clear all Python-related environment variables ::
@@ -49,6 +49,23 @@ for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set start=%
 :: Skip downloading LFS (Large File Storage) files ::
 set GIT_LFS_SKIP_SMUDGE=1
 
+:: Show Logo ::
+set BGR=%yellow%
+set FGR=%green%
+echo.
+echo    %BGR%0000000000000000000000000000
+echo    %BGR%000000000000%FGR%0000%BGR%000000000000
+echo    %BGR%0000%FGR%0000000%BGR%0%FGR%0000%BGR%0%FGR%0000000%BGR%0000
+echo    %BGR%0000%FGR%0000000%BGR%0%FGR%0000%BGR%0%FGR%0000000%BGR%0000
+echo    %BGR%0000%FGR%0000%BGR%0000%FGR%0000%BGR%0000%FGR%0000%BGR%0000
+echo    %BGR%0000%FGR%0000%BGR%0000%FGR%0000%BGR%0000%FGR%0000%BGR%0000
+echo    %BGR%0000%FGR%0000%BGR%000000000000%FGR%0000%BGR%0000
+echo    %BGR%0000%FGR%00000000000000000000%BGR%0000
+echo    %BGR%0000%FGR%00000000000000000000%BGR%0000
+echo    %BGR%0000000000000000000000000000
+echo    %BGR%0000000000000000000000000000%reset%
+echo.
+
 :: Clear Pip and uv Cache ::
 call :clear_pip_uv_cache
 
@@ -58,7 +75,7 @@ call :install_git
 ::----------------------------------------------------
 :: Check if git is installed
 git.exe --version>nul 2>&1
-if errorlevel 1 (
+if not "%errorlevel%"=="0" (
     echo %warning%WARNING:%reset% %bold%'git'%reset% is NOT installed
 	echo Please install %bold%'git'%reset% manually from %yellow%https://git-scm.com/%reset% and run this installer again
     echo Press any key to Exit...&pause>nul
@@ -110,7 +127,7 @@ set warning=[33m
 set     red=[91m
 set   green=[92m
 set  yellow=[93m
-set    bold=[1m
+set    bold=[97m
 set   reset=[0m
 goto :eof
 
@@ -153,14 +170,19 @@ powershell -Command "[System.Net.ServicePointManager]::CheckCertificateRevocatio
 :: Ignore SSL certificate errors ::
 REM powershell -Command "Add-Type @'using System.Net;using System.Security.Cryptography.X509Certificates;public class TrustAllCertsPolicy : ICertificatePolicy {public bool CheckValidationResult(ServicePoint srvPoint,X509Certificate certificate,WebRequest request,int certificateProblem){return true;}}'@;[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy"
 
-powershell -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing"
+REM powershell -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing"
+powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip --ssl-no-revoke
+
+
 md python_embeded&&cd python_embeded
 tar.exe -xf ..\python-3.12.10-embed-amd64.zip
 erase ..\python-3.12.10-embed-amd64.zip
 echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
-powershell -Command "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing"
+REM powershell -Command "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing"
+powershell -Command "try { Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o get-pip.py https://bootstrap.pypa.io/get-pip.py --ssl-no-revoke
+
 
 echo ../AI-Toolkit> python312._pth
 echo Lib/site-packages>> python312._pth
@@ -173,9 +195,10 @@ echo # import site>> python312._pth
 "%CD%\python.exe" -I get-pip.py %PIPargs%
 "%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
 "%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
-"%CD%\python.exe" -I -m pip install virtualenv %PIPargs%
 
-powershell -Command "Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing"
+REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing"
+powershell -Command "try { Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o python_3.12.7_include_libs.zip https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke
+
 
 tar.exe -xf python_3.12.7_include_libs.zip
 erase python_3.12.7_include_libs.zip
@@ -189,29 +212,21 @@ echo.
 cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
-"..\python_embeded\python.exe" -I -m virtualenv --clear --no-download venv
-CALL venv\Scripts\activate.bat
 
-:: Clear environment again inside venv for safety ::
-set PYTHONPATH=
-set PYTHONHOME=
-set PIP_CONFIG_FILE=
-
-:: Check if uv.exe exists in python_embeded ::
-if exist "..\python_embeded\Scripts\uv.exe" pip install uv==0.9.7 %PIPargs%
-
-if exist "venv\Scripts\uv.exe" (
+if exist "..\python_embeded\Scripts\uv.exe" (
     echo %green%Using UV for package installation%reset%
-    uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
-    uv pip install -r requirements.txt %UVargs%
-    uv pip install poetry-core %UVargs%
-    uv pip install triton-windows==3.4.0.post20 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install -r requirements.txt %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install poetry-core %UVargs%
+	"..\python_embeded\python.exe" -I -m uv pip install wheel %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install triton-windows==3.4.0.post20 %UVargs%
 ) else (
     echo %warning%UV not available - using standard pip%reset%
-    pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
-    pip install -r requirements.txt %PIPargs%
-    pip install poetry-core %PIPargs%
-    pip install triton-windows==3.4.0.post20 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install -r requirements.txt %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install poetry-core %PIPargs%
+	"..\python_embeded\python.exe" -I -m pip install wheel %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install triton-windows==3.4.0.post20 %PIPargs%
 )
 
 echo.
@@ -242,6 +257,9 @@ echo set PYENV_ROOT=>>%start_bat_name%
 echo set PYENV_VERSION=>>%start_bat_name%
 echo.>>%start_bat_name%
 
+echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>%start_bat_name%
+echo.>>%start_bat_name%
+
 echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
 echo set "local_serv=http://localhost:8675">>%start_bat_name%
 echo echo.>>%start_bat_name%
@@ -261,13 +279,8 @@ echo.>>%start_bat_name%
 
 echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
 echo echo.>>%start_bat_name%
-echo echo ^[1;93mGeneral:^[0m>>%start_bat_name%
-echo echo  ^[1;32m1.^[0m Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
-echo echo  ^[1;32m2.^[0m Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
-echo echo  ^[1;32m3.^[0m To activate the ^[1;92mvirtual environment^[0m (if needed):>>%start_bat_name%
-echo echo     - Open ^[1;92mCMD^[0m where ^[1;92mStart-AI-Toolkit.bat^[0m is located>>%start_bat_name%
-echo echo       and Run ^[1;92mAI-Toolkit\venv\Scripts\activate.bat^[0m>>%start_bat_name%
-echo echo     ^[1;93mOR^[0m just start ^[1;92mvenv-AI-Toolkit.bat^[0m>>%start_bat_name%
+echo echo  - Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
+echo echo  - Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
 echo echo.>>%start_bat_name%
 echo echo ^[92m:::::::: ^[93mWaiting for the server to start...^[92m :::::::::^[0m>>%start_bat_name%
 echo.>>%start_bat_name%
@@ -279,30 +292,6 @@ echo if exist "%%windir%%\System32\WindowsPowerShell\v1.0" set "PATH=%%PATH%%;%%
 echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%start_bat_name%
 echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>>%start_bat_name%
 echo start !local_serv!>>%start_bat_name%
-
-:: Create venv-AI-Toolkit.bat ::
-echo %green%:::::::::: Creating%yellow%   venv-AI-Toolkit.bat %green%:::::::::::%reset%
-
-echo @echo off^&^&cd /d %%~dp0>venv-AI-Toolkit.bat
-echo.>>venv-AI-Toolkit.bat
-
-:: Isolate from system Python ::
-echo set PYTHONPATH=>>venv-AI-Toolkit.bat
-echo set PYTHONHOME=>>venv-AI-Toolkit.bat
-echo set PYTHON=>>venv-AI-Toolkit.bat
-echo set PYTHONSTARTUP=>>venv-AI-Toolkit.bat
-echo set PYTHONUSERBASE=>>venv-AI-Toolkit.bat
-echo set PIP_CONFIG_FILE=>>venv-AI-Toolkit.bat
-echo set PIP_REQUIRE_VIRTUALENV=>>venv-AI-Toolkit.bat
-echo set VIRTUAL_ENV=>>venv-AI-Toolkit.bat
-echo set CONDA_PREFIX=>>venv-AI-Toolkit.bat
-echo set CONDA_DEFAULT_ENV=>>venv-AI-Toolkit.bat
-echo set PYENV_ROOT=>>venv-AI-Toolkit.bat
-echo set PYENV_VERSION=>>venv-AI-Toolkit.bat
-echo.>>venv-AI-Toolkit.bat
-
-echo call AI-Toolkit\venv\Scripts\activate.bat>>venv-AI-Toolkit.bat
-echo cmd /k>>venv-AI-Toolkit.bat
 
 :: Create Update-AI-Toolkit.bat ::
 echo %green%:::::::::: Creating%yellow% Update-AI-Toolkit.bat %green%:::::::::::%reset%
@@ -326,6 +315,9 @@ echo set PYENV_ROOT=>>Update-AI-Toolkit.bat
 echo set PYENV_VERSION=>>Update-AI-Toolkit.bat
 echo.>>Update-AI-Toolkit.bat
 
+echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>Update-AI-Toolkit.bat
+echo.>>Update-AI-Toolkit.bat
+
 echo set GIT_LFS_SKIP_SMUDGE=^1>>Update-AI-Toolkit.bat
 echo cd ./ai-toolkit>>Update-AI-Toolkit.bat
 echo.>>Update-AI-Toolkit.bat
@@ -339,10 +331,8 @@ echo git.exe pull>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
 echo echo ^[92m::::::: Installing ^[93mrequirements ^[92mand updating ^[93mdiffusers^[92m :::::::::^[0m>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
-echo CALL venv\Scripts\activate.bat>>Update-AI-Toolkit.bat
-echo pip uninstall diffusers -y>>Update-AI-Toolkit.bat
-echo pip install -r requirements.txt --no-cache>>Update-AI-Toolkit.bat
-echo CALL venv\Scripts\deactivate.bat>>Update-AI-Toolkit.bat
+echo ..\python_embeded\python.exe -I -m pip uninstall diffusers -y>>Update-AI-Toolkit.bat
+echo ..\python_embeded\python.exe -I -m pip install -r requirements.txt --no-cache --no-warn-script-location>>Update-AI-Toolkit.bat
 
 echo.>>Update-AI-Toolkit.bat
 echo echo.>>Update-AI-Toolkit.bat
@@ -351,5 +341,8 @@ echo if "%%~1"=="" ^(>>Update-AI-Toolkit.bat
 echo     echo ^[93m::::::::::::::: Press any key to exit :::::::::::::::^[0m^&Pause^>nul>>Update-AI-Toolkit.bat
 echo     exit>>Update-AI-Toolkit.bat
 echo ^)>>Update-AI-Toolkit.bat
+
+echo.>>Update-AI-Toolkit.bat
+echo exit>>Update-AI-Toolkit.bat
 
 goto :eof
