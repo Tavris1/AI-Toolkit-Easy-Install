@@ -1,13 +1,12 @@
 # AI-Toolkit-Easy-Install
 
-### One-click installation of [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-- No system Python needed  
-- AI-Toolkit is launched via a **single .bat file**, which also:  
-  - Automatically checks for updates on launch and notifies you of new versions  
-  - Opens your default browser once the local server is running  
-- Includes a separate **Update-AI-Toolkit.bat** for update to the latest version
-- Includes **PyTorch 2.8.0 with CUDA 12.8**, compatible with **RTX 50x GPUs**
-- Includes **Triton**
+## One-click Portable [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
+- **Fully portable:** No **system Python** or **VENV** required. Reduces antivirus false positives.  
+- **Single-file launch:** Start everything via **one .bat file**, which:  
+  - **Opens your default browser** once the local server is live.
+  - **Alerts you** whenever a new update is available.  
+- **Easy maintenance:** Includes **Update-AI-Toolkit.bat** for one-click updates.
+- Includes **PyTorch 2.8.0** with **CUDA 12.8**, fully optimized for **RTX 50x** GPUs and **Triton**
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 [![GitHun Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
@@ -16,11 +15,11 @@
 
 ---
 
-### Installation List:  
-- **AI-Toolkit by Ostris**  
-- **Python 3.12.10 Embedded**  
-- **Git** *(will be installed or updated if needed)*  
-- **Node.js** *(will be installed or updated if needed)*  
+## Included Components:  
+- **AI-Toolkit by Ostris** _(latest)_  
+- **Python 3.12.10** _(Embedded Portable Version)_  
+- **Git** _(will be installed or updated if needed)_  
+- **Node.js** _(will be installed or updated if needed)_  
 
 ---
 ## Installation  
@@ -29,19 +28,17 @@
 > [!IMPORTANT]
 > - Do **not** run the installer as **Administrator**
 > - Avoid system folders (**Program Files**, **Windows**, **C:\\** root)  
-> - Avoid **spaces** and **special characters** in folder names
-> - Make sure your NVIDIA drivers are up to date
-> - Do not rename or move the AI-Toolkit folder after installation
-> - Use NTFS drives, not exFAT
-[ ](https://github.com/user-attachments/files/22717004/AI-Toolkit-Easy-Install.zip)
+> - Avoid **spaces** and **special characters** in folder names  
+> - Make sure your NVIDIA drivers are up to date  
+> - Use NTFS drives, not exFAT  
+> - You **can** move the **entire directory**, keeping the **AI-Toolkit** and **python_embeded** folders and **.bat** files together  
 
 ## Screenshots  
 ### Installing AI-Toolkit  
 <img width="1038" height="400" alt="Installing AI-Toolkit 1038" src="https://github.com/user-attachments/assets/636fcbe9-1d4c-4a63-a1c3-db046eca8bec" />
 
 ### Starting AI-Toolkit  
-<img width="1038" height="404" alt="Starting AI-Toolkit 1038" src="https://github.com/user-attachments/assets/2565c2f4-8200-49e0-8677-b55aba49bd3b" />
+<img width="1038" height="244" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/6d7df07a-0002-4eae-80ad-f36d367ae62d" />
 
 ### [Support me on PayPal](https://paypal.me/tavris1)
 [![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
-
