@@ -6,7 +6,7 @@
   - **Opens your default browser** once the local server is live.
   - **Alerts you** whenever a new update is available.  
 - **Easy maintenance:** Includes **Update-AI-Toolkit.bat** for one-click updates.
-- Includes **PyTorch 2.8.0** with **CUDA 12.8**, fully optimized for **RTX 50x** GPUs and **Triton**
+- Includes **PyTorch 2.8.0** with **CUDA 12.8** (fully optimized for **RTX 50x** GPUs) and **Triton**
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 [![GitHun Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
