@@ -1,7 +1,7 @@
 # AI-Toolkit-Easy-Install
 
 ## One-click Portable [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-- **Fully portable:** No **system Python** or **VENV** required. Reduces antivirus false positives.  
+- **Fully portable:** No **system Python** or **VENV** required.  
 - **Single-file launch:** Start everything via **one .bat file**, which:  
   - **Opens your default browser** once the local server is live.
   - **Alerts you** whenever a new update is available.  
