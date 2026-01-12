@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.0 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.1 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -232,117 +232,170 @@ if exist "..\python_embeded\Scripts\uv.exe" (
 echo.
 goto :eof
 
+
+
+
 :create_bat_files
-:: Create Start-AI-Toolkit.bat ::
-echo %green%:::::::::: Creating%yellow%  Start-AI-Toolkit.bat %green%:::::::::::%reset%
 cd..\
-set "start_bat_name=Start-AI-Toolkit.bat"
-echo @echo off^&^&cd /d %%~dp0>%start_bat_name%
-echo Title %version_title%>>%start_bat_name%
-echo setlocal enabledelayedexpansion>>%start_bat_name%
-echo.>>%start_bat_name%
 
-:: Isolate from system Python ::
-echo set PYTHONPATH=>>%start_bat_name%
-echo set PYTHONHOME=>>%start_bat_name%
-echo set PYTHON=>>%start_bat_name%
-echo set PYTHONSTARTUP=>>%start_bat_name%
-echo set PYTHONUSERBASE=>>%start_bat_name%
-echo set PIP_CONFIG_FILE=>>%start_bat_name%
-echo set PIP_REQUIRE_VIRTUALENV=>>%start_bat_name%
-echo set VIRTUAL_ENV=>>%start_bat_name%
-echo set CONDA_PREFIX=>>%start_bat_name%
-echo set CONDA_DEFAULT_ENV=>>%start_bat_name%
-echo set PYENV_ROOT=>>%start_bat_name%
-echo set PYENV_VERSION=>>%start_bat_name%
-echo.>>%start_bat_name%
+:::::::::::::::::::::::::::::::::
+:: Create Start-AI-Toolkit.bat ::
+:::::::::::::::::::::::::::::::::
 
-echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>%start_bat_name%
-echo.>>%start_bat_name%
+set "bat_file_name=Start-AI-Toolkit.bat"
+echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
-echo set GIT_LFS_SKIP_SMUDGE=^1>>%start_bat_name%
-echo set "local_serv=http://localhost:8675">>%start_bat_name%
-echo echo.>>%start_bat_name%
-echo cd ./ai-toolkit>>%start_bat_name%
+echo @echo off^&^&cd /d %%~dp0>%bat_file_name%
+echo Title AI-Toolkit-Easy-Install v0.4.1 by ivo>>%bat_file_name%
+echo setlocal enabledelayedexpansion>>%bat_file_name%
+echo.>>%bat_file_name%
 
-echo     echo ^[92m::::::::::::  Starting AI-Toolkit ...  ::::::::::::::^[0m>>%start_bat_name%
-echo     echo.>>%start_bat_name%
+echo set PYTHONPATH=>>%bat_file_name%
+echo set PYTHONHOME=>>%bat_file_name%
+echo set PYTHON=>>%bat_file_name%
+echo set PYTHONSTARTUP=>>%bat_file_name%
+echo set PYTHONUSERBASE=>>%bat_file_name%
+echo set PIP_CONFIG_FILE=>>%bat_file_name%
+echo set PIP_REQUIRE_VIRTUALENV=>>%bat_file_name%
+echo set VIRTUAL_ENV=>>%bat_file_name%
+echo set CONDA_PREFIX=>>%bat_file_name%
+echo set CONDA_DEFAULT_ENV=>>%bat_file_name%
+echo set PYENV_ROOT=>>%bat_file_name%
+echo set PYENV_VERSION=>>%bat_file_name%
+echo.>>%bat_file_name%
 
-echo git.exe fetch>>%start_bat_name%
-echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%start_bat_name%
-echo if !errorlevel!==0 ^(>>%start_bat_name%
-echo     echo ^[93m:::::::::::: ^[91mNew updates^[93m are available ::::::::::::::^[0m>>%start_bat_name%
-echo     echo ^[92m:::::::::::: Run Update-AI-Toolkit.bat ::::::::::::::^[0m>>%start_bat_name%
-echo     echo.>>%start_bat_name%
-echo ^)>>%start_bat_name%
-echo.>>%start_bat_name%
+echo set warning=[33m>>%bat_file_name%
+echo set     red=[91m>>%bat_file_name%
+echo set   green=[92m>>%bat_file_name%
+echo set  yellow=[93m>>%bat_file_name%
+echo set    bold=[97m>>%bat_file_name%
+echo set   reset=[0m>>%bat_file_name%
+echo.>>%bat_file_name%
 
-echo echo ^[1;93mTips for beginners:^[0m>>%start_bat_name%
-echo echo.>>%start_bat_name%
-echo echo  - Set your ^[1;92mHugging Face Token^[0m in Settings>>%start_bat_name%
-echo echo  - Close server with ^[1;92mCtrl+C twice^[0m, not the ^[1;91mX^[0m button>>%start_bat_name%
-echo echo.>>%start_bat_name%
-echo echo ^[92m:::::::: ^[93mWaiting for the server to start...^[92m :::::::::^[0m>>%start_bat_name%
-echo.>>%start_bat_name%
+echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>%bat_file_name%
+echo if not exist .\AI-Toolkit\ ^(>>%bat_file_name%
+echo 	echo %%warning%%WARNING:%%reset%% '%%bold%%AI-Toolkit%%reset%%' folder NOT exists!>>%bat_file_name%
+echo 	echo %%green%%Please reinstall 'AI-Toolkit-Easy-Install'.%%reset%%>>%bat_file_name%
+echo 	echo Press any key to Exit...^&Pause^>nul>>%bat_file_name%
+echo 	goto :eof>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo if not exist .\python_embeded\ ^(>>%bat_file_name%
+echo 	echo %%warning%%WARNING:%%reset%% '%%bold%%python_embeded%%reset%%' folder NOT exists!>>%bat_file_name%
+echo 	echo %%green%%Please reinstall 'AI-Toolkit-Easy-Install'.%%reset%%>>%bat_file_name%
+echo 	echo Press any key to Exit...^&Pause^>nul>>%bat_file_name%
+echo 	goto :eof>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo.>>%bat_file_name%
 
-echo cd ./ui>>%start_bat_name%
-echo start cmd.exe /k npm run build_and_start>>%start_bat_name%
-echo :loop>>%start_bat_name%
-echo if exist "%%windir%%\System32\WindowsPowerShell\v1.0" set "PATH=%%PATH%%;%%windir%%\System32\WindowsPowerShell\v1.0">>"%start_bat_name%"
-echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%start_bat_name%
-echo if !errorlevel! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>>%start_bat_name%
-echo start !local_serv!>>%start_bat_name%
+echo set GIT_LFS_SKIP_SMUDGE^=^1>>%bat_file_name%
+echo set "local_serv=http://localhost:8675">>%bat_file_name%
+echo echo.>>%bat_file_name%
+echo cd ./ai-toolkit>>%bat_file_name%
+echo     echo %%green%%:::::::::::::  Starting AI-Toolkit ...  :::::::::::::::%%reset%%>>%bat_file_name%
+echo     echo.>>%bat_file_name%
+echo git.exe fetch>>%bat_file_name%
+echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%bat_file_name%
+echo if !errorlevel!==0 ^(>>%bat_file_name%
+echo     echo  - %%red%%New updates%%reset%% are available.%%green%% Run Start-AI-Toolkit.bat%%reset%%>>%bat_file_name%
+echo     echo.>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo.>>%bat_file_name%
 
-:: Create Update-AI-Toolkit.bat ::
-echo %green%:::::::::: Creating%yellow% Update-AI-Toolkit.bat %green%:::::::::::%reset%
+echo if exist ".\aitk_db.db" ^(>>%bat_file_name%
+echo     type ".\aitk_db.db" 2^>nul ^| findstr /i /c:"HF_TOKEN" ^>nul 2^>^&^1>>%bat_file_name%
+echo     if errorlevel 1 ^(echo  - %%green%%Hugging Face Token%%reset%% not found. Set it in Settings.^)>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo echo  - Stop the server with %%green%%Ctrl+C twice%%reset%%, not %%red%%X%%reset%%>>%bat_file_name%
+echo echo.>>%bat_file_name%
+echo echo %%yellow%%::::::::: Waiting for the server to start... ::::::::::%%reset%%>>%bat_file_name%
+echo.>>%bat_file_name%
 
-echo @echo off^&^&cd /d %%~dp0>Update-AI-Toolkit.bat
-echo Title AI-Toolkit Update by ivo>>Update-AI-Toolkit.bat
-echo.>>Update-AI-Toolkit.bat
+echo cd ./ui>>%bat_file_name%
+echo start cmd.exe /k npm run build_and_start>>%bat_file_name%
+echo :loop>>%bat_file_name%
+echo if exist "%%windir%%\System32\WindowsPowerShell\v1.0" set "path=%%path%%;%%windir%%\System32\WindowsPowerShell\v1.0">>%bat_file_name%
+echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%bat_file_name%
+echo if ^!errorlevel^! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>>%bat_file_name%
+echo start ^!local_serv^!>>%bat_file_name%
 
-:: Isolate from system Python ::
-echo set PYTHONPATH=>>Update-AI-Toolkit.bat
-echo set PYTHONHOME=>>Update-AI-Toolkit.bat
-echo set PYTHON=>>Update-AI-Toolkit.bat
-echo set PYTHONSTARTUP=>>Update-AI-Toolkit.bat
-echo set PYTHONUSERBASE=>>Update-AI-Toolkit.bat
-echo set PIP_CONFIG_FILE=>>Update-AI-Toolkit.bat
-echo set PIP_REQUIRE_VIRTUALENV=>>Update-AI-Toolkit.bat
-echo set VIRTUAL_ENV=>>Update-AI-Toolkit.bat
-echo set CONDA_PREFIX=>>Update-AI-Toolkit.bat
-echo set CONDA_DEFAULT_ENV=>>Update-AI-Toolkit.bat
-echo set PYENV_ROOT=>>Update-AI-Toolkit.bat
-echo set PYENV_VERSION=>>Update-AI-Toolkit.bat
-echo.>>Update-AI-Toolkit.bat
 
-echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>Update-AI-Toolkit.bat
-echo.>>Update-AI-Toolkit.bat
 
-echo set GIT_LFS_SKIP_SMUDGE=^1>>Update-AI-Toolkit.bat
-echo cd ./ai-toolkit>>Update-AI-Toolkit.bat
-echo.>>Update-AI-Toolkit.bat
+::::::::::::::::::::::::::::
+:: Create %bat_file_name% ::
+::::::::::::::::::::::::::::
 
-echo echo.>>Update-AI-Toolkit.bat
-echo echo ^[92m::::::::::::::: Installing ^[93mAI-Toolkit^[92m updates... :::::::::::::::^[0m>>Update-AI-Toolkit.bat
-echo echo.>>Update-AI-Toolkit.bat
-echo git.exe reset --hard>>Update-AI-Toolkit.bat
-echo git.exe clean -fd>>Update-AI-Toolkit.bat
-echo git.exe pull>>Update-AI-Toolkit.bat
-echo echo.>>Update-AI-Toolkit.bat
-echo echo ^[92m::::::: Installing ^[93mrequirements ^[92mand updating ^[93mdiffusers^[92m :::::::::^[0m>>Update-AI-Toolkit.bat
-echo echo.>>Update-AI-Toolkit.bat
-echo ..\python_embeded\python.exe -I -m pip uninstall diffusers -y>>Update-AI-Toolkit.bat
-echo ..\python_embeded\python.exe -I -m pip install -r requirements.txt --no-cache --no-warn-script-location>>Update-AI-Toolkit.bat
+set "bat_file_name=Update-AI-Toolkit.bat"
+echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
-echo.>>Update-AI-Toolkit.bat
-echo echo.>>Update-AI-Toolkit.bat
-echo echo ^[92m:::::::::::::::   Update completed    :::::::::::::::^[0m>>Update-AI-Toolkit.bat
-echo if "%%~1"=="" ^(>>Update-AI-Toolkit.bat
-echo     echo ^[93m::::::::::::::: Press any key to exit :::::::::::::::^[0m^&Pause^>nul>>Update-AI-Toolkit.bat
-echo     exit>>Update-AI-Toolkit.bat
-echo ^)>>Update-AI-Toolkit.bat
+echo @echo off^&^&cd /d %%~dp0>%bat_file_name%
+echo Title AI-Toolkit Update by ivo>>%bat_file_name%
+echo.>>%bat_file_name%
+echo.>>%bat_file_name%
 
-echo.>>Update-AI-Toolkit.bat
-echo exit>>Update-AI-Toolkit.bat
+
+echo set PYTHONPATH=>>%bat_file_name%
+echo set PYTHONHOME=>>%bat_file_name%
+echo set PYTHON=>>%bat_file_name%
+echo set PYTHONSTARTUP=>>%bat_file_name%
+echo set PYTHONUSERBASE=>>%bat_file_name%
+echo set PIP_CONFIG_FILE=>>%bat_file_name%
+echo set PIP_REQUIRE_VIRTUALENV=>>%bat_file_name%
+echo set VIRTUAL_ENV=>>%bat_file_name%
+echo set CONDA_PREFIX=>>%bat_file_name%
+echo set CONDA_DEFAULT_ENV=>>%bat_file_name%
+echo set PYENV_ROOT=>>%bat_file_name%
+echo set PYENV_VERSION=>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo set warning=[33m>>%bat_file_name%
+echo set     red=[91m>>%bat_file_name%
+echo set   green=[92m>>%bat_file_name%
+echo set  yellow=[93m>>%bat_file_name%
+echo set    bold=[97m>>%bat_file_name%
+echo set   reset=[0m>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>%bat_file_name%
+echo if not exist .\AI-Toolkit\ ^(>>%bat_file_name%
+echo 	echo %%warning%%WARNING:%%reset%% '%%bold%%AI-Toolkit%%reset%%' folder NOT exists!>>%bat_file_name%
+echo 	echo %%green%%Please reinstall 'AI-Toolkit-Easy-Install'.%%reset%%>>%bat_file_name%
+echo 	echo Press any key to Exit...^&Pause^>nul>>%bat_file_name%
+echo 	goto :eof>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo if not exist .\python_embeded\ ^(>>%bat_file_name%
+echo 	echo %%warning%%WARNING:%%reset%% '%%bold%%python_embeded%%reset%%' folder NOT exists!>>%bat_file_name%
+echo 	echo %%green%%Please reinstall 'AI-Toolkit-Easy-Install'.%%reset%%>>%bat_file_name%
+echo 	echo Press any key to Exit...^&Pause^>nul>>%bat_file_name%
+echo 	goto :eof>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo set GIT_LFS_SKIP_SMUDGE=^1>>%bat_file_name%
+echo cd ./ai-toolkit>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo echo.>>%bat_file_name%
+echo echo %%green%%::::::::::::::: Installing %%yellow%%AI-Toolkit%%green%% updates... :::::::::::::::%%reset%%>>%bat_file_name%
+echo echo.>>%bat_file_name%
+echo git.exe reset --hard>>%bat_file_name%
+echo git.exe clean -fd>>%bat_file_name%
+echo git.exe pull>>%bat_file_name%
+echo echo.>>%bat_file_name%
+echo echo %%green%%::::::: Installing %%yellow%%requirements %%green%%and updating %%yellow%%diffusers%%green%% :::::::::%%reset%%>>%bat_file_name%
+echo echo.>>%bat_file_name%
+echo ..\python_embeded\python.exe -I -m pip uninstall diffusers -y>>%bat_file_name%
+echo ..\python_embeded\python.exe -I -m pip install -r requirements.txt --no-cache --no-warn-script-location>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo echo.>>%bat_file_name%
+echo echo %%green%%:::::::::::::::   Update completed    :::::::::::::::%%reset%%>>%bat_file_name%
+echo if "%%~1"=="" ^(>>%bat_file_name%
+echo     echo %%yellow%%::::::::::::::: Press any key to exit :::::::::::::::%%reset%%^&Pause^>nul>>%bat_file_name%
+echo     exit>>%bat_file_name%
+echo ^)>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo exit>>%bat_file_name%
+
 
 goto :eof
