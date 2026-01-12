@@ -296,7 +296,7 @@ echo     echo.>>%bat_file_name%
 echo git.exe fetch>>%bat_file_name%
 echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%bat_file_name%
 echo if !errorlevel!==0 ^(>>%bat_file_name%
-echo     echo  - %%red%%New updates%%reset%% are available.%%green%% Run Start-AI-Toolkit.bat%%reset%%>>%bat_file_name%
+echo     echo  - %%red%%New updates%%reset%% are available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
