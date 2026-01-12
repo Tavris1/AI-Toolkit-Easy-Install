@@ -38,7 +38,7 @@
 <img width="1038" height="366" alt="Installing-AI-Toolkit" src="https://github.com/user-attachments/assets/cc8ff016-1339-4668-893b-1fd5adeed74a" />
 
 ### Starting AI-Toolkit  
-<img width="1038" height="246" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/4d69fd29-3b69-4a8c-8fda-8268ac6370a1" />  
+<img width="1038" height="246" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/6712b552-a0ed-45c3-881a-6208b402ac1f" />  
 
 ### [Support me on PayPal](https://paypal.me/tavris1)
 [![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
