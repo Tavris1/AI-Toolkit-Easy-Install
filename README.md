@@ -31,7 +31,7 @@
 > - Avoid **spaces** and **special characters** in folder names  
 > - Make sure your NVIDIA drivers are up to date  
 > - Use NTFS drives, not exFAT  
-> - You **can** move the **entire directory**, keeping the **AI-Toolkit** and **python_embeded** folders and **.bat** files together  
+> - You **can** move the **entire directory**, keeping the **AI-Toolkit** and **python_embeded** folders together  
 
 ## Screenshots  
 ### Installing AI-Toolkit  
