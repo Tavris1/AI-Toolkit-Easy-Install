@@ -40,5 +40,11 @@
 ### Starting AI-Toolkit  
 <img width="1038" height="246" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/6712b552-a0ed-45c3-881a-6208b402ac1f" />  
 
-### [Support me on PayPal](https://paypal.me/tavris1)
-[![Support me on-Paypal-blue](https://github.com/user-attachments/assets/c1a767b0-f3d9-48c7-877b-12653d2f9ac7)](https://paypal.me/tavris1)  
+Thank you for using **AI-Toolkit-Easy-Install**.  
+
+If you enjoy my projects, please consider sponsoring me. Any support is greatly appreciated!  
+
+<!-- [![Sponsor me on GitHub](https://img.shields.io/github/sponsors/Tavris1?label=Sponsor&logo=GitHub)](https://github.com/sponsors/Tavris1) -->  
+❤️ Sponsor on GitHub: https://github.com/sponsors/Tavris1  
+💜 Donate on PayPal: https://paypal.me/tavris1 [![Support me on PayPal](https://img.shields.io/badge/PayPal-Support-blue?logo=paypal)](https://paypal.me/tavris1)  
+☕ Buy Me a Coffee: https://buymeacoffee.com/tavris1 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/tavris1)  
