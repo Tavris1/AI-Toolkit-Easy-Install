@@ -1,12 +1,12 @@
 # AI-Toolkit-Easy-Install
 
-## One-click Portable [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-- **Fully portable:** No **system Python** or **VENV** required.  
-- **Single-file launch:** Start everything via **one .bat file**, which:  
+## One-click Portable **AI-Toolkit by Ostris** for Windows  
+- No **system Python** or **VENV** required.  
+- Start everything via **one .bat file**, which:  
   - **Opens your default browser** once the local server is live.
   - **Alerts you** whenever a new update is available.  
-- **Easy maintenance:** Includes **Update-AI-Toolkit.bat** for one-click updates.
-- Includes **PyTorch 2.8.0** with **CUDA 12.8** (fully optimized for **RTX 50x** GPUs) and **Triton**
+- Includes **Update-AI-Toolkit.bat** for one-click updates.
+- Includes **PyTorch 2.8.0** with **CUDA 12.8** (fully optimized for **RTX 50x** GPUs), **Triton** and **huggingface_hub[hf_xet]**
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 [![GitHun Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
@@ -35,7 +35,7 @@
 
 ## Screenshots  
 ### Installing AI-Toolkit  
-<img width="1038" height="366" alt="Installing-AI-Toolkit" src="https://github.com/user-attachments/assets/cc8ff016-1339-4668-893b-1fd5adeed74a" />
+<img width="1038" height="380" alt="AI-Toolkit-Install" src="https://github.com/user-attachments/assets/2a9c3f1f-0a36-4bfe-80fa-5fb31627562e" />
 
 ### Starting AI-Toolkit  
 <img width="1038" height="246" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/6712b552-a0ed-45c3-881a-6208b402ac1f" />  
