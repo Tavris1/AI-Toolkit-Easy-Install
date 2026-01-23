@@ -1,6 +1,6 @@
 # AI-Toolkit-Easy-Install
 
-## One-click Portable **AI-Toolkit by Ostris** for Windows  
+## One-click Portable [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
 - No **system Python** or **VENV** required.  
 - Start everything via **one .bat file**, which:  
   - **Opens your default browser** once the local server is live.
