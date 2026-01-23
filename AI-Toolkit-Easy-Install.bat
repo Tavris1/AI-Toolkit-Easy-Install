@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.1 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.3 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -66,9 +66,6 @@ echo    %BGR%0000000000000000000000000000
 echo    %BGR%0000000000000000000000000000%reset%
 echo.
 
-:: Clear Pip and uv Cache ::
-call :clear_pip_uv_cache
-
 :: Install/Update Git ::
 call :install_git
 
@@ -105,6 +102,7 @@ call :ai-toolkit_install
 
 :: Create 'Start-AI-Toolkit.bat' ::
 call :create_bat_files
+echo.
 
 :: Clear Pip and uv Cache ::
 call :clear_pip_uv_cache
@@ -114,7 +112,6 @@ for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set end=%%i
 for /f %%i in ('powershell -command "(New-TimeSpan -Start (Get-Date '%start%') -End (Get-Date '%end%')).TotalSeconds"') do set diff=%%i
 
 :: Final Messages ::
-echo.
 echo %green%::::::::::::::: Installation Complete :::::::::::::::%reset%
 echo %green%::::::::::::::: Total Running Time:%red% %diff% %green%seconds%reset%
 echo %yellow%::::::::::::::: Press any key to exit :::::::::::::::%reset%&Pause>nul
@@ -132,11 +129,17 @@ set   reset=[0m
 goto :eof
 
 :clear_pip_uv_cache
-if exist "%localappdata%\pip\cache" rd /s /q "%localappdata%\pip\cache"&&md "%localappdata%\pip\cache"
-if exist "%localappdata%\uv\cache" rd /s /q "%localappdata%\uv\cache"&&md "%localappdata%\uv\cache"
+echo %green%::::::::::::: Clearing Pip and uv Cache%green% :::::::::::::%reset%
+
+set CACHE_DRIVE=%localappdata:~0,2%
+
+for /f "delims=" %%A in ('
+powershell -NoProfile -Command "$t=0;@('%localappdata%\pip\cache','%localappdata%\uv\cache')|%%{if(Test-Path $_){Get-ChildItem $_ -Recurse -Force -File -ErrorAction SilentlyContinue|%%{$t+=$_.Length};Remove-Item $_ -Recurse -Force -ErrorAction SilentlyContinue}};New-Item -ItemType Directory '%localappdata%\pip\cache' -Force|Out-Null;New-Item -ItemType Directory '%localappdata%\uv\cache' -Force|Out-Null;if($t -eq 0){'Cache is already clean on %CACHE_DRIVE%'} elseif($t -ge 1GB){'Cleared {0:N1} GB on %CACHE_DRIVE%' -f ($t/1GB)} else {'Cleared {0} MB on %CACHE_DRIVE%' -f [math]::Floor($t/1MB)}"
+') do set MSG=%%A
+
+echo %green%::::::::::::: %yellow%%MSG%%reset%
 echo.
-echo %green%:::::::::: Clearing Pip and uv Cache %yellow%Done%green% :::::::::::%reset%
-echo.
+
 goto :eof
 
 :install_git
@@ -220,6 +223,7 @@ if exist "..\python_embeded\Scripts\uv.exe" (
     "..\python_embeded\python.exe" -I -m uv pip install poetry-core %UVargs%
 	"..\python_embeded\python.exe" -I -m uv pip install wheel %UVargs%
     "..\python_embeded\python.exe" -I -m uv pip install triton-windows==3.4.0.post20 %UVargs%
+	"..\python_embeded\python.exe" -I -m uv pip install hf_xet %UVargs%
 ) else (
     echo %warning%UV not available - using standard pip%reset%
     "..\python_embeded\python.exe" -I -m pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
@@ -227,6 +231,7 @@ if exist "..\python_embeded\Scripts\uv.exe" (
     "..\python_embeded\python.exe" -I -m pip install poetry-core %PIPargs%
 	"..\python_embeded\python.exe" -I -m pip install wheel %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install triton-windows==3.4.0.post20 %PIPargs%
+	"..\python_embeded\python.exe" -I -m pip install hf_xet %PIPargs%
 )
 
 echo.
