@@ -40,6 +40,6 @@ No system Python. No VENV. Just run and go.
 
 If you enjoy my projects, please consider sponsoring me. Any support is greatly appreciated!  
 
-❤️ GitHub Sponsors: https://github.com/sponsors/Tavris1  
 💜 PayPal: https://paypal.me/tavris1  
 ☕ Buy Me a Coffee: https://buymeacoffee.com/tavris1  
+❤️ GitHub Sponsors: https://github.com/sponsors/Tavris1  
