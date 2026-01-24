@@ -1,50 +1,45 @@
 # AI-Toolkit-Easy-Install
 
-## One-click Portable [**AI-Toolkit by Ostris**](https://github.com/ostris/ai-toolkit) for Windows  
-- No **system Python** or **VENV** required.  
-- Start everything via **one .bat file**, which:  
-  - **Opens your default browser** once the local server is live.
-  - **Alerts you** whenever a new update is available.  
-- Includes **Update-AI-Toolkit.bat** for one-click updates.
-- Includes **PyTorch 2.8.0** with **CUDA 12.8** (fully optimized for **RTX 50x** GPUs), **Triton** and **huggingface_hub[hf_xet]**
+## One-click portable [AI-Toolkit by Ostris](https://github.com/ostris/ai-toolkit) for Windows
+**An easy-to-use training suite for image and video diffusion models.**
+
+No system Python. No VENV. Just run and go.
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
-[![GitHun Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
-[![Github All Releases](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)]()
-[![GitHub Downloads latest)](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/latest/total?style=flat&label=downloads%40latest&color=orange)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
+[![GitHub Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
+
+<img width="1038" height="246" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/6712b552-a0ed-45c3-881a-6208b402ac1f" />
+
+## Features
+
+### Launcher
+- Start everything via one `.bat` file, which:
+  - Opens your default browser once the local server is live
+  - Alerts you whenever a new update is available
+- Built-in updater for easy updates
+
+### Installer
+- Automatically installs or updates Git and Node.js if needed
+- Installs an embedded Python 3.12 (portable, no system changes)
+- Installs PyTorch 2.8.0 with CUDA 12.8, Triton and `huggingface_hub[hf_xet]`
 
 ---
 
-## Included Components:  
-- **AI-Toolkit by Ostris** _(latest)_  
-- **Python 3.12.10** _(Embedded Portable Version)_  
-- **Git** _(will be installed or updated if needed)_  
-- **Node.js** _(will be installed or updated if needed)_  
+## Installation
+1. Download the [:arrow_forward:latest release here◀️](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
+2. Extract `AI-Toolkit-Easy-Install.bat` into a new folder and run it  
 
----
-## Installation  
-- Download the [:arrow_forward:latest release here◀️](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
-- Extract **`AI-Toolkit-Easy-Install.bat`** to a new folder, then run it.  
 > [!IMPORTANT]
-> - Do **not** run the installer as **Administrator**
-> - Avoid system folders (**Program Files**, **Windows**, **C:\\** root)  
-> - Avoid **spaces** and **special characters** in folder names  
-> - Make sure your NVIDIA drivers are up to date  
-> - Use NTFS drives, not exFAT  
-> - You **can** move the **entire directory**, keeping the **AI-Toolkit** and **python_embeded** folders together  
-
-## Screenshots  
-### Installing AI-Toolkit  
-<img width="1038" height="380" alt="AI-Toolkit-Install" src="https://github.com/user-attachments/assets/2a9c3f1f-0a36-4bfe-80fa-5fb31627562e" />
-
-### Starting AI-Toolkit  
-<img width="1038" height="246" alt="Start-AI-Toolkit" src="https://github.com/user-attachments/assets/6712b552-a0ed-45c3-881a-6208b402ac1f" />  
-
-Thank you for using **AI-Toolkit-Easy-Install**.  
+> To avoid common Windows issues:  
+> - Do not run the installer as Administrator  
+> - Avoid system folders (Program Files, Windows, C:\ root)  
+> - Avoid spaces and special characters in folder names  
+> - Use NTFS drives (not exFAT)  
+---
 
 If you enjoy my projects, please consider sponsoring me. Any support is greatly appreciated!  
 
-<!-- [![Sponsor me on GitHub](https://img.shields.io/github/sponsors/Tavris1?label=Sponsor&logo=GitHub)](https://github.com/sponsors/Tavris1) -->  
-❤️ Sponsor on GitHub: https://github.com/sponsors/Tavris1  
-💜 Donate on PayPal: https://paypal.me/tavris1 [![Support me on PayPal](https://img.shields.io/badge/PayPal-Support-blue?logo=paypal)](https://paypal.me/tavris1)  
-☕ Buy Me a Coffee: https://buymeacoffee.com/tavris1 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/tavris1)  
+❤️ GitHub Sponsors: https://github.com/sponsors/Tavris1  
+💜 PayPal: https://paypal.me/tavris1  
+☕ Buy Me a Coffee: https://buymeacoffee.com/tavris1  
