@@ -1,6 +1,6 @@
 # AI-Toolkit-Easy-Install
 
-## One-click portable [AI-Toolkit by Ostris](https://github.com/ostris/ai-toolkit) for Windows
+## One-click portable "AI-Toolkit by Ostris" for Windows
 **An easy-to-use training suite for image and video diffusion models.**
 
 No system Python. No VENV. Just run and go.
