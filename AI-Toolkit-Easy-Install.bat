@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.3 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.5 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -104,8 +104,8 @@ call :ai-toolkit_install
 call :create_bat_files
 echo.
 
-:: Clear Pip and uv Cache ::
-call :clear_pip_uv_cache
+REM :: Clear Pip and uv Cache ::
+REM call :clear_pip_uv_cache
 
 :: Capture the end time ::
 for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set end=%%i
