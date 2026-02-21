@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.5 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.6 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -178,7 +178,7 @@ powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/py
 
 
 md python_embeded&&cd python_embeded
-tar.exe -xf ..\python-3.12.10-embed-amd64.zip
+tar.exe -xmf ..\python-3.12.10-embed-amd64.zip
 erase ..\python-3.12.10-embed-amd64.zip
 echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
@@ -203,7 +203,7 @@ REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/woct0rdho/tr
 powershell -Command "try { Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o python_3.12.7_include_libs.zip https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke
 
 
-tar.exe -xf python_3.12.7_include_libs.zip
+tar.exe -xmf python_3.12.7_include_libs.zip
 erase python_3.12.7_include_libs.zip
 
 echo.
