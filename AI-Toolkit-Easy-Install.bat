@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.6 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.7 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -44,7 +44,7 @@ if exist AI-Toolkit (
 )
 
 :: Capture the start time ::
-for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set start=%%i
+for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command "Get-Date -Format yyyy-MM-dd_HH:mm:ss"') do set start=%%i
 
 :: Skip downloading LFS (Large File Storage) files ::
 set GIT_LFS_SKIP_SMUDGE=1
@@ -108,14 +108,15 @@ REM :: Clear Pip and uv Cache ::
 REM call :clear_pip_uv_cache
 
 :: Capture the end time ::
-for /f %%i in ('powershell -command "Get-Date -Format HH:mm:ss"') do set end=%%i
-for /f %%i in ('powershell -command "(New-TimeSpan -Start (Get-Date '%start%') -End (Get-Date '%end%')).TotalSeconds"') do set diff=%%i
+for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command "Get-Date -Format yyyy-MM-dd_HH:mm:ss"') do set end=%%i
+for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command "$s=[datetime]::ParseExact('%start%','yyyy-MM-dd_HH:mm:ss',$null); $e=[datetime]::ParseExact('%end%','yyyy-MM-dd_HH:mm:ss',$null); if($e -lt $s){$e=$e.AddDays(1)}; ($e-$s).TotalSeconds"') do set diff=%%i
 
 :: Final Messages ::
 echo %green%::::::::::::::: Installation Complete :::::::::::::::%reset%
 echo %green%::::::::::::::: Total Running Time:%red% %diff% %green%seconds%reset%
 echo %yellow%::::::::::::::: Press any key to exit :::::::::::::::%reset%&Pause>nul
-goto :eof
+
+exit
 
 ::::::::::::::::::::::::::::::::: END :::::::::::::::::::::::::::::::::
 
@@ -134,7 +135,7 @@ echo %green%::::::::::::: Clearing Pip and uv Cache%green% :::::::::::::%reset%
 set CACHE_DRIVE=%localappdata:~0,2%
 
 for /f "delims=" %%A in ('
-powershell -NoProfile -Command "$t=0;@('%localappdata%\pip\cache','%localappdata%\uv\cache')|%%{if(Test-Path $_){Get-ChildItem $_ -Recurse -Force -File -ErrorAction SilentlyContinue|%%{$t+=$_.Length};Remove-Item $_ -Recurse -Force -ErrorAction SilentlyContinue}};New-Item -ItemType Directory '%localappdata%\pip\cache' -Force|Out-Null;New-Item -ItemType Directory '%localappdata%\uv\cache' -Force|Out-Null;if($t -eq 0){'Cache is already clean on %CACHE_DRIVE%'} elseif($t -ge 1GB){'Cleared {0:N1} GB on %CACHE_DRIVE%' -f ($t/1GB)} else {'Cleared {0} MB on %CACHE_DRIVE%' -f [math]::Floor($t/1MB)}"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$t=0;@('%localappdata%\pip\cache','%localappdata%\uv\cache')|%%{if(Test-Path $_){Get-ChildItem $_ -Recurse -Force -File -ErrorAction SilentlyContinue|%%{$t+=$_.Length};Remove-Item $_ -Recurse -Force -ErrorAction SilentlyContinue}};New-Item -ItemType Directory '%localappdata%\pip\cache' -Force|Out-Null;New-Item -ItemType Directory '%localappdata%\uv\cache' -Force|Out-Null;if($t -eq 0){'Cache is already clean on %CACHE_DRIVE%'} elseif($t -ge 1GB){'Cleared {0:N1} GB on %CACHE_DRIVE%' -f ($t/1GB)} else {'Cleared {0} MB on %CACHE_DRIVE%' -f [math]::Floor($t/1MB)}"
 ') do set MSG=%%A
 
 echo %green%::::::::::::: %yellow%%MSG%%reset%
@@ -167,24 +168,18 @@ goto :eof
 echo %green%::::::::::::: Installing%yellow% Python embedded %green%::::::::::::%reset%
 echo.
 
-:: Disable only CRL/OCSP checks for SSL ::
-powershell -Command "[System.Net.ServicePointManager]::CheckCertificateRevocationList = $false"
-
-:: Ignore SSL certificate errors ::
-REM powershell -Command "Add-Type @'using System.Net;using System.Security.Cryptography.X509Certificates;public class TrustAllCertsPolicy : ICertificatePolicy {public bool CheckValidationResult(ServicePoint srvPoint,X509Certificate certificate,WebRequest request,int certificateProblem){return true;}}'@;[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy"
-
-REM powershell -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing"
-powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip --ssl-no-revoke
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip
 
 
 md python_embeded&&cd python_embeded
 tar.exe -xmf ..\python-3.12.10-embed-amd64.zip
+if errorlevel 1 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '..\python-3.12.10-embed-amd64.zip' -DestinationPath '.' -Force"
+
 erase ..\python-3.12.10-embed-amd64.zip
 echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
-REM powershell -Command "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing"
-powershell -Command "try { Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o get-pip.py https://bootstrap.pypa.io/get-pip.py --ssl-no-revoke
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o get-pip.py https://bootstrap.pypa.io/get-pip.py
 
 
 echo ../AI-Toolkit> python312._pth
@@ -199,11 +194,11 @@ echo # import site>> python312._pth
 "%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
 "%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
 
-REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing"
-powershell -Command "try { Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L -o python_3.12.7_include_libs.zip https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip --ssl-no-revoke
-
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o python_3.12.7_include_libs.zip https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip
 
 tar.exe -xmf python_3.12.7_include_libs.zip
+if errorlevel 1 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath 'python_3.12.7_include_libs.zip' -DestinationPath '.' -Force"
+
 erase python_3.12.7_include_libs.zip
 
 echo.
@@ -319,15 +314,15 @@ echo cd ./ui>>%bat_file_name%
 echo start cmd.exe /k npm run build_and_start>>%bat_file_name%
 echo :loop>>%bat_file_name%
 echo if exist "%%windir%%\System32\WindowsPowerShell\v1.0" set "path=%%path%%;%%windir%%\System32\WindowsPowerShell\v1.0">>%bat_file_name%
-echo powershell -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%bat_file_name%
+echo powershell -NoProfile -ExecutionPolicy Bypass -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%bat_file_name%
 echo if ^!errorlevel^! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>>%bat_file_name%
 echo start ^!local_serv^!>>%bat_file_name%
 
 
 
-::::::::::::::::::::::::::::
-:: Create %bat_file_name% ::
-::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::
+:: Create Update-AI-Toolkit.bat ::
+::::::::::::::::::::::::::::::::::
 
 set "bat_file_name=Update-AI-Toolkit.bat"
 echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
