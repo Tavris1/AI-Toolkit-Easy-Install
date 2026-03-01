@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.7 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.8 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -104,9 +104,6 @@ call :ai-toolkit_install
 call :create_bat_files
 echo.
 
-REM :: Clear Pip and uv Cache ::
-REM call :clear_pip_uv_cache
-
 :: Capture the end time ::
 for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command "Get-Date -Format yyyy-MM-dd_HH:mm:ss"') do set end=%%i
 for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command "$s=[datetime]::ParseExact('%start%','yyyy-MM-dd_HH:mm:ss',$null); $e=[datetime]::ParseExact('%end%','yyyy-MM-dd_HH:mm:ss',$null); if($e -lt $s){$e=$e.AddDays(1)}; ($e-$s).TotalSeconds"') do set diff=%%i
@@ -127,20 +124,6 @@ set   green=[92m
 set  yellow=[93m
 set    bold=[97m
 set   reset=[0m
-goto :eof
-
-:clear_pip_uv_cache
-echo %green%::::::::::::: Clearing Pip and uv Cache%green% :::::::::::::%reset%
-
-set CACHE_DRIVE=%localappdata:~0,2%
-
-for /f "delims=" %%A in ('
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$t=0;@('%localappdata%\pip\cache','%localappdata%\uv\cache')|%%{if(Test-Path $_){Get-ChildItem $_ -Recurse -Force -File -ErrorAction SilentlyContinue|%%{$t+=$_.Length};Remove-Item $_ -Recurse -Force -ErrorAction SilentlyContinue}};New-Item -ItemType Directory '%localappdata%\pip\cache' -Force|Out-Null;New-Item -ItemType Directory '%localappdata%\uv\cache' -Force|Out-Null;if($t -eq 0){'Cache is already clean on %CACHE_DRIVE%'} elseif($t -ge 1GB){'Cleared {0:N1} GB on %CACHE_DRIVE%' -f ($t/1GB)} else {'Cleared {0} MB on %CACHE_DRIVE%' -f [math]::Floor($t/1MB)}"
-') do set MSG=%%A
-
-echo %green%::::::::::::: %yellow%%MSG%%reset%
-echo.
-
 goto :eof
 
 :install_git
@@ -169,7 +152,7 @@ echo %green%::::::::::::: Installing%yellow% Python embedded %green%::::::::::::
 echo.
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip
-
+if errorlevel 1 curl.exe -L --ssl-no-revoke -k -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip
 
 md python_embeded&&cd python_embeded
 tar.exe -xmf ..\python-3.12.10-embed-amd64.zip
@@ -180,6 +163,7 @@ echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+if errorlevel 1 curl.exe -L --ssl-no-revoke -k -o get-pip.py https://bootstrap.pypa.io/get-pip.py
 
 
 echo ../AI-Toolkit> python312._pth
@@ -190,7 +174,14 @@ echo python312.zip>> python312._pth
 echo .>> python312._pth
 echo # import site>> python312._pth
 
-"%CD%\python.exe" -I get-pip.py %PIPargs%
+echo [global]> pip.ini
+echo trusted-host =>> pip.ini
+echo     pypi.org>> pip.ini
+echo     files.pythonhosted.org>> pip.ini
+echo     pypi.python.org>> pip.ini
+
+"%CD%\python.exe" -I get-pip.py %PIPargs% --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org
+REM "%CD%\python.exe" -I -m pip config set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org"
 "%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
 "%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
 
