@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.8 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.4.9 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -237,7 +237,7 @@ set "bat_file_name=Start-AI-Toolkit.bat"
 echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
 echo @echo off^&^&cd /d %%~dp0>%bat_file_name%
-echo Title AI-Toolkit-Easy-Install v0.4.1 by ivo>>%bat_file_name%
+echo Title %version_title%>>%bat_file_name%
 echo setlocal enabledelayedexpansion>>%bat_file_name%
 echo.>>%bat_file_name%
 
@@ -282,23 +282,23 @@ echo set GIT_LFS_SKIP_SMUDGE^=^1>>%bat_file_name%
 echo set "local_serv=http://localhost:8675">>%bat_file_name%
 echo echo.>>%bat_file_name%
 echo cd ./ai-toolkit>>%bat_file_name%
-echo     echo %%green%%:::::::::::::  Starting AI-Toolkit ...  :::::::::::::::%%reset%%>>%bat_file_name%
+echo     echo    %%green%%::::::::::::::::: Starting AI-Toolkit :::::::::::::::::%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
 echo git.exe fetch>>%bat_file_name%
 echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%bat_file_name%
 echo if !errorlevel!==0 ^(>>%bat_file_name%
-echo     echo  - %%red%%New updates%%reset%% are available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
+echo     echo     - %%red%%New updates%%reset%% are available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo if exist ".\aitk_db.db" ^(>>%bat_file_name%
 echo     type ".\aitk_db.db" 2^>nul ^| findstr /i /c:"HF_TOKEN" ^>nul 2^>^&^1>>%bat_file_name%
-echo     if errorlevel 1 ^(echo  - %%green%%Hugging Face Token%%reset%% not found. Set it in Settings.^)>>%bat_file_name%
+echo     if errorlevel 1 ^(echo     - %%green%%Hugging Face Token%%reset%% not found. Set it in Settings.^)>>%bat_file_name%
 echo ^)>>%bat_file_name%
-echo echo  - Stop the server with %%green%%Ctrl+C twice%%reset%%, not %%red%%X%%reset%%>>%bat_file_name%
+echo echo     - Stop the server with %%green%%Ctrl+C twice%%reset%%, not %%red%%X%%reset%%>>%bat_file_name%
 echo echo.>>%bat_file_name%
-echo echo %%yellow%%::::::::: Waiting for the server to start... ::::::::::%%reset%%>>%bat_file_name%
+echo echo    %%yellow%%::::::::: Waiting for the server to start... ::::::::::%%reset%%>>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo cd ./ui>>%bat_file_name%
