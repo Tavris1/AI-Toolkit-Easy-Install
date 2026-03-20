@@ -36,7 +36,8 @@ No system Python. No VENV. Just run and go.
 ---
 
 ## 🖥️ Installation
-1. [**Download AI-Toolkit-Easy-Install**](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)  
+<!--1. [**Download AI-Toolkit-Easy-Install**](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)!-->
+1. [**Download AI-Toolkit-Easy-Install**](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/download/untagged-157b454b201973ed57cc/AI-Toolkit-Easy-Install.zip)  
 2. Extract `AI-Toolkit-Easy-Install.bat` into a new folder and run it  
 
 > [!IMPORTANT]
