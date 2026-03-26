@@ -28,9 +28,10 @@ No system Python. No VENV. Just run and go.
 | Git | [![Git version](https://img.shields.io/github/v/tag/git/git?label=&display_name=tag&color=blue)](https://git-scm.com/) - Latest (will install/update if needed) |
 | Node.js | [![Node.js version](https://img.shields.io/github/v/release/nodejs/node?label=&color=green)](https://nodejs.org/en/download/) - Latest (will install/update if needed) |
 | Python | [![Python version](https://img.shields.io/badge/3.12.10-blue)](https://www.python.org/downloads/release/python-31210/) - Embedded portable version |
-| PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.8.0-CUDA%2012.8-red)](https://pytorch.org/get-started/locally/) |
-| Triton | [![Triton version](https://img.shields.io/badge/3.4.0.post20-blue)](https://github.com/woct0rdho/triton-windows) |
+| PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.9.1-CUDA%2012.8-red)](https://pytorch.org/get-started/locally/) |
+| Triton | [![Triton version](https://img.shields.io/badge/3.5.1.post24-blue)](https://github.com/woct0rdho/triton-windows) |
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
+| FFmpeg 8 | [![FFmpeg Shared](https://img.shields.io/badge/FFmpeg-8.1_Shared-blue?logo=ffmpeg)](https://www.gyan.dev/ffmpeg/builds/) |
 | AI-Toolkit | [![AI-Toolkit last commit](https://img.shields.io/github/last-commit/ostris/ai-toolkit)](https://github.com/ostris/ai-toolkit) - Latest release |
 
 ---
