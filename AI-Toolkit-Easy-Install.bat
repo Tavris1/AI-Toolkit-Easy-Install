@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.4.9 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.5.0 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -92,7 +92,10 @@ if not exist AI-Toolkit (
 )
 
 :: Install Node.js ::
-call :nodejs_install
+call :install_nodejs
+
+:: Install FFmpeg 8 ::
+call :install_ffmpeg8
 
 :: Install Python & pip embedded ::
 call :python_embedded_install
@@ -136,12 +139,20 @@ set "path=%PATH%;%ProgramFiles%\Git\cmd"
 echo.
 goto :eof
 
-:nodejs_install
+:install_nodejs
 :: https://nodejs.org/en
 echo %green%:::::::::::: Installing/Updating%yellow% Node.js %green%::::::::::::%reset%
 echo.
 winget.exe install --id=OpenJS.NodeJS -e
 set "path=%PATH%;%ProgramFiles%\nodejs"
+Title %version_title%
+echo.
+goto :eof
+
+:install_ffmpeg8
+echo %green%:::::::::::: Installing/Updating%yellow% FFmpeg 8 %green%:::::::::::%reset%
+echo.
+winget.exe install --id Gyan.FFmpeg.Shared --version 8.0 --accept-package-agreements --accept-source-agreements
 Title %version_title%
 echo.
 goto :eof
@@ -204,20 +215,24 @@ cd ai-toolkit
 
 if exist "..\python_embeded\Scripts\uv.exe" (
     echo %green%Using UV for package installation%reset%
-    "..\python_embeded\python.exe" -I -m uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
     "..\python_embeded\python.exe" -I -m uv pip install -r requirements.txt %UVargs%
     "..\python_embeded\python.exe" -I -m uv pip install poetry-core %UVargs%
 	"..\python_embeded\python.exe" -I -m uv pip install wheel %UVargs%
-    "..\python_embeded\python.exe" -I -m uv pip install triton-windows==3.4.0.post20 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install "triton-windows<3.6" %UVargs%
 	"..\python_embeded\python.exe" -I -m uv pip install hf_xet %UVargs%
+	"..\python_embeded\python.exe" -I -m uv pip install ffmpeg %UVargs%
+	"..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %UVargs%
 ) else (
     echo %warning%UV not available - using standard pip%reset%
-    "..\python_embeded\python.exe" -I -m pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install -r requirements.txt %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install poetry-core %PIPargs%
 	"..\python_embeded\python.exe" -I -m pip install wheel %PIPargs%
-    "..\python_embeded\python.exe" -I -m pip install triton-windows==3.4.0.post20 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install "triton-windows<3.6" %PIPargs%
 	"..\python_embeded\python.exe" -I -m pip install hf_xet %PIPargs%
+	"..\python_embeded\python.exe" -I -m uv pip install ffmpeg %PIPargs%
+	"..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %PIPargs%
 )
 
 echo.
