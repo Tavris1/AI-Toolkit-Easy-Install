@@ -20,7 +20,8 @@ No system Python. No VENV. Just run and go.
 - Start everything via one `.bat` file, which:
   - Opens your default browser once the local server is live
   - Alerts you whenever a new update is available
-- Built-in updater for easy updates
+  - Checks for a **Hugging Face Token** in Settings
+- Includes **Update-AI-Toolkit** for easy updates
 
 ### Installer
 | 🔧 Component | 📝 Note |
