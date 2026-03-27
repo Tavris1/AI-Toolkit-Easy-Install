@@ -8,6 +8,7 @@ An easy-to-use training suite for image and video diffusion models.
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 [![GitHub Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
+[![GitHub Downloads latest)](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/latest/total?style=flat&label=⬇+latest&color=orange)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 
 <img width="1280" height="284" alt="AIT(R) 1280 BIG" src="https://github.com/user-attachments/assets/24d11b25-cba4-4abc-8988-5a788384cdd1" />  
 No system Python. No VENV. Just run and go.
