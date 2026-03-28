@@ -17,17 +17,6 @@ No system Python. No VENV. Just run and go.
 
 ## ✨ Features
 
-<details open>
-<summary><b>Launcher</b></summary>
-
-- Start everything via one `.bat` file, which:
-  - Opens your default browser once the local server is live
-  - Alerts you whenever a new update is available
-  - Checks for a **Hugging Face Token** in Settings
-- Includes **Update-AI-Toolkit** for easy updates
-
-</details>
-
 <details>
 <summary><b>Installer</b></summary>
 
@@ -42,6 +31,17 @@ No system Python. No VENV. Just run and go.
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
 | FFmpeg | [![PyPI - FFmpeg](https://img.shields.io/pypi/v/ffmpeg?label=ffmpeg-python&color=blue&logo=python&logoColor=white)](https://pypi.org/project/ffmpeg/) - Latest release |
 | AI-Toolkit | [![AI-Toolkit last commit](https://img.shields.io/github/last-commit/ostris/ai-toolkit)](https://github.com/ostris/ai-toolkit) - Latest release |
+
+</details>
+
+<details open>
+<summary><b>Launcher</b></summary>
+
+- Start everything via one `.bat` file, which:
+  - Opens your default browser once the local server is live
+  - Alerts you whenever a new update is available
+  - Checks for a **Hugging Face Token** in Settings
+- Includes **Update-AI-Toolkit** for easy updates
 
 </details>
 
