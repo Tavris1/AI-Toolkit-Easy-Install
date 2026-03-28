@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.5.0 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.5.1 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -114,9 +114,8 @@ for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command
 :: Final Messages ::
 echo %green%::::::::::::::: Installation Complete :::::::::::::::%reset%
 echo %green%::::::::::::::: Total Running Time:%red% %diff% %green%seconds%reset%
-echo %yellow%::::::::::::::: Press any key to exit :::::::::::::::%reset%&Pause>nul
 
-exit
+(goto) 2>nul & (timeout /t 2 /nobreak >nul & del /f /q "%CD%\%~nx0" & echo. & echo %yellow%::::::::::::::: Press any key to exit :::::::::::::::%reset% & pause >nul & exit)
 
 ::::::::::::::::::::::::::::::::: END :::::::::::::::::::::::::::::::::
 
@@ -253,7 +252,10 @@ echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
 echo @echo off^&^&cd /d %%~dp0>%bat_file_name%
 echo Title %version_title%>>%bat_file_name%
-echo setlocal enabledelayedexpansion>>%bat_file_name%
+echo setlocal>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo set "delay=2">>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo set PYTHONPATH=>>%bat_file_name%
@@ -271,11 +273,16 @@ echo set PYENV_VERSION=>>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo set warning=[33m>>%bat_file_name%
+echo set    gray=[90m>>%bat_file_name%
 echo set     red=[91m>>%bat_file_name%
 echo set   green=[92m>>%bat_file_name%
 echo set  yellow=[93m>>%bat_file_name%
-echo set    bold=[97m>>%bat_file_name%
+echo set    blue=[94m>>%bat_file_name%
+echo set magenta=[95m>>%bat_file_name%
+echo set    cyan=[96m>>%bat_file_name%
+echo set   white=[97m>>%bat_file_name%
 echo set   reset=[0m>>%bat_file_name%
+
 echo.>>%bat_file_name%
 
 echo set "path=%%~dp0\python_embeded;%%~dp0\python_embeded\Scripts;%%path%%">>%bat_file_name%
@@ -297,32 +304,40 @@ echo set GIT_LFS_SKIP_SMUDGE^=^1>>%bat_file_name%
 echo set "local_serv=http://localhost:8675">>%bat_file_name%
 echo echo.>>%bat_file_name%
 echo cd ./ai-toolkit>>%bat_file_name%
-echo     echo    %%green%%::::::::::::::::: Starting AI-Toolkit :::::::::::::::::%%reset%%>>%bat_file_name%
+echo     echo %%green%%::::::::::::::: Starting AI-Toolkit ::::::::::::::%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
-echo git.exe fetch>>%bat_file_name%
+echo git.exe fetch --quiet ^>nul ^2^>^&^1>>%bat_file_name%
 echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%bat_file_name%
-echo if !errorlevel!==0 ^(>>%bat_file_name%
-echo     echo     - %%red%%New updates%%reset%% are available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
+echo if %%errorlevel%%==0 ^(>>%bat_file_name%
+echo     echo  - %%red%%UPDATES%%reset%% available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
+echo     set "delay=5">>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo if exist ".\aitk_db.db" ^(>>%bat_file_name%
-echo     type ".\aitk_db.db" 2^>nul ^| findstr /i /c:"HF_TOKEN" ^>nul 2^>^&^1>>%bat_file_name%
-echo     if errorlevel 1 ^(echo     - %%green%%Hugging Face Token%%reset%% not found. Set it in Settings.^)>>%bat_file_name%
+echo     findstr /i /c:"HF_TOKEN" ".\aitk_db.db" ^>nul 2^>^&^1>>%bat_file_name%
+echo     if errorlevel 1 ^(echo  - %%magenta%%Hugging Face Token%%reset%% not found. Set in Settings.^)>>%bat_file_name%
 echo ^)>>%bat_file_name%
-echo echo     - Stop the server with %%green%%Ctrl+C twice%%reset%%, not %%red%%X%%reset%%>>%bat_file_name%
+echo echo  - Stop the server with %%green%%Ctrl+C twice%%reset%%, not with %%red%%X%%reset%%>>%bat_file_name%
 echo echo.>>%bat_file_name%
-echo echo    %%yellow%%::::::::: Waiting for the server to start... ::::::::::%%reset%%>>%bat_file_name%
+echo echo %%green%%::::::: Starting the server. Please wait... ::::::>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo timeout %%delay%%>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo echo %%reset%%>>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo set "path=%%windir%%\System32\WindowsPowerShell\v1.0;%%path%%">>%bat_file_name%
+echo.>>%bat_file_name%
+
+echo start /b powershell -NoProfile -ExecutionPolicy Bypass -Command "while(1){Start-Sleep 2;try{Invoke-WebRequest 'http://localhost:8675' -TimeoutSec 2 -UseBasicParsing -EA Stop|Out-Null;Start-Process 'http://localhost:8675';break}catch{}}">>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo cd ./ui>>%bat_file_name%
-echo start cmd.exe /k npm run build_and_start>>%bat_file_name%
-echo :loop>>%bat_file_name%
-echo if exist "%%windir%%\System32\WindowsPowerShell\v1.0" set "path=%%path%%;%%windir%%\System32\WindowsPowerShell\v1.0">>%bat_file_name%
-echo powershell -NoProfile -ExecutionPolicy Bypass -Command "try { $response = Invoke-WebRequest -Uri '!local_serv!' -TimeoutSec 2 -UseBasicParsing; exit 0 } catch { exit 1 }" ^>nul 2^>^&^1>>%bat_file_name%
-echo if ^!errorlevel^! neq 0 ^(timeout /t 2 /nobreak ^>nul^&^&goto :loop^)>>%bat_file_name%
-echo start ^!local_serv^!>>%bat_file_name%
+echo npm run build_and_start>>%bat_file_name%
 
 
 
