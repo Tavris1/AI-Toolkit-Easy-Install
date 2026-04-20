@@ -212,29 +212,89 @@ cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 
+:: PyTorch stack for RTX 40/50-series (Blackwell sm_120) - CUDA 12.8 cp312 wheels
+:: Torch/vision/audio are installed INDIVIDUALLY so silent-skip failures surface loudly.
+:: (Batched "torch torchvision torchaudio" can silently drop torchaudio under uv on Windows
+::  when one wheel resolves late, causing "No module named 'torchaudio'" at first job.)
+
 if exist "..\python_embeded\Scripts\uv.exe" (
     echo %green%Using UV for package installation%reset%
-    "..\python_embeded\python.exe" -I -m uv pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    echo.
+    echo %green%:::: Installing%yellow% PyTorch 2.9.1 + CUDA 12.8 (Blackwell sm_120) %green%::::%reset%
+    "..\python_embeded\python.exe" -I -m uv pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    call :verify_torch_stack uv
+    echo.
+    echo %green%:::: Installing%yellow% ai-toolkit requirements %green%::::%reset%
     "..\python_embeded\python.exe" -I -m uv pip install -r requirements.txt %UVargs%
-    "..\python_embeded\python.exe" -I -m uv pip install poetry-core %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install wheel %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install poetry-core wheel %UVargs%
     "..\python_embeded\python.exe" -I -m uv pip install "triton-windows<3.6" %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install hf_xet %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install ffmpeg %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install hf_xet ffmpeg %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %UVargs%
+    call :verify_torch_stack_final uv
 ) else (
     echo %warning%UV not available - using standard pip%reset%
-    "..\python_embeded\python.exe" -I -m pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    echo.
+    echo %green%:::: Installing%yellow% PyTorch 2.9.1 + CUDA 12.8 (Blackwell sm_120) %green%::::%reset%
+    "..\python_embeded\python.exe" -I -m pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    call :verify_torch_stack pip
+    echo.
+    echo %green%:::: Installing%yellow% ai-toolkit requirements %green%::::%reset%
     "..\python_embeded\python.exe" -I -m pip install -r requirements.txt %PIPargs%
-    "..\python_embeded\python.exe" -I -m pip install poetry-core %PIPargs%
-	"..\python_embeded\python.exe" -I -m pip install wheel %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install poetry-core wheel %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install "triton-windows<3.6" %PIPargs%
-	"..\python_embeded\python.exe" -I -m pip install hf_xet %PIPargs%
-	"..\python_embeded\python.exe" -I -m uv pip install ffmpeg %PIPargs%
-	"..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install hf_xet ffmpeg %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install torchcodec==0.9.1 %PIPargs%
+    call :verify_torch_stack_final pip
 )
 
 echo.
+goto :eof
+
+:verify_torch_stack
+:: Arg %1 = "uv" or "pip" - chooses installer for repair attempt
+echo.
+echo %green%:::: Verifying%yellow% PyTorch stack %green%::::%reset%
+"..\python_embeded\python.exe" -I -c "import torch, torchvision, torchaudio; print(f'torch {torch.__version__} / torchvision {torchvision.__version__} / torchaudio {torchaudio.__version__}'); print('CUDA available:', torch.cuda.is_available()); print('CUDA arch list:', torch.cuda.get_arch_list())"
+if not errorlevel 1 goto :eof
+echo %warning%PyTorch verification FAILED - attempting repair%reset%
+if /i "%~1"=="uv" (
+    "..\python_embeded\python.exe" -I -m uv pip install --reinstall torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+) else (
+    "..\python_embeded\python.exe" -I -m pip install --force-reinstall --no-deps torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+)
+"..\python_embeded\python.exe" -I -c "import torch, torchvision, torchaudio" >nul 2>&1
+if errorlevel 1 (
+    echo %red%FATAL: PyTorch stack still broken after repair.%reset%
+    echo %yellow%Manual fix from the ai-toolkit folder:%reset%
+    echo   ..\python_embeded\python.exe -m pip install --force-reinstall torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128
+    pause
+)
+goto :eof
+
+:verify_torch_stack_final
+:: Final gate: requirements.txt can cascade-downgrade torch via transitive deps.
+:: This check catches a silently-uninstalled torchaudio BEFORE the user hits "first job".
+echo.
+echo %green%:::: Final verification%reset%
+"..\python_embeded\python.exe" -I -c "import torch, torchvision, torchaudio, torchcodec; print(f'OK torch {torch.__version__} / vision {torchvision.__version__} / audio {torchaudio.__version__} / codec {torchcodec.__version__}')"
+if not errorlevel 1 goto :eof
+echo %warning%Post-requirements verification FAILED - re-pinning torch stack%reset%
+if /i "%~1"=="uv" (
+    "..\python_embeded\python.exe" -I -m uv pip install --reinstall torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
+    "..\python_embeded\python.exe" -I -m uv pip install --reinstall torchcodec==0.9.1 %UVargs%
+) else (
+    "..\python_embeded\python.exe" -I -m pip install --force-reinstall --no-deps torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
+    "..\python_embeded\python.exe" -I -m pip install --force-reinstall --no-deps torchcodec==0.9.1 %PIPargs%
+)
+"..\python_embeded\python.exe" -I -c "import torch, torchvision, torchaudio, torchcodec" >nul 2>&1
+if errorlevel 1 (
+    echo %red%FATAL: torch stack could not be repaired. See errors above.%reset%
+    pause
+)
 goto :eof
 
 
