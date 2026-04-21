@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.5.1 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.5.2 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -230,8 +230,8 @@ if exist "..\python_embeded\Scripts\uv.exe" (
 	"..\python_embeded\python.exe" -I -m pip install wheel %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install "triton-windows<3.6" %PIPargs%
 	"..\python_embeded\python.exe" -I -m pip install hf_xet %PIPargs%
-	"..\python_embeded\python.exe" -I -m uv pip install ffmpeg %PIPargs%
-	"..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %PIPargs%
+	"..\python_embeded\python.exe" -I -m pip install ffmpeg --no-cache-dir --no-warn-script-location --timeout=1000 --retries 20
+	"..\python_embeded\python.exe" -I -m pip install torchcodec==0.9.1 %PIPargs%
 )
 
 echo.
