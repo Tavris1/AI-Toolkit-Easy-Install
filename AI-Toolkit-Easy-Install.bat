@@ -212,15 +212,14 @@ cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 
-:: PyTorch stack for RTX 40/50-series (Blackwell sm_120) - CUDA 12.8 cp312 wheels
-:: Torch/vision/audio are installed INDIVIDUALLY so silent-skip failures surface loudly.
-:: (Batched "torch torchvision torchaudio" can silently drop torchaudio under uv on Windows
-::  when one wheel resolves late, causing "No module named 'torchaudio'" at first job.)
+:: Install torch, torchvision, torchaudio as three separate commands so a silent
+:: resolver skip surfaces as a hard error instead of "No module named 'torchaudio'"
+:: at the user's first training job (see issues #44, #46).
 
 if exist "..\python_embeded\Scripts\uv.exe" (
     echo %green%Using UV for package installation%reset%
     echo.
-    echo %green%:::: Installing%yellow% PyTorch 2.9.1 + CUDA 12.8 (Blackwell sm_120) %green%::::%reset%
+    echo %green%:::: Installing%yellow% PyTorch 2.9.1 + CUDA 12.8 %green%::::%reset%
     "..\python_embeded\python.exe" -I -m uv pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
     "..\python_embeded\python.exe" -I -m uv pip install torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
     "..\python_embeded\python.exe" -I -m uv pip install torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
@@ -236,7 +235,7 @@ if exist "..\python_embeded\Scripts\uv.exe" (
 ) else (
     echo %warning%UV not available - using standard pip%reset%
     echo.
-    echo %green%:::: Installing%yellow% PyTorch 2.9.1 + CUDA 12.8 (Blackwell sm_120) %green%::::%reset%
+    echo %green%:::: Installing%yellow% PyTorch 2.9.1 + CUDA 12.8 %green%::::%reset%
     "..\python_embeded\python.exe" -I -m pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install torchvision==0.24.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
     "..\python_embeded\python.exe" -I -m pip install torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
