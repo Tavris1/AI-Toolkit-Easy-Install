@@ -27,6 +27,7 @@ No system Python. No VENV. Just run and go.
 | Python | [![Python version](https://img.shields.io/badge/3.12.10-blue)](https://www.python.org/downloads/release/python-31210/) - Embedded portable version |
 | PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.9.1-CUDA%2012.8-red)](https://pytorch.org/get-started/locally/) |
 | Triton | [![Triton version](https://img.shields.io/badge/3.5.1.post24-blue)](https://github.com/woct0rdho/triton-windows) - Latest release for Torch 2.9.1 |
+| torchcodec | [![torchcodec version](https://img.shields.io/badge/0.9.1-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.9.1 |
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
 | FFmpeg | [![PyPI - FFmpeg](https://img.shields.io/pypi/v/ffmpeg?label=ffmpeg-python&color=blue&logo=python&logoColor=white)](https://pypi.org/project/ffmpeg/) - Latest release |
 | AI-Toolkit | [![AI-Toolkit last commit](https://img.shields.io/github/last-commit/ostris/ai-toolkit)](https://github.com/ostris/ai-toolkit) - Latest release |
