@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.5.2 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.5.3 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -192,7 +192,8 @@ echo     pypi.python.org>> pip.ini
 
 "%CD%\python.exe" -I get-pip.py %PIPargs% --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org
 REM "%CD%\python.exe" -I -m pip config set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org"
-"%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
+REM "%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
+"%CD%\python.exe" -I -m pip install uv %PIPargs%
 "%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o python_3.12.7_include_libs.zip https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip
@@ -205,37 +206,37 @@ erase python_3.12.7_include_libs.zip
 echo.
 goto :eof
 
-:ai-toolkit_install
+:AI-TOOLKIT_INSTALL
 echo %green%::::::::::::::: Installing%yellow% AI-Toolkit %green%:::::::::::::::%reset%
 echo.
 cd ..\
 git.exe clone https://github.com/ostris/ai-toolkit.git
 cd ai-toolkit
 
+set "PY_EXE=..\python_embeded\python.exe"
+
 if exist "..\python_embeded\Scripts\uv.exe" (
     echo %green%Using UV for package installation%reset%
-    "..\python_embeded\python.exe" -I -m uv pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %UVargs%
-    "..\python_embeded\python.exe" -I -m uv pip install -r requirements.txt %UVargs%
-    "..\python_embeded\python.exe" -I -m uv pip install poetry-core %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install wheel %UVargs%
-    "..\python_embeded\python.exe" -I -m uv pip install "triton-windows<3.6" %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install hf_xet %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install ffmpeg %UVargs%
-	"..\python_embeded\python.exe" -I -m uv pip install torchcodec==0.9.1 %UVargs%
+    set "INSTALL_CMD=-I -m uv pip install %UVargs%"
 ) else (
     echo %warning%UV not available - using standard pip%reset%
-    "..\python_embeded\python.exe" -I -m pip install torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 --index-url https://download.pytorch.org/whl/cu128 %PIPargs%
-    "..\python_embeded\python.exe" -I -m pip install -r requirements.txt %PIPargs%
-    "..\python_embeded\python.exe" -I -m pip install poetry-core %PIPargs%
-	"..\python_embeded\python.exe" -I -m pip install wheel %PIPargs%
-    "..\python_embeded\python.exe" -I -m pip install "triton-windows<3.6" %PIPargs%
-	"..\python_embeded\python.exe" -I -m pip install hf_xet %PIPargs%
-	"..\python_embeded\python.exe" -I -m pip install ffmpeg --no-cache-dir --no-warn-script-location --timeout=1000 --retries 20
-	"..\python_embeded\python.exe" -I -m pip install torchcodec==0.9.1 %PIPargs%
+    set "INSTALL_CMD=-I -m pip install %PIPargs%"
 )
 
+%PY_EXE% %INSTALL_CMD% torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cu128
+%PY_EXE% %INSTALL_CMD% torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+%PY_EXE% %INSTALL_CMD% -r requirements.txt
+%PY_EXE% %INSTALL_CMD% poetry-core
+%PY_EXE% %INSTALL_CMD% wheel
+%PY_EXE% %INSTALL_CMD% hf_xet
+%PY_EXE% %INSTALL_CMD% ffmpeg
+%PY_EXE% %INSTALL_CMD% -U torchcodec==0.15
+%PY_EXE% %INSTALL_CMD% "triton-windows<3.7"
+%PY_EXE% %INSTALL_CMD% https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.6/flash_attn-2.8.3+cu128torch2.11-cp312-cp312-win_amd64.whl
+
 echo.
-goto :eof
+
+GOTO :EOF
 
 
 
