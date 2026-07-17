@@ -25,9 +25,10 @@ No system Python. No VENV. Just run and go.
 | Node.js | [![Node.js version](https://img.shields.io/github/v/release/nodejs/node?label=&color=green)](https://nodejs.org/en/download/) - Latest (will install/update if needed) |
 | FFmpeg 8 | [![FFmpeg Release](https://img.shields.io/github/v/release/GyanD/codexffmpeg?label=FFmpeg&color=blue&logo=ffmpeg)](https://www.gyan.dev/ffmpeg/builds/) - Latest (will install/update if needed) |
 | Python | [![Python version](https://img.shields.io/badge/3.12.10-blue)](https://www.python.org/downloads/release/python-31210/) - Embedded portable version |
-| PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.9.1-CUDA%2012.8-red)](https://pytorch.org/get-started/locally/) |
-| Triton | [![Triton version](https://img.shields.io/badge/3.5.1.post24-blue)](https://github.com/woct0rdho/triton-windows) - Latest release for Torch 2.9.1 |
-| torchcodec | [![torchcodec version](https://img.shields.io/badge/0.9.1-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.9.1 |
+| PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.11.0-CUDA%2012.8-red)](https://pytorch.org/get-started/locally/) |
+| Triton | [![Triton version](https://img.shields.io/badge/3.6.0.post26-blue)](https://github.com/woct0rdho/triton-windows) - Latest compatible release for Torch 2.11.0 (pinned <3.7) |
+| FlashAttention | [![FlashAttention version](https://img.shields.io/badge/2.8.3-blue)](https://github.com/Dao-AILab/flash-attention) |
+| torchcodec | [![torchcodec version](https://img.shields.io/badge/0.15.0-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.11.0 |
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
 | FFmpeg | [![PyPI - FFmpeg](https://img.shields.io/pypi/v/ffmpeg?label=ffmpeg-python&color=blue&logo=python&logoColor=white)](https://pypi.org/project/ffmpeg/) - Latest release |
 | AI-Toolkit | [![AI-Toolkit last commit](https://img.shields.io/github/last-commit/ostris/ai-toolkit)](https://github.com/ostris/ai-toolkit) - Latest release |
