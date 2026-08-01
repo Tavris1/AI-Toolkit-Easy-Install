@@ -62,6 +62,8 @@ No system Python. No VENV. Just run and go.
 
 <div align="center">
 
+---
+
 ## ❤️ Support Development
 
 Enjoy the project?  
