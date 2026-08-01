@@ -6,9 +6,14 @@ One-click portable Windows installer for "AI-Toolkit by Ostris" 🔹 Nvidia GPUs
 An easy-to-use training suite for image and video diffusion models.
 
 [![GitHub Release](https://img.shields.io/github/v/release/Tavris1/AI-Toolkit-Easy-Install)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
-[![GitHub Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/Tavris1/AI-Toolkit-Easy-Install?style=flat&label=date)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
-[![GitHub Downloads latest)](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/latest/total?style=flat&label=⬇+latest&color=orange)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
+
+  <p align="center">
+    <a href="#%EF%B8%8F-installation">📥 Install</a> &nbsp;·&nbsp;
+    <a href="#-features">✨ Features</a> &nbsp;·&nbsp;
+    <a href="#%EF%B8%8F-support-development">❤️ Support Development</a>
+  </p>
 
 <img width="1280" height="284" alt="AIT(R) 1280 BIG" src="https://github.com/user-attachments/assets/24d11b25-cba4-4abc-8988-5a788384cdd1" />  
 No system Python. No VENV. Just run and go.
@@ -44,7 +49,7 @@ No system Python. No VENV. Just run and go.
 ---
 
 ## 🖥️ Installation
-1. [**▶️ CLICK HERE ◀️**](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip) to download the latest version
+1. [**📥 DOWNLOAD LATEST VERSION**](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/latest/download/AI-Toolkit-Easy-Install.zip)
 2. Extract `AI-Toolkit-Easy-Install.bat` into a new folder and run it  
 
 > [!IMPORTANT]
@@ -54,9 +59,10 @@ No system Python. No VENV. Just run and go.
 
 <div align="center">
 
-## ❤️ Support Me
+## ❤️ Support Development
 
-Enjoy my projects? Any support is greatly appreciated!
+Enjoy the project?  
+If it saves you time, your support helps keep development and maintenance going.
 
 [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/tavris1)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/tavris1)
