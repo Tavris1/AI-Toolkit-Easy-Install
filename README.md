@@ -58,6 +58,7 @@ No system Python. No VENV. Just run and go.
 > - Do not run the installer as Administrator  
 > - Avoid system folders (`Program Files`, `Windows`, `C:\` root)  
 > - Avoid spaces and special characters in folder names  
+> - Make sure your NVIDIA drivers are up to date (v580 or newer)  
 
 <div align="center">
 
