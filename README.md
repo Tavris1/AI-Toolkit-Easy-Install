@@ -34,7 +34,7 @@ No system Python. No VENV. Just run and go.
 | FFmpeg 8 | [![FFmpeg Release](https://img.shields.io/github/v/release/GyanD/codexffmpeg?label=FFmpeg&color=blue&logo=ffmpeg)](https://www.gyan.dev/ffmpeg/builds/) - Latest (will install/update if needed) |
 | Python | [![Python version](https://img.shields.io/badge/3.12.10-blue)](https://www.python.org/downloads/release/python-31210/) - Embedded portable version |
 | PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.13.0-CUDA%2013.0-red)](https://pytorch.org/get-started/locally/) |
-| Triton | [![Triton version](https://img.shields.io/badge/3.7.1.post27-blue)](https://github.com/woct0rdho/triton-windows) - Latest compatible release for Torch 2.11.0 (pinned <3.7) |
+| Triton | [![Triton version](https://img.shields.io/badge/3.7.1.post27-blue)](https://github.com/woct0rdho/triton-windows) - Latest compatible release for Torch 2.11.0 (pinned <3.8) |
 | FlashAttention | [![FlashAttention version](https://img.shields.io/badge/2.8.3-blue)](https://github.com/Dao-AILab/flash-attention) |
 | torchcodec | [![torchcodec version](https://img.shields.io/badge/0.15.0-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.11.0 |
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
