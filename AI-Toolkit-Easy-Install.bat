@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.5.3 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.6.0 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -223,16 +223,16 @@ if exist "..\python_embeded\Scripts\uv.exe" (
     set "INSTALL_CMD=-I -m pip install %PIPargs%"
 )
 
-%PY_EXE% %INSTALL_CMD% torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cu128
-%PY_EXE% %INSTALL_CMD% torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+%PY_EXE% %INSTALL_CMD% torch==2.13.0 torchvision==0.28.0 --index-url https://download.pytorch.org/whl/cu130
+%PY_EXE% %INSTALL_CMD% torchaudio==2.11.0 --index-url https://download.pytorch.org/whl/cu130
 %PY_EXE% %INSTALL_CMD% -r requirements.txt
 %PY_EXE% %INSTALL_CMD% poetry-core
 %PY_EXE% %INSTALL_CMD% wheel
 %PY_EXE% %INSTALL_CMD% hf_xet
 %PY_EXE% %INSTALL_CMD% ffmpeg
 %PY_EXE% %INSTALL_CMD% -U torchcodec==0.15
-%PY_EXE% %INSTALL_CMD% "triton-windows<3.7"
-%PY_EXE% %INSTALL_CMD% https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.6/flash_attn-2.8.3+cu128torch2.11-cp312-cp312-win_amd64.whl
+%PY_EXE% %INSTALL_CMD% "triton-windows<3.8"
+%PY_EXE% %INSTALL_CMD% https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.52/flash_attn-2.8.3+cu130torch2.13-cp312-cp312-win_amd64.whl
 
 echo.
 
@@ -316,10 +316,6 @@ echo     set "delay=5">>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
-echo if exist ".\aitk_db.db" ^(>>%bat_file_name%
-echo     findstr /i /c:"HF_TOKEN" ".\aitk_db.db" ^>nul 2^>^&^1>>%bat_file_name%
-echo     if errorlevel 1 ^(echo  - %%magenta%%Hugging Face Token%%reset%% not found. Set in Settings.^)>>%bat_file_name%
-echo ^)>>%bat_file_name%
 echo echo  - Stop the server with %%green%%Ctrl+C twice%%reset%%, not with %%red%%X%%reset%%>>%bat_file_name%
 echo echo.>>%bat_file_name%
 echo echo %%green%%::::::: Starting the server. Please wait... ::::::>>%bat_file_name%
