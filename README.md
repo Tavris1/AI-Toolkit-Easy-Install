@@ -34,9 +34,9 @@ No system Python. No VENV. Just run and go.
 | FFmpeg 8 | [![FFmpeg Release](https://img.shields.io/github/v/release/GyanD/codexffmpeg?label=FFmpeg&color=blue&logo=ffmpeg)](https://www.gyan.dev/ffmpeg/builds/) - Latest (will install/update if needed) |
 | Python | [![Python version](https://img.shields.io/badge/3.12.10-blue)](https://www.python.org/downloads/release/python-31210/) - Embedded portable version |
 | PyTorch | [![PyTorch version](https://img.shields.io/badge/PyTorch%202.13.0-CUDA%2013.0-red)](https://pytorch.org/get-started/locally/) |
-| Triton | [![Triton version](https://img.shields.io/badge/3.7.1.post27-blue)](https://github.com/woct0rdho/triton-windows) - Latest compatible release for Torch 2.11.0 (pinned <3.8) |
+| Triton | [![Triton version](https://img.shields.io/badge/3.7.1.post27-blue)](https://github.com/woct0rdho/triton-windows) - Latest compatible release for Torch 2.13.0 (pinned <3.8) |
 | FlashAttention | [![FlashAttention version](https://img.shields.io/badge/2.8.3-blue)](https://github.com/Dao-AILab/flash-attention) |
-| torchcodec | [![torchcodec version](https://img.shields.io/badge/0.15.0-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.11.0 |
+| torchcodec | [![torchcodec version](https://img.shields.io/badge/0.15.0-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.13.0 |
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
 | FFmpeg | [![PyPI - FFmpeg](https://img.shields.io/pypi/v/ffmpeg?label=ffmpeg-python&color=blue&logo=python&logoColor=white)](https://pypi.org/project/ffmpeg/) - Latest release |
 | AI-Toolkit | [![AI-Toolkit last commit](https://img.shields.io/github/last-commit/ostris/ai-toolkit)](https://github.com/ostris/ai-toolkit) - Latest release |
