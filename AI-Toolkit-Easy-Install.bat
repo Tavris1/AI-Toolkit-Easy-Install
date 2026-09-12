@@ -1,5 +1,5 @@
 @echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.6.0 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.6.1 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -304,7 +304,7 @@ echo.>>%bat_file_name%
 echo set GIT_LFS_SKIP_SMUDGE^=^1>>%bat_file_name%
 echo set "local_serv=http://localhost:8675">>%bat_file_name%
 echo echo.>>%bat_file_name%
-echo cd ./ai-toolkit>>%bat_file_name%
+echo cd /d "%%~dp0ai-toolkit">>%bat_file_name%
 echo     echo %%green%%::::::::::::::: Starting AI-Toolkit ::::::::::::::%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
 echo git.exe fetch --quiet ^>nul ^2^>^&^1>>%bat_file_name%
@@ -333,10 +333,7 @@ echo.>>%bat_file_name%
 echo start /b powershell -NoProfile -ExecutionPolicy Bypass -Command "while(1){Start-Sleep 2;try{Invoke-WebRequest 'http://localhost:8675' -TimeoutSec 2 -UseBasicParsing -EA Stop|Out-Null;Start-Process 'http://localhost:8675';break}catch{}}">>%bat_file_name%
 echo.>>%bat_file_name%
 
-echo cd ./ui>>%bat_file_name%
-echo npm run build_and_start>>%bat_file_name%
-
-
+echo npm --prefix "%%~dp0AI-Toolkit\ui" run build_and_start>>%bat_file_name%
 
 ::::::::::::::::::::::::::::::::::
 :: Create Update-AI-Toolkit.bat ::
@@ -389,7 +386,7 @@ echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo set GIT_LFS_SKIP_SMUDGE=^1>>%bat_file_name%
-echo cd ./ai-toolkit>>%bat_file_name%
+echo cd /d "%%~dp0ai-toolkit">>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo echo.>>%bat_file_name%
@@ -403,6 +400,7 @@ echo echo %%green%%::::::: Installing %%yellow%%requirements %%green%%and updati
 echo echo.>>%bat_file_name%
 echo ..\python_embeded\python.exe -I -m pip uninstall diffusers -y>>%bat_file_name%
 echo ..\python_embeded\python.exe -I -m pip install -r requirements.txt --no-cache --no-warn-script-location>>%bat_file_name%
+echo ..\python_embeded\python.exe -I -m pip install -U torchcodec==0.15 >>%bat_file_name%
 echo.>>%bat_file_name%
 
 echo echo.>>%bat_file_name%
