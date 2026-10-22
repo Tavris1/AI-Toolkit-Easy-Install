@@ -11,7 +11,7 @@ Windows • NVIDIA GPUs
 [![GitHub Downloads](https://img.shields.io/github/downloads/Tavris1/AI-Toolkit-Easy-Install/total)](https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases)
 
   <p align="center">
-    <a href="#%EF%B8%8F-installation">📥 Install</a> &nbsp;·&nbsp;
+    <a href="#%EF%B8%8F-installation">📥 <strong>INSTALL</strong></a> &nbsp;·&nbsp;
     <a href="#-features">✨ Features</a> &nbsp;·&nbsp;
     <a href="#%EF%B8%8F-support-development">❤️ Support Development</a>
   </p>
