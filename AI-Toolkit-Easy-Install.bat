@@ -1,5 +1,5 @@
-@echo off&&cd /d %~dp0
-set "version_title=AI-Toolkit-Easy-Install v0.6.1 by ivo"
+@echo off&&cd /D "%~dp0"
+set "version_title=AI-Toolkit-Easy-Install v0.6.2 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -35,13 +35,58 @@ if exist "%windir%\system32" set "path=%PATH%;%windir%\System32"
 if exist "%windir%\system32\WindowsPowerShell\v1.0" set "path=%PATH%;%windir%\system32\WindowsPowerShell\v1.0"
 if exist "%localappdata%\Microsoft\WindowsApps" set "path=%PATH%;%localappdata%\Microsoft\WindowsApps"
 
-:: Check for Existing ComfyUI Folder ::
+set "FATAL="
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "if(([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){exit 10}else{exit 0}"
+if %errorlevel% equ 10 (
+	if /I "%~1"=="CEI_NOADMIN" (
+		cls
+		echo %warning%WARNING:%reset% This installer cannot run with %yellow%Administrator%reset% rights
+		echo %green%Start it with a normal double-click, NOT with %yellow%Run as administrator%reset%
+		echo Press any key to Exit...&Pause>nul
+		exit /b 1
+	)
+	echo %warning%WARNING:%reset% Administrator rights detected. Restarting without them...
+	if exist "%TEMP%\CEI_deelevate.flag" (
+		runas.exe /trustlevel:0x20000 "cmd.exe /c \"\"%~f0\" CEI_NOADMIN\""
+		if errorlevel 1 (
+			echo.
+			echo %red%Failed to restart without Administrator rights%reset%
+			echo %green%Start this file with a normal double-click, NOT with %yellow%Run as administrator%reset%
+			echo Press any key to Exit...&Pause>nul
+			exit /b 1
+		)
+		exit /b 0
+	)
+	(echo.>"%TEMP%\CEI_deelevate.flag") 2>nul
+	"%SystemRoot%\explorer.exe" "%~f0"
+	exit /b 0
+)
+del "%TEMP%\CEI_deelevate.flag" >nul 2>&1
+
+set "CEI_HOME=%~dp0"
+if "%CEI_HOME:~0,2%"=="\\" (
+	cls
+	echo %warning%WARNING:%reset% Network paths ^(UNC^) are not supported
+	echo %green%Copy the entire package to a local drive and run it again.%reset%
+	echo Press any key to Exit...&Pause>nul
+	exit /b 1
+)
+
+call :NVIDIA_DRIVER_CHECK
+if defined FATAL exit /b 1
+
+:: Check for Existing AI-Toolkit Folder ::
 if exist AI-Toolkit (
 	echo %warning%WARNING:%reset% '%bold%AI-Toolkit%reset%' folder already exists!
 	echo %green%Move this file to another folder and run it again.%reset%
 	echo Press any key to Exit...&Pause>nul
 	goto :eof
 )
+
+call :CHECK_LOCATION
+if defined FATAL exit /b 1
+call :CHECK_NON_ASCII
 
 :: Capture the start time ::
 for /f "delims=" %%i in ('powershell -NoProfile -ExecutionPolicy Bypass -command "Get-Date -Format yyyy-MM-dd_HH:mm:ss"') do set start=%%i
@@ -99,6 +144,7 @@ call :install_ffmpeg8
 
 :: Install Python & pip embedded ::
 call :python_embedded_install
+if defined FATAL exit /b 1
 
 :: Install AI-Toolkit ::
 call :ai-toolkit_install
@@ -126,6 +172,92 @@ set   green=[92m
 set  yellow=[93m
 set    bold=[97m
 set   reset=[0m
+goto :eof
+
+:CHECK_LOCATION
+set "CEI_ROOT=%CD%"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$r=[IO.Path]::GetFullPath($env:CEI_ROOT).TrimEnd('\')+'\'; if($r -ieq ($env:SystemDrive+'\')){exit 1}; foreach($d in @($env:SystemRoot,$env:ProgramFiles,${env:ProgramFiles(x86)},$env:ProgramW6432)){if($d -and $r.StartsWith($d.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)){exit 1}}; exit 0"
+if errorlevel 1 (
+	cls
+	echo %warning%WARNING:%reset% Cannot install into system folders like %yellow%Program Files, Windows%reset% or system root %yellow%C:\%reset%
+	echo %green%Move this file to another folder and run it again.%reset%
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
+
+set "CEI_TEST=.cei_test_%RANDOM%%RANDOM%"
+(md "%CEI_TEST%") 2>nul
+(echo test>"%CEI_TEST%\write.tmp") 2>nul
+if not exist "%CEI_TEST%\write.tmp" (
+	rd /s /q "%CEI_TEST%" 2>nul
+	cls
+	echo %warning%WARNING:%reset% No permission to create folders/files here
+	echo Move this file to a folder you own, for example in your user folder or on another drive
+	echo %green%Then run it again.%reset%
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
+rd /s /q "%CEI_TEST%" 2>nul
+goto :eof
+
+:CHECK_NON_ASCII
+set "CEI_ROOT=%CD%"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$c=0; if($env:CEI_ROOT -cmatch '[^\x00-\x7F]'){$c+=1}; if($env:USERPROFILE -cmatch '[^\x00-\x7F]'){$c+=2}; exit $c"
+set "CEI_NA=%errorlevel%"
+if %CEI_NA% equ 0 goto :eof
+echo.
+if %CEI_NA% equ 1 echo %red%WARNING: The installation path contains non-English characters. Installation problems are possible.%reset%
+if %CEI_NA% equ 3 echo %red%WARNING: The installation path contains non-English characters. Installation problems are possible.%reset%
+if %CEI_NA% equ 2 echo %red%WARNING: Your Windows user folder name contains non-English characters. Installation problems are possible.%reset%
+if %CEI_NA% equ 3 echo %red%WARNING: Your Windows user folder name contains non-English characters. Installation problems are possible.%reset%
+echo %red%Recommended: use a short English-only path, for example D:\AI\AI-Toolkit\%reset%
+echo.
+timeout /t 3 /nobreak >nul
+goto :eof
+
+:NVIDIA_DRIVER_CHECK
+set "NV_MIN=580"
+set "NV_FULL="
+set "NV_MAJOR="
+
+if exist "%ProgramFiles%\NVIDIA Corporation\NVSMI\nvidia-smi.exe" set "path=%path%;%ProgramFiles%\NVIDIA Corporation\NVSMI"
+
+where.exe nvidia-smi.exe >nul 2>&1
+if errorlevel 1 (
+	echo.
+	echo %warning%WARNING:%reset% %red%NVIDIA driver not detected%reset%
+	echo This installer requires an %yellow%NVIDIA GPU%reset% with an installed driver
+	echo Install the latest driver from %yellow%https://www.nvidia.com/drivers%reset% and run this installer again
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
+
+for /f %%a in ('nvidia-smi --query-gpu^=driver_version --format^=csv^,noheader 2^>nul') do set "NV_FULL=%%a"
+for /f "tokens=1 delims=." %%a in ("%NV_FULL%") do set "NV_MAJOR=%%a"
+
+echo %NV_MAJOR%| findstr /R "^[0-9][0-9]*$" >nul
+if errorlevel 1 (
+	echo.
+	echo %warning%WARNING:%reset% %red%Unable to read NVIDIA driver version%reset%
+	echo Make sure the NVIDIA driver is working ^(run %yellow%nvidia-smi%reset% in a terminal to check^)
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
+
+if %NV_MAJOR% LSS %NV_MIN% (
+	echo.
+	echo %red%   Your NVIDIA driver %yellow%^(%NV_FULL%^)%red% is below %yellow%%NV_MIN%%reset%
+	echo %warning%   Drivers below %yellow%%NV_MIN%%warning% do not support %yellow%CUDA 13%warning% or newer%reset%
+	echo %warning%   Recommendation: Update NVIDIA drivers%reset%
+	echo %green%   Install the latest driver from %yellow%https://www.nvidia.com/drivers%green% and run this installer again%reset%
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
 goto :eof
 
 :install_git
@@ -162,7 +294,26 @@ echo %green%::::::::::::: Installing%yellow% Python embedded %green%::::::::::::
 echo.
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile 'python-3.12.10-embed-amd64.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip
-if errorlevel 1 curl.exe -L --ssl-no-revoke -k -o python-3.12.10-embed-amd64.zip https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip
+
+if not exist "python-3.12.10-embed-amd64.zip" (
+	echo.
+	echo %red%Failed to download python-3.12.10-embed-amd64.zip%reset%
+	echo Check your date and time, Windows updates and antivirus HTTPS scanning
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try{if((Get-FileHash -LiteralPath 'python-3.12.10-embed-amd64.zip' -Algorithm SHA256).Hash -eq '4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3'){exit 0}else{exit 1}}catch{exit 1}"
+if errorlevel 1 (
+	erase "python-3.12.10-embed-amd64.zip"
+	echo.
+	echo %red%Python archive checksum does not match%reset%
+	echo The download may be corrupted or modified. Delete the %yellow%AI-Toolkit%reset% folder and run this installer again
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
 
 md python_embeded&&cd python_embeded
 tar.exe -xmf ..\python-3.12.10-embed-amd64.zip
@@ -173,7 +324,6 @@ echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o get-pip.py https://bootstrap.pypa.io/get-pip.py
-if errorlevel 1 curl.exe -L --ssl-no-revoke -k -o get-pip.py https://bootstrap.pypa.io/get-pip.py
 
 
 echo ../AI-Toolkit> python312._pth
@@ -229,7 +379,6 @@ if exist "..\python_embeded\Scripts\uv.exe" (
 %PY_EXE% %INSTALL_CMD% poetry-core
 %PY_EXE% %INSTALL_CMD% wheel
 %PY_EXE% %INSTALL_CMD% hf_xet
-%PY_EXE% %INSTALL_CMD% ffmpeg
 %PY_EXE% %INSTALL_CMD% -U torchcodec==0.15
 %PY_EXE% %INSTALL_CMD% "triton-windows<3.8"
 %PY_EXE% %INSTALL_CMD% https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.52/flash_attn-2.8.3+cu130torch2.13-cp312-cp312-win_amd64.whl
@@ -251,7 +400,7 @@ cd..\
 set "bat_file_name=Start-AI-Toolkit.bat"
 echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
-echo @echo off^&^&cd /d %%~dp0>%bat_file_name%
+echo @echo off^&^&cd /d "%%~dp0">%bat_file_name%
 echo Title %version_title%>>%bat_file_name%
 echo setlocal>>%bat_file_name%
 echo.>>%bat_file_name%
@@ -282,6 +431,7 @@ echo set    blue=[94m>>%bat_file_name%
 echo set magenta=[95m>>%bat_file_name%
 echo set    cyan=[96m>>%bat_file_name%
 echo set   white=[97m>>%bat_file_name%
+echo set    bold=[97m>>%bat_file_name%
 echo set   reset=[0m>>%bat_file_name%
 
 echo.>>%bat_file_name%
@@ -308,8 +458,9 @@ echo cd /d "%%~dp0ai-toolkit">>%bat_file_name%
 echo     echo %%green%%::::::::::::::: Starting AI-Toolkit ::::::::::::::%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
 echo git.exe fetch --quiet ^>nul ^2^>^&^1>>%bat_file_name%
-echo git.exe status -uno ^| findstr /C:"Your branch is behind" ^>nul>>%bat_file_name%
-echo if %%errorlevel%%==0 ^(>>%bat_file_name%
+echo set "BEHIND=">>%bat_file_name%
+echo for /f %%%%A in ^('git.exe rev-list --count HEAD..@{u} 2^^^>nul'^) do set "BEHIND=%%%%A">>%bat_file_name%
+echo if defined BEHIND if not "%%BEHIND%%"=="0" ^(>>%bat_file_name%
 echo     echo  - %%red%%UPDATES%%reset%% available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
 echo     echo.>>%bat_file_name%
 echo     set "delay=5">>%bat_file_name%
@@ -342,7 +493,7 @@ echo npm --prefix "%%~dp0AI-Toolkit\ui" run build_and_start>>%bat_file_name%
 set "bat_file_name=Update-AI-Toolkit.bat"
 echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
-echo @echo off^&^&cd /d %%~dp0>%bat_file_name%
+echo @echo off^&^&cd /d "%%~dp0">%bat_file_name%
 echo Title AI-Toolkit Update by ivo>>%bat_file_name%
 echo.>>%bat_file_name%
 echo.>>%bat_file_name%
