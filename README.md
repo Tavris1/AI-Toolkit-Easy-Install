@@ -54,10 +54,8 @@ No system Python. No VENV. Just run and go.
 2. Extract `AI-Toolkit-Easy-Install.bat` into a new folder and run it  
 
 > [!IMPORTANT]
-> - Do not run the installer as Administrator  
-> - Avoid system folders (`Program Files`, `Windows`, `C:\` root)  
-> - Avoid spaces and special characters in folder names  
-> - Make sure your NVIDIA drivers are up to date (v580 or newer)  
+> - Use a short, English-only path (e.g., `D:\AI\AI-Toolkit\`).
+> - Update NVIDIA drivers to v580 or newer.
 
 <div align="center">
 
