@@ -38,7 +38,6 @@ No system Python. No VENV. Just run and go.
 | FlashAttention | [![FlashAttention version](https://img.shields.io/badge/2.8.3-blue)](https://github.com/Dao-AILab/flash-attention) |
 | torchcodec | [![torchcodec version](https://img.shields.io/badge/0.15.0-blue)](https://github.com/meta-pytorch/torchcodec) - Compatible version for Torch 2.13.0 |
 | huggingface_hub\[hf_xet\] | [![hf_xet version](https://img.shields.io/github/v/release/huggingface/xet-core?label=&color=blue)](https://github.com/huggingface/xet-core) - Latest release |
-| FFmpeg | [![PyPI - FFmpeg](https://img.shields.io/pypi/v/ffmpeg?label=ffmpeg-python&color=blue&logo=python&logoColor=white)](https://pypi.org/project/ffmpeg/) - Latest release |
 | AI-Toolkit | [![AI-Toolkit last commit](https://img.shields.io/github/last-commit/ostris/ai-toolkit)](https://github.com/ostris/ai-toolkit) - Latest release |
 
 ### Launcher
