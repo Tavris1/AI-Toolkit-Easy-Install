@@ -18,7 +18,7 @@ Windows • NVIDIA GPUs
 
 ---
 
-<img width="1480" height="390" alt="AI-Toolkit" src="https://github.com/user-attachments/assets/bb37293a-76d6-4ec2-aaf0-3353251ecbba" />
+<img width="1480" height="390" alt="AI-Toolkit" src="https://github.com/user-attachments/assets/161064f9-45ea-4add-9039-fc8599dacbbd" />
 No system Python. No VENV. Just run and go.
 
 </div>
