@@ -1,5 +1,5 @@
 @echo off&&cd /D "%~dp0"
-set "version_title=AI-Toolkit-Easy-Install v0.6.2 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.6.3 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -65,6 +65,7 @@ if %errorlevel% equ 10 (
 del "%TEMP%\CEI_deelevate.flag" >nul 2>&1
 
 set "CEI_HOME=%~dp0"
+set "CEI_SELF=%~f0"
 if "%CEI_HOME:~0,2%"=="\\" (
 	cls
 	echo %warning%WARNING:%reset% Network paths ^(UNC^) are not supported
@@ -461,9 +462,15 @@ echo git.exe fetch --quiet ^>nul ^2^>^&^1>>%bat_file_name%
 echo set "BEHIND=">>%bat_file_name%
 echo for /f %%%%A in ^('git.exe rev-list --count HEAD..@{u} 2^^^>nul'^) do set "BEHIND=%%%%A">>%bat_file_name%
 echo if defined BEHIND if not "%%BEHIND%%"=="0" ^(>>%bat_file_name%
-echo     echo  - %%red%%UPDATES%%reset%% available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
-echo     echo.>>%bat_file_name%
-echo     set "delay=5">>%bat_file_name%
+echo     powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((Get-Content -LiteralPath '%%~f0' -Raw) -split ('#P'+'S#'))[1]">>%bat_file_name%
+echo     if errorlevel 1 ^(>>%bat_file_name%
+echo         call "%%~dp0Update-AI-Toolkit.bat" nopause>>%bat_file_name%
+echo         cd /d "%%~dp0ai-toolkit">>%bat_file_name%
+echo         Title %version_title%>>%bat_file_name%
+echo     ^) else ^(>>%bat_file_name%
+echo         echo  - %%red%%UPDATES%%reset%% available.%%green%% Run Update-AI-Toolkit.bat%%reset%%>>%bat_file_name%
+echo         echo.>>%bat_file_name%
+echo     ^)>>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
@@ -485,6 +492,9 @@ echo start /b powershell -NoProfile -ExecutionPolicy Bypass -Command "while(1){S
 echo.>>%bat_file_name%
 
 echo npm --prefix "%%~dp0AI-Toolkit\ui" run build_and_start>>%bat_file_name%
+echo exit /b>>%bat_file_name%
+set "CEI_OUT=%CD%\%bat_file_name%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$b=[IO.File]::ReadAllText($env:CEI_SELF).Split(@('#P'+'S#'),[StringSplitOptions]::None)[1]; [IO.File]::AppendAllText($env:CEI_OUT,'#P'+'S#'+$b+'#P'+'S#',[Text.Encoding]::ASCII)"
 
 ::::::::::::::::::::::::::::::::::
 :: Create Update-AI-Toolkit.bat ::
@@ -495,6 +505,7 @@ echo %green%:::::::::: Creating%yellow% %bat_file_name%%reset%
 
 echo @echo off^&^&cd /d "%%~dp0">%bat_file_name%
 echo Title AI-Toolkit Update by ivo>>%bat_file_name%
+echo setlocal>>%bat_file_name%
 echo.>>%bat_file_name%
 echo.>>%bat_file_name%
 
@@ -556,13 +567,91 @@ echo.>>%bat_file_name%
 
 echo echo.>>%bat_file_name%
 echo echo %%green%%:::::::::::::::   Update completed    :::::::::::::::%%reset%%>>%bat_file_name%
+echo echo.>>%bat_file_name%
 echo if "%%~1"=="" ^(>>%bat_file_name%
 echo     echo %%yellow%%::::::::::::::: Press any key to exit :::::::::::::::%%reset%%^&Pause^>nul>>%bat_file_name%
-echo     exit>>%bat_file_name%
+echo     exit /b>>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
-echo exit>>%bat_file_name%
+echo exit /b>>%bat_file_name%
 
 
 goto :eof
+
+#PS#
+Add-Type -AssemblyName System.Windows.Forms,System.Drawing
+[Windows.Forms.Application]::EnableVisualStyles()
+[Console]::OutputEncoding=[Text.Encoding]::UTF8
+$total=5
+$n=$env:BEHIND
+$msg=''
+try{$msg=(& git.exe log -1 --format=%s '@{u}' 2>$null|Select-Object -First 1)}catch{}
+if([string]::IsNullOrWhiteSpace($msg)){$msg='No description'}
+$c={param($h) [Drawing.ColorTranslator]::FromHtml($h)}
+$f=New-Object Windows.Forms.Form
+$f.FormBorderStyle='None'
+$f.StartPosition='CenterScreen'
+$f.TopMost=$true
+$f.ShowInTaskbar=$false
+$f.ClientSize=New-Object Drawing.Size(420,200)
+$f.BackColor=&$c '#1e1e24'
+$bar=New-Object Windows.Forms.Panel
+$bar.Location=New-Object Drawing.Point(0,0)
+$bar.Size=New-Object Drawing.Size(420,4)
+$bar.BackColor=&$c '#4ade80'
+$t1=New-Object Windows.Forms.Label
+$t1.Text='Update available'
+$t1.Font=New-Object Drawing.Font('Segoe UI',16,[Drawing.FontStyle]::Bold)
+$t1.ForeColor=&$c '#ffffff'
+$t1.Location=New-Object Drawing.Point(20,22)
+$t1.AutoSize=$true
+$t2=New-Object Windows.Forms.Label
+$t2.Text="$n new commit(s) in AI-Toolkit"
+$t2.Font=New-Object Drawing.Font('Segoe UI',10)
+$t2.ForeColor=&$c '#9ca3af'
+$t2.Location=New-Object Drawing.Point(22,58)
+$t2.AutoSize=$true
+$t3=New-Object Windows.Forms.Label
+$t3.Text="Latest: $msg"
+$t3.Font=New-Object Drawing.Font('Segoe UI',10)
+$t3.ForeColor=&$c '#e5e7eb'
+$t3.Location=New-Object Drawing.Point(22,86)
+$t3.Size=New-Object Drawing.Size(376,40)
+$t3.AutoEllipsis=$true
+$ok=New-Object Windows.Forms.Button
+$ok.Text='UPDATE NOW'
+$ok.Font=New-Object Drawing.Font('Segoe UI',10,[Drawing.FontStyle]::Bold)
+$ok.Location=New-Object Drawing.Point(20,138)
+$ok.Size=New-Object Drawing.Size(190,42)
+$ok.FlatStyle='Flat'
+$ok.FlatAppearance.BorderSize=0
+$ok.BackColor=&$c '#4ade80'
+$ok.ForeColor=&$c '#0b0b0f'
+$ok.DialogResult='OK'
+$no=New-Object Windows.Forms.Button
+$no.Text="Later ($total)"
+$no.Font=New-Object Drawing.Font('Segoe UI',10)
+$no.Location=New-Object Drawing.Point(210,138)
+$no.Size=New-Object Drawing.Size(190,42)
+$no.FlatStyle='Flat'
+$no.FlatAppearance.BorderSize=0
+$no.BackColor=&$c '#2f2f38'
+$no.ForeColor=&$c '#e5e7eb'
+$no.DialogResult='Cancel'
+$f.Controls.AddRange(@($bar,$t1,$t2,$t3,$ok,$no))
+$f.AcceptButton=$ok
+$f.CancelButton=$no
+$sw=New-Object Diagnostics.Stopwatch
+$tm=New-Object Windows.Forms.Timer
+$tm.Interval=50
+$tm.Add_Tick({
+    $left=$total-$sw.Elapsed.TotalSeconds
+    if($left -le 0){$f.DialogResult='Cancel';$f.Close();return}
+    $bar.Width=[int](420*$left/$total)
+    $no.Text="Later ($([math]::Ceiling($left)))"
+})
+$f.Add_Shown({$f.Activate();$sw.Start();$tm.Start()})
+$r=$f.ShowDialog()
+if($r -eq 'OK'){exit 1}else{exit 0}
+#PS#
