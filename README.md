@@ -18,7 +18,7 @@ Windows • NVIDIA GPUs
 
 ---
 
-<img width="1280" height="284" alt="AIT(R) 1280 BIG" src="https://github.com/user-attachments/assets/24d11b25-cba4-4abc-8988-5a788384cdd1" />  
+<img width="1480" height="390" alt="AI-Toolkit" src="https://github.com/user-attachments/assets/bb37293a-76d6-4ec2-aaf0-3353251ecbba" />
 No system Python. No VENV. Just run and go.
 
 </div>
