@@ -1,5 +1,5 @@
 @echo off&&cd /D "%~dp0"
-set "version_title=AI-Toolkit-Easy-Install v0.6.3 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.6.5 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -152,6 +152,9 @@ call :ai-toolkit_install
 
 :: Create 'Start-AI-Toolkit.bat' ::
 call :create_bat_files
+
+:: Create shortcut ::
+call :create_shortcut
 echo.
 
 :: Capture the end time ::
@@ -391,6 +394,21 @@ GOTO :EOF
 
 
 
+:create_shortcut
+set "LNK_NAME=AI-Toolkit.lnk"
+set "ICON_NAME=AI-Toolkit.ico"
+set "ICON_URL=https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/download/assets/AI-Toolkit.ico"
+set "ROOT_DIR=%CD%"
+set "ICON_PATH=%CD%\python_embeded\%ICON_NAME%"
+
+if not exist "%ICON_PATH%" curl.exe -L -f -s --ssl-no-revoke -o "%ICON_PATH%" "%ICON_URL%"
+
+echo %green%:::::::::: Creating shortcut to%yellow% Start-AI-Toolkit%reset%
+powershell -NoProfile -ExecutionPolicy Bypass -command "$p=$env:ROOT_DIR; $i=$env:ICON_PATH; $q=[string][char]34; $s=(New-Object -ComObject WScript.Shell).CreateShortcut($p+'\'+$env:LNK_NAME); $s.TargetPath=$env:SystemRoot+'\explorer.exe'; $s.Arguments=$q+$p+'\Start-AI-Toolkit.bat'+$q; $s.WorkingDirectory=$p; if(Test-Path -LiteralPath $i){$s.IconLocation=$i}; $s.Save()"
+
+if exist "%ROOT_DIR%\%LNK_NAME%" powershell -NoProfile -ExecutionPolicy Bypass -command "Copy-Item -LiteralPath ($env:ROOT_DIR+'\'+$env:LNK_NAME) -Destination ([Environment]::GetFolderPath('Desktop')) -Force -ErrorAction Stop" >nul 2>&1 && echo %green%:::::::::: Shortcut copied to Desktop%reset%
+goto :eof
+
 :create_bat_files
 cd..\
 
@@ -452,6 +470,10 @@ echo 	goto :eof>>%bat_file_name%
 echo ^)>>%bat_file_name%
 echo.>>%bat_file_name%
 
+echo set "LNK_ROOT=%%~dp0">>%bat_file_name%
+echo start /b powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((Get-Content -LiteralPath '%%~f0' -Raw) -split ('#L'+'N#'))[1]">>%bat_file_name%
+echo.>>%bat_file_name%
+
 echo set GIT_LFS_SKIP_SMUDGE^=^1>>%bat_file_name%
 echo set "local_serv=http://localhost:8675">>%bat_file_name%
 echo echo.>>%bat_file_name%
@@ -495,6 +517,7 @@ echo npm --prefix "%%~dp0AI-Toolkit\ui" run build_and_start>>%bat_file_name%
 echo exit /b>>%bat_file_name%
 set "CEI_OUT=%CD%\%bat_file_name%"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$b=[IO.File]::ReadAllText($env:CEI_SELF).Split(@('#P'+'S#'),[StringSplitOptions]::None)[1]; [IO.File]::AppendAllText($env:CEI_OUT,'#P'+'S#'+$b+'#P'+'S#',[Text.Encoding]::ASCII)"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$b=[IO.File]::ReadAllText($env:CEI_SELF).Split(@('#L'+'N#'),[StringSplitOptions]::None)[1]; [IO.File]::AppendAllText($env:CEI_OUT,'#L'+'N#'+$b+'#L'+'N#',[Text.Encoding]::ASCII)"
 
 ::::::::::::::::::::::::::::::::::
 :: Create Update-AI-Toolkit.bat ::
@@ -578,6 +601,33 @@ echo exit /b>>%bat_file_name%
 
 
 goto :eof
+
+#LN#
+$ErrorActionPreference='SilentlyContinue'
+$p=$env:LNK_ROOT.TrimEnd('\')
+$bat=$p+'\Start-AI-Toolkit.bat'
+$ico=$p+'\python_embeded\AI-Toolkit.ico'
+$exe=$env:SystemRoot+'\explorer.exe'
+$q=[string][char]34
+$arg=$q+$bat+$q
+$lnk=$p+'\AI-Toolkit.lnk'
+if(-not(Test-Path -LiteralPath $ico)){& curl.exe -L -f -s --ssl-no-revoke -o $ico 'https://github.com/Tavris1/AI-Toolkit-Easy-Install/releases/download/assets/AI-Toolkit.ico'}
+$hasIco=Test-Path -LiteralPath $ico
+$w=New-Object -ComObject WScript.Shell
+$ok=$false
+if(Test-Path -LiteralPath $lnk){
+    $c=$w.CreateShortcut($lnk)
+    $ok=($c.TargetPath -ieq $exe) -and ($c.Arguments -ieq $arg) -and ($c.WorkingDirectory -ieq $p) -and ((-not $hasIco) -or ($c.IconLocation -ieq ($ico+',0')))
+}
+if(-not $ok){
+    $s=$w.CreateShortcut($lnk)
+    $s.TargetPath=$exe
+    $s.Arguments=$arg
+    $s.WorkingDirectory=$p
+    if($hasIco){$s.IconLocation=$ico}
+    $s.Save()
+}
+#LN#
 
 #PS#
 Add-Type -AssemblyName System.Windows.Forms,System.Drawing
