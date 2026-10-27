@@ -44,8 +44,10 @@ No system Python. No VENV. Just run and go.
 
 - Start everything via one `.bat` file, which:
   - Opens your default browser once the local server is live
-  - Alerts you whenever an **update** is available
-- Includes **Update-AI-Toolkit** for easy updates
+  - Offers a **one-click update** when a new version is available, with a 5-second countdown
+- Creates an **AI-Toolkit** shortcut on the Desktop
+  - Automatically repairs the original shortcut if the installation folder is moved or renamed
+- Includes **Update-AI-Toolkit** for manual updates
 
 ---
 
