@@ -1,5 +1,5 @@
 @echo off&&cd /D "%~dp0"
-set "version_title=AI-Toolkit-Easy-Install v0.6.5 by ivo"
+set "version_title=AI-Toolkit-Easy-Install v0.6.6 by ivo"
 Title %version_title%
 
 :: Set colors ::
@@ -327,7 +327,32 @@ erase ..\python-3.12.10-embed-amd64.zip
 echo.
 echo %green%::::::::::::::::::: Installing%yellow% pip %green%::::::::::::::::::%reset%
 echo.
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile 'get-pip.py' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+set "CEI_PIP_DOWNLOAD_OK="
+curl.exe -fL --progress-bar --ssl-no-revoke --retry 5 --retry-delay 2 -o "get-pip.py" "https://bootstrap.pypa.io/get-pip.py"
+if not errorlevel 1 set "CEI_PIP_DOWNLOAD_OK=1"
+if defined CEI_PIP_DOWNLOAD_OK goto :cei_get_pip_downloaded
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Try{Start-BitsTransfer -Source 'https://bootstrap.pypa.io/get-pip.py' -Destination 'get-pip.py' -ErrorAction Stop;exit 0}catch{exit 1}"
+if not errorlevel 1 set "CEI_PIP_DOWNLOAD_OK=1"
+if defined CEI_PIP_DOWNLOAD_OK goto :cei_get_pip_downloaded
+
+curl.exe -fL --progress-bar --ssl-no-revoke --retry 5 --retry-delay 2 -o "get-pip.py" "https://raw.githubusercontent.com/pypa/get-pip/main/public/get-pip.py"
+if not errorlevel 1 set "CEI_PIP_DOWNLOAD_OK=1"
+if defined CEI_PIP_DOWNLOAD_OK goto :cei_get_pip_downloaded
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Try{Start-BitsTransfer -Source 'https://raw.githubusercontent.com/pypa/get-pip/main/public/get-pip.py' -Destination 'get-pip.py' -ErrorAction Stop;exit 0}catch{exit 1}"
+if not errorlevel 1 set "CEI_PIP_DOWNLOAD_OK=1"
+
+:cei_get_pip_downloaded
+if not exist "get-pip.py" set "CEI_PIP_DOWNLOAD_OK="
+if not defined CEI_PIP_DOWNLOAD_OK (
+    echo.
+    echo %red%Failed to download get-pip.py%reset%
+    echo Check the download errors above, your internet connection and system date and time.
+    echo Press any key to Exit...&Pause>nul
+    set "FATAL=1"
+    goto :eof
+)
 
 
 echo ../AI-Toolkit> python312._pth
@@ -344,11 +369,68 @@ echo     pypi.org>> pip.ini
 echo     files.pythonhosted.org>> pip.ini
 echo     pypi.python.org>> pip.ini
 
-"%CD%\python.exe" -I get-pip.py %PIPargs% --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host pypi.python.org
-REM "%CD%\python.exe" -I -m pip config set global.trusted-host "pypi.org files.pythonhosted.org pypi.python.org"
-REM "%CD%\python.exe" -I -m pip install uv==0.9.7 %PIPargs%
-"%CD%\python.exe" -I -m pip install uv %PIPargs%
-"%CD%\python.exe" -I -m pip install --upgrade pip %PIPargs%
+:: Extract bundled pip directly without running get-pip.py ::
+echo Installing pip from the bundled copy...
+.\python.exe -I -c "import base64,io,zipfile;src=open('get-pip.py','rb').read().decode('utf-8');assert 'DATA = b'+chr(34)*3 in src, 'Bundled pip DATA marker not found';blob=src.partition('DATA = b'+chr(34)*3)[2].rsplit(chr(34)*3,1)[0];assert blob.strip(), 'Bundled pip DATA is empty';z=zipfile.ZipFile(io.BytesIO(base64.b85decode(b''.join(blob.encode().split()))));assert 'pip/__main__.py' in z.namelist(), 'Bundled archive does not contain pip';assert z.testzip() is None, 'Bundled pip archive is corrupt';z.extractall('Lib/site-packages')"
+if errorlevel 1 (
+    echo.
+    echo %red%Failed to unpack the bundled pip%reset%
+    echo Check the extraction error above. The get-pip.py file may be incomplete or its format may have changed.
+    echo Press any key to Exit...&Pause>nul
+    set "FATAL=1"
+    goto :eof
+)
+.\python.exe -I -m pip --version >nul 2>&1
+if errorlevel 1 (
+	echo.
+	echo %red%Failed to install pip%reset%
+	echo Check the messages above and your internet connection. If your antivirus blocked Python files, see %yellow%Windows Security, Protection history%reset%
+	echo Delete the %yellow%AI-Toolkit%reset% folder and run this installer again
+	echo Press any key to Exit...&Pause>nul
+	set "FATAL=1"
+	goto :eof
+)
+.\python.exe -I -m pip install --upgrade %PIPargs% pip
+if errorlevel 1 (
+    echo.
+    echo %red%Failed to complete pip installation%reset%
+    echo Check the messages above and your internet connection.
+    echo Press any key to Exit...&Pause>nul
+    set "FATAL=1"
+    goto :eof
+)
+
+.\python.exe -I -m pip --version
+if errorlevel 1 (
+    echo.
+    echo %red%Pip verification failed after the upgrade%reset%
+    echo Check the Python error above. Installation has been stopped.
+    echo Press any key to Exit...&Pause>nul
+    set "FATAL=1"
+    goto :eof
+)
+echo %green%Pip is ready.%reset%
+
+
+.\python.exe -I -m pip install uv %PIPargs%
+if errorlevel 1 (
+    echo.
+    echo %red%Failed to install uv%reset%
+    echo Check the installation error above and your internet connection.
+    echo Press any key to Exit...&Pause>nul
+    set "FATAL=1"
+    goto :eof
+)
+.\python.exe -I -m uv --version
+if errorlevel 1 (
+    echo.
+    echo %red%UV verification failed%reset%
+    echo Check the Python error above. Installation has been stopped.
+    echo Press any key to Exit...&Pause>nul
+    set "FATAL=1"
+    goto :eof
+)
+
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest -Uri 'https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip' -OutFile 'python_3.12.7_include_libs.zip' -UseBasicParsing } catch { exit 1 }" || curl.exe -L --ssl-no-revoke -o python_3.12.7_include_libs.zip https://github.com/woct0rdho/triton-windows/releases/download/v3.0.0-windows.post1/python_3.12.7_include_libs.zip
 
